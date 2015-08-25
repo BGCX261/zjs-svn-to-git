@@ -1,0 +1,50 @@
+#summary zjs.Template
+ * *File:* zjs/text.js
+ * *Module:* zjs.text
+= Class Template =
+
+----
+<p>This class provides a means to connect a template string and syntax for later use. The mechanics are performed by the zjs.format method.</p>
+----
+== Constructor Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#ctor ctor]</b> (<b title="The template text.">string template</b>, <i title="(Optional) The regex that captures the parts of a replacement.">regexp syntax</i>)<br/>Captures the definition of the template and its syntax.</td>
+</tr>
+</table>
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#format format]</b> (<b title="The object containing the values to be inserted.">object object</b>)<br/>Applies the template to the given object’s data, producing a formatted string with symbols replaced by corresponding object’s properties.</td>
+</tr>
+</table>
+----
+== Constructor Details ==
+=== ctor ===
+<code language='js'>void ctor (string template, regexp syntax?)</code>
+<blockquote>
+<p>Captures the definition of the template and its syntax.</p>
+<b>Parameters:</b><br/><ol>
+<li>template : string
+<p>The template text.</p>
+</li>
+<li>syntax : regexp <i>(optional)</i>
+<p>The regex that captures the parts of a replacement.</p>
+</li>
+</ol>
+</blockquote>
+----
+== Method Details ==
+=== format ===
+<code language='js'>void format (object object)</code>
+<blockquote>
+<p>Applies the template to the given object’s data, producing a formatted string with symbols replaced by corresponding object’s properties.</p>
+<b>Parameters:</b><br/><ol>
+<li>object : object
+<p>The object containing the values to be inserted.</p>
+</li>
+</ol>
+</blockquote>

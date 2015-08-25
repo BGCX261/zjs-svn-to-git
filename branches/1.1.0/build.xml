@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="zjs" default="build" basedir=".">
+    <description>Builds ZJS</description>
+    <property name="zjs.dir" location="${basedir}"/>
+    <import file="${zjs.dir}/etc/jsmin.xml"/>
+
+    <target name="init">
+        <loadproperties srcfile="${zjs.dir}/zjs-props.conf"/>
+        <property name="zjs.version"
+                  value="${zjs.version.major}.${zjs.version.minor}.${zjs.version.rev}"/>
+
+        <property name="build.dir" location="${zjs.dir}/build"/>
+        <property name="docs.dir" location="${zjs.dir}/doc"/>
+        <property name="src.dir"  location="${zjs.dir}/src"/>
+        <property name="test.dir"  location="${zjs.dir}/test"/>
+        <property name="zjs.zipdir" value="zjs_${zjs.version}"/>
+        <echo>ZJS ${zjs.version}</echo>
+        <echo>build.dir = ${build.dir}</echo>
+    </target>
+
+    <target name="clean" depends="init" description="Clean output directory">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="build" depends="init" description="Builds ZJS">
+
+        <jsmin outdir="${build.dir}/src"
+               outfile="${build.dir}/src/zjs-all.js"
+               level="1"
+               verbosity="quiet">
+<comment>/*
+	ZJS ${zjs.version}
+	Copyright (C) 2008, Donald W. Griffin
+	All rights reserved.
+	[MIT license -- see license.txt for details]
+*/</comment>
+            <fileset dir="${src.dir}">
+                <include name="zjs.js"/>
+            </fileset>
+            <fileset dir="${src.dir}">
+                <include name="*.js"/>
+            </fileset>
+        </jsmin>
+
+        <mkdir dir="${build.dir}/test"/>
+        <copy todir="${build.dir}/test">
+            <fileset dir="${test.dir}" includes="*"/>
+        </copy>
+
+        <zip destfile="${build.dir}/${zjs.zipdir}.zip">
+            <zipfileset dir="${build.dir}" includes="**/*" prefix="${zjs.zipdir}">
+                <exclude name="**/*.zip"/>
+                <exclude name="temp/**"/>
+            </zipfileset>
+            <zipfileset dir="${docs.dir}" includes="*" prefix="${zjs.zipdir}/doc"/>
+        </zip>
+
+    </target>
+
+    <target name="test" depends="init" description="Test ZJS">
+        <jsmin outfile="${build.dir}/temp/test.js"
+               level="-1"
+               verbosity="quie">
+            <fileset dir="${src.dir}">
+                <include name="zjs.js"/>
+            </fileset>
+            <fileset dir="${test.dir}">
+                <include name="unittest.js"/>
+            </fileset>
+            <fileset dir="${test.dir}">
+                <include name="test.js"/>
+            </fileset>
+        </jsmin>
+
+        <jsmin outfile="${build.dir}/temp/test-x.js"
+               level="-1"
+               verbosity="quie">
+            <fileset dir="${src.dir}">
+                <include name="zjs.js"/>
+            </fileset>
+            <fileset dir="${src.dir}">
+                <include name="zjs-x.js"/>
+            </fileset>
+            <fileset dir="${test.dir}">
+                <include name="unittest.js"/>
+            </fileset>
+            <fileset dir="${test.dir}">
+                <include name="test.js"/>
+            </fileset>
+            <fileset dir="${test.dir}">
+                <include name="test-x.js"/>
+            </fileset>
+        </jsmin>
+
+        <scriptdef name="zjstest"
+                   language="javascript" src="${build.dir}/temp/test.js">
+            <![CDATA[
+            importPackage(java.lang);
+            if (testDataToConsole(System.out, testRun()))
+                self.fail("Test failed");
+            ]]>
+        </scriptdef>
+
+        <scriptdef name="zjstest-x"
+                   language="javascript" src="${build.dir}/temp/test-x.js">
+            <![CDATA[
+            importPackage(java.lang);
+            if (testDataToConsole(System.out, testRun()))
+                self.fail("Test failed");
+            ]]>
+        </scriptdef>
+
+        <zjstest/>
+        <zjstest-x/>
+    </target>
+
+</project>

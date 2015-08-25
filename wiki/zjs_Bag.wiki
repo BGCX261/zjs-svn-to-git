@@ -1,0 +1,315 @@
+#summary zjs.Bag
+ * *File:* zjs/ext.js
+ * *Module:* zjs.ext
+= Class Bag =
+
+----
+<p>This class manages a keyed collection that also maintains insertion order. Methods are provided to detect duplicate keys and lookup failures.</p>
+<pre>
+                                       items[]
+                                       +--+
+   pk.map = {                        0 !  !--`>` obj1
+       obj1[pk.key]: 0,                +--+
+       obj2[pk.key]: 1,              1 !  !--`>` obj2
+       ...,                            +--+
+       obj6[pk.key]: 5               2 !  !--`>` obj3
+   };                                  +--+
+                                     3 !  !--`>` obj4
+   uk.map = {                          +--+
+       obj1[uk.key]: obj1,           4 !  !--`>` obj5
+       ....                            +--+
+   };                                5 !  !--`>` obj6
+                                       +--+
+   nuk.map = {
+       obj1[nuk.key]: [obj1, obj2],
+       obj3[nuk.key]: [obj3],
+       ...
+   };</pre>
+----
+== Config Properties ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><p><b>dupKeyMsg</b></p></td>
+<td>
+<p>The error message text when a duplicate key is added.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>indexBy</b></p></td>
+<td>
+<p>The config property contains the names of the fields on which to index items. This can be either a string[] of field names or an object with properties named by index name and values of the field name.</p>
+<code language="js">
+    var bag = new zjs.Bag({
+        indexBy: ["name"]
+    });;
+
+    //...
+    var item = bag.name.get("foo"); // get item with name property = "foo"
+
+    bag = new zjs.Bag({
+        indexBy: { byName: "name" }
+    });;
+
+    //...
+    var item = bag.byName.get("foo"); // get item with name property = "foo"</code>
+</td></tr>
+<tr valign='top'>
+<td><p><b>notFoundMsg</b></p></td>
+<td>
+<p>The error message text when an item is not found.</p>
+</td></tr>
+</table>
+----
+== Constructor Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#ctor ctor]</b> (<b title="The configuration object to copy onto this object.">cfg</b>)<br/>Initializes and configures this instance.</td>
+</tr>
+</table>
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>Bag</b></td>
+<td><b>[#add add]</b> (<b title="The item to add.">item</b>)<br/>Adds an item to this collection.</td>
+</tr>
+<tr valign='top'>
+<td><b>Bag</b></td>
+<td><b>[#clear clear]</b> ()<br/>This method clears the contents of this bag.</td>
+</tr>
+<tr valign='top'>
+<td><b>bool</b></td>
+<td><b>[#contains contains]</b> (<b title="The item to check.">item</b>)<br/>This method returns true if the given item is contained in this bag.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#count count]</b> ()<br/>This method returns the number of items in this bag.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#each each]</b> (<b title="The function to call">function fn</b>, <i title="(Optional) The object scope (&quot;this&quot; pointer) to pass to fn function (not name).">scope</i>)<br/>This method calls the specified function for each item in this bag.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#empty empty]</b> ()<br/>This method returns true if this bag is empty.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#indexOf indexOf]</b> (<b title="The item to find.">item</b>)<br/>This method returns the index of the given item or -1 if not present.</td>
+</tr>
+<tr valign='top'>
+<td><b>Bag</b></td>
+<td><b>[#insert insert]</b> (<b title="The position at which to insert the items.">pos</b>, <b title="The first item to insert at the given position.">item</b>)<br/>This method inserts a number of items at the specified position.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#newIndex newIndex]</b> (<b title="The name or the config for the new Index.">string|object cfg</b>, <i title="(Optional) The name of the index.">name</i>)<br/>This method creates a new Index on this bag.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#remove remove]</b> (<b title="The item to remove from this bag.">item</b>)<br/>This method returns true if the item was found (and removed), false if not.</td>
+</tr>
+<tr valign='top'>
+<td><b>Bag</b></td>
+<td><b>[#removeAt removeAt]</b> (<b title="The position at which to remove elements.">pos</b>, <b title="The number of items to remove.">count</b>)<br/>This method removes a number of items at the given position.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#removeKey removeKey]</b> (<b title="The primary key of the item to remove.">key</b>)<br/>This method removes the item with the matching primary key and returns the item.</td>
+</tr>
+</table>
+----
+== Constructor Details ==
+=== ctor ===
+<code language='js'>void ctor (cfg)</code>
+<blockquote>
+<p>Initializes and configures this instance. All properties on the given config object are copied onto this object.</p>
+<b>Parameters:</b><br/><ol>
+<li>cfg
+<p>The configuration object to copy onto this object.</p>
+</li>
+</ol>
+</blockquote>
+----
+== Method Details ==
+=== add ===
+<code language='js'>Bag add (item)</code>
+<blockquote>
+<p>Adds an item to this collection.</p>
+<b>Parameters:</b><br/><ol>
+<li>item
+<p>The item to add.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>This object (to chain method calls).</p>
+</blockquote>
+</blockquote>
+=== clear ===
+<code language='js'>Bag clear ()</code>
+<blockquote>
+<p>This method clears the contents of this bag.</p>
+<br/><b>Returns:</b><br/><blockquote>
+<p>This object (to chain method calls).</p>
+</blockquote>
+</blockquote>
+=== contains ===
+<code language='js'>bool contains (item)</code>
+<blockquote>
+<p>This method returns true if the given item is contained in this bag.</p>
+<b>Parameters:</b><br/><ol>
+<li>item
+<p>The item to check.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if the given item is contained in this bag.</p>
+</blockquote>
+</blockquote>
+=== count ===
+<code language='js'>object count ()</code>
+<blockquote>
+<p>This method returns the number of items in this bag.</p>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The number of items in this bag.</p>
+</blockquote>
+</blockquote>
+=== each ===
+<code language='js'>object each (function fn, scope?)</code>
+<blockquote>
+<p>This method calls the specified function for each item in this bag.</p>
+<b>Parameters:</b><br/><ol>
+<li>fn : function
+<code language='js'>object fn (value, etc)</code>
+<blockquote>
+<p>The function to call</p>
+<b>Parameters:</b><br/><ol>
+<li>value
+<p>The current value being iterated.</p>
+</li>
+<li>etc
+<p>An object containing other useful information passed to each call.</p>
+<b>Members:</b><br/><ul>
+<li>key
+<p>The current index being iterated.</p>
+</li>
+<li>index
+<p>The current index being iterated.</p>
+</li>
+<li>value
+<p>The value returned from the last call of fn (starts as undefined).</p>
+</li>
+<li>$break
+<p>A boolean that can be set to true to end the loop.</p>
+</li>
+</ul>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The value to store in etc.value and/or return from $foreach or $break.</p>
+</blockquote>
+</blockquote>
+</li>
+<li>scope <i>(optional)</i>
+<p>The object scope ("this" pointer) to pass to fn function (not name).</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The last value returned by fn or passed to $break.</p>
+</blockquote>
+</blockquote>
+=== empty ===
+<code language='js'>object empty ()</code>
+<blockquote>
+<p>This method returns true if this bag is empty.</p>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if this bag is empty.</p>
+</blockquote>
+</blockquote>
+=== indexOf ===
+<code language='js'>object indexOf (item)</code>
+<blockquote>
+<p>This method returns the index of the given item or -1 if not present.</p>
+<b>Parameters:</b><br/><ol>
+<li>item
+<p>The item to find.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>the index of the given item or -1 if not present.</p>
+</blockquote>
+</blockquote>
+=== insert ===
+<code language='js'>Bag insert (pos, item)</code>
+<blockquote>
+<p>This method inserts a number of items at the specified position.</p>
+<b>Parameters:</b><br/><ol>
+<li>pos
+<p>The position at which to insert the items.</p>
+</li>
+<li>item
+<p>The first item to insert at the given position.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>This object (to chain method calls).</p>
+</blockquote>
+</blockquote>
+=== newIndex ===
+<code language='js'>object newIndex (string|object cfg, name?)</code>
+<blockquote>
+<p>This method creates a new Index on this bag.</p>
+<b>Parameters:</b><br/><ol>
+<li>cfg : string|object
+<p>The name or the config for the new Index.</p>
+</li>
+<li>name <i>(optional)</i>
+<p>The name of the index.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The new Index object.</p>
+</blockquote>
+</blockquote>
+=== remove ===
+<code language='js'>object remove (item)</code>
+<blockquote>
+<p>This method returns true if the item was found (and removed), false if not.</p>
+<b>Parameters:</b><br/><ol>
+<li>item
+<p>The item to remove from this bag.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if the item was found (and removed), false if not.</p>
+</blockquote>
+</blockquote>
+=== removeAt ===
+<code language='js'>Bag removeAt (pos, count)</code>
+<blockquote>
+<p>This method removes a number of items at the given position.</p>
+<b>Parameters:</b><br/><ol>
+<li>pos
+<p>The position at which to remove elements.</p>
+</li>
+<li>count
+<p>The number of items to remove.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>This object (to chain method calls).</p>
+</blockquote>
+</blockquote>
+=== removeKey ===
+<code language='js'>object removeKey (key)</code>
+<blockquote>
+<p>This method removes the item with the matching primary key and returns the item. If the primary key was not found, null is returned.</p>
+<b>Parameters:</b><br/><ol>
+<li>key
+<p>The primary key of the item to remove.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The removed item or null if not found.</p>
+</blockquote>
+</blockquote>

@@ -1,0 +1,222 @@
+#summary zjs.ClassPlugin
+ * *File:* zjs/core.js
+ * *Module:* zjs.core
+= Class ClassPlugin =
+
+----
+<p>This class implements the mechanics of a class plugin. To implement a class plugin, derive from this class. Its ctor method registers itself by its given name. The add and expand methods are called to handle the members of the specified name.</p>
+<p>For example,</p>
+<code language="js">
+   new ($class(zjs.ClassPlugin, {
+       ctor : function () {
+           $super(arguments).call(this, "$foo");
+       },
+
+       add : function (klass, inst, name, value) {
+           ...
+       },
+
+       expand : function (klass, value, values, index) {
+           ...
+       }
+   }));</code>
+<p>With the above plugin registered, the following:</p>
+<code language="js">
+   MyClass : $class({
+       $foo : [ 1, 2, 3 ]
+   });</code>
+<p>or the following:</p>
+<code language="js">
+   MyClass : $class({
+       $foo : {
+           bar : 42
+       }
+   });</code>
+<p>Will call the process method of the plugin. In the first case, the array [1,2,3] is passed as the values and in the second case, the object { bar: 42 } is passed. The default implementation of the process method is described below.</p>
+----
+== Constructor Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#ctor ctor]</b> (<b title="The name of this plugin.">name</b>)<br/>Initializes the plugin given its name.</td>
+</tr>
+</table>
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#add add]</b> (<b title="The class being processed.">klass</b>, <b title="The plugin's instance object for the class.">inst</b>, <b title="The name of the value.">name</b>, <b title="The value.">value</b>)<br/>This method is called to add a single named value.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#conflictCheck conflictCheck]</b> (<b title="The class being processed.">klass</b>, <b title="The plugin's instance object for the class.">inst</b>, <b title="The name of the value.">name</b>, <b title="The value.">value</b>)<br/>This method performs basic conflict checking for added values.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#expand expand]</b> (<b title="The class being processed.">klass</b>, <b title="The value of the current element being processed.">value</b>, <b title="The array of values being processed.">values</b>, <b title="The current index into the array (value == values[index]).">index</b>)<br/>This method is called to expand an array element to a name/value pair.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#finish finish]</b> (<b title="The class being processed.">klass</b>)<br/>This method is called whenever a class or mixin adds members.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#prep prep]</b> (<b title="The class being processed.">klass</b>)<br/>Makes sure the class and its bases have an object for this plugin.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#process process]</b> (<b title="The class to which the values apply.">klass</b>, <b title="The set of values to process.">values</b>)<br/>Processes the given set of values for a class.</td>
+</tr>
+</table>
+----
+== Constructor Details ==
+=== ctor ===
+<code language='js'>void ctor (name)</code>
+<blockquote>
+<p>Initializes the plugin given its name.</p>
+<b>Parameters:</b><br/><ol>
+<li>name
+<p>The name of this plugin.</p>
+</li>
+</ol>
+</blockquote>
+----
+== Method Details ==
+=== add ===
+<code language='js'>void add (klass, inst, name, value)</code>
+<blockquote>
+<p>This method is called to add a single named value. For example, the following will call this method with a name of "bar" and a value of 42:</p>
+<code language="js">
+    Foo : $class(
+    {
+        $foo :
+        {
+            bar : 42
+        }
+    })</code>
+<b>Parameters:</b><br/><ol>
+<li>klass
+<p>The class being processed.</p>
+</li>
+<li>inst
+<p>The plugin's instance object for the class.</p>
+</li>
+<li>name
+<p>The name of the value.</p>
+</li>
+<li>value
+<p>The value.</p>
+</li>
+</ol>
+</blockquote>
+=== conflictCheck ===
+<code language='js'>object conflictCheck (klass, inst, name, value)</code>
+<blockquote>
+<p>This method performs basic conflict checking for added values. This check uses $overwrite and $replace semantics.</p>
+<b>Parameters:</b><br/><ol>
+<li>klass
+<p>The class being processed.</p>
+</li>
+<li>inst
+<p>The plugin's instance object for the class.</p>
+</li>
+<li>name
+<p>The name of the value.</p>
+</li>
+<li>value
+<p>The value.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>Unwrapped (actual) value for the named item.</p>
+</blockquote>
+</blockquote>
+=== expand ===
+<code language='js'>object expand (klass, value, values, index)</code>
+<blockquote>
+<p>This method is called to expand an array element to a name/value pair. For example, this method is called twice when given the following:</p>
+<code language="js">
+    Foo : $class(
+    {
+        $foo : [ "abc", "xyz" ]
+    })</code>
+<p>The name and value returned are used to call the add method. In the above, add would be called twice.</p>
+<b>Parameters:</b><br/><ol>
+<li>klass
+<p>The class being processed.</p>
+</li>
+<li>value
+<p>The value of the current element being processed.</p>
+</li>
+<li>values
+<p>The array of values being processed.</p>
+</li>
+<li>index
+<p>The current index into the array (value == values[index]).</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>An object containing the name and value to add.</p>
+<b>Members:</b><br/><ul>
+<li>name
+<p>The name of the element.</p>
+</li>
+<li>value
+<p>The value of the element.</p>
+</li>
+</ul>
+</blockquote>
+</blockquote>
+=== finish ===
+<code language='js'>void finish (klass)</code>
+<blockquote>
+<p>This method is called whenever a class or mixin adds members.</p>
+<b>Parameters:</b><br/><ol>
+<li>klass
+<p>The class being processed.</p>
+</li>
+</ol>
+</blockquote>
+=== prep ===
+<code language='js'>object prep (klass)</code>
+<blockquote>
+<p>Makes sure the class and its bases have an object for this plugin. These objects are attached to the class and its prototype and are prototype chained to their counterparts on the base class.</p>
+<p>For example, given a plugin named $foo:</p>
+<code language="js">
+    Base : $class(
+    {
+        $foo : ...
+    }),
+
+    Derived : $class("Base",
+    {
+        $foo : ...
+    })</code>
+<p>There would be two objects, one for each class. The object for Derived would have the object for Base as its prototype.</p>
+<code language="js">
+    var d = new Derived();
+    assertTrue(d.$foo === Derived.$foo);
+    assertTrue(Base.$foo.isPrototypeOf(Derived.$foo));</code>
+<b>Parameters:</b><br/><ol>
+<li>klass
+<p>The class being processed.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The object to attach for this plugin.</p>
+</blockquote>
+</blockquote>
+=== process ===
+<code language='js'>void process (klass, values)</code>
+<blockquote>
+<p>Processes the given set of values for a class.</p>
+<b>Parameters:</b><br/><ol>
+<li>klass
+<p>The class to which the values apply.</p>
+</li>
+<li>values
+<p>The set of values to process.</p>
+</li>
+</ol>
+</blockquote>

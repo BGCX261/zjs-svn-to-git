@@ -1,0 +1,23 @@
+#summary Namespace zjs.config
+= Description =
+
+<p>This is the container for various configuration properties.</p>
+----
+== Variables ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><p><b>debug</b></p></td>
+<td>
+<p>True if a debugger is present, false if not. This is initialized based on detecting Firebug, but can be forced to true as needed.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>hasOwn</b></p></td>
+<td>
+<p>True if hasOwnPrototype is supported by the browser.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>useOwn</b></p></td>
+<td>
+<p>True if hasOwnProperty should be used. This is based on detection of EVIL libraries (like Prototype.js) that add to Object.prototype.</p>
+</td></tr>
+</table>

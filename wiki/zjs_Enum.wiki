@@ -1,0 +1,75 @@
+#summary zjs.Enum
+ * *File:* zjs/core.js
+ * *Module:* zjs.core
+= Class Enum =
+
+----
+<p>This class is the base for all enumerations.</p>
+----
+== Constructor Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#ctor ctor]</b> (<b title="The unique ID of this enumerated constant.">id</b>, <b title="The name of this enumerated constant.">name</b>, <b title="The user's (implicitly or explicitly) specified value.">ordinal</b>)<br/>Initializes this object with its essential properties.</td>
+</tr>
+</table>
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#equals equals]</b> (<b title="The value to compare to this enum constant.">v</b>)<br/>Compares the given value to this enum constant.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#getFullName getFullName]</b> ()<br/>Returns the full name of this enumerated constant.</td>
+</tr>
+</table>
+----
+== Constructor Details ==
+=== ctor ===
+<code language='js'>void ctor (id, name, ordinal)</code>
+<blockquote>
+<p>Initializes this object with its essential properties.</p>
+<b>Parameters:</b><br/><ol>
+<li>id
+<p>The unique ID of this enumerated constant.</p>
+</li>
+<li>name
+<p>The name of this enumerated constant.</p>
+</li>
+<li>ordinal
+<p>The user's (implicitly or explicitly) specified value.</p>
+</li>
+</ol>
+</blockquote>
+----
+== Method Details ==
+=== equals ===
+<code language='js'>object equals (v)</code>
+<blockquote>
+<p>Compares the given value to this enum constant. A match may be by exact object instance or equal name or ordinal.</p>
+<p>For example:</p>
+<code language="js">
+    Foo : $enum(["CONST"]),
+
+    ...
+    if (Foo.CONST.equals(x)) // x == Foo.CONST, "CONST" or Foo.CONST.ordinal
+        ...</code>
+<b>Parameters:</b><br/><ol>
+<li>v
+<p>The value to compare to this enum constant.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if equal, false if not.</p>
+</blockquote>
+</blockquote>
+=== getFullName ===
+<code language='js'>object getFullName ()</code>
+<blockquote>
+<p>Returns the full name of this enumerated constant.</p>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The full name of this enumerated constant.</p>
+</blockquote>
+</blockquote>

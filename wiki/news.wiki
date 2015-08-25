@@ -1,0 +1,63 @@
+#summary What's Happening.
+#labels Featured
+
+<wiki:toc max_depth="1" />
+
+= The ZJS News =
+
+Check it out [http://zjsdev.blogspot.com here]. Going forward, any news will be there.
+
+= ZJS 3.0.0b1 (May 31, 2009) =
+
+Scoped lookup is ready! Details can be found [http://zjsdev.blogspot.com/2009/06/scoped-lookup.html here].
+
+= ZJS 2.1 is now 3.0 (Apr 24, 2009) =
+
+I've had some ideas that probably push 2.1 beyond a small update:
+
+ * The *[abstract $abstract]* pseudo-keyword, of course.
+ * A solution to the base/derived class declarations needing to be split into multiple calls to *[namespace $namespace]*.
+ * A meaningful and inexpensive *$interface* concept. It should automate [http://en.wikipedia.org/wiki/Duck_typing Duck Typing] practices as well as feel familiar to normal OO "isa" semantics. The trick will be figuring out how it will play with *[mixin $mixin]*!
+ * Usability improvements to *[foreach $foreach]*.
+
+= ZJS 2.1 Underway (Apr 16, 2009) =
+
+This release introduces the *[abstract $abstract]* pseudo-keyword. While !JavaScript cannot enforce "must override" rules (as easily), it can be helpful for large projects to get clues that things are amiss as early as possible. For example, classes with abstract methods cannot be instantiated which moves detection much closer than the moment the abstract method is called.
+
+Still thinking about what else will constitute this release, but some other aids in detecting bugs are in order. Also, there is *[zjsObject zjs.Object]*.
+
+= ZJS 2.0 Released (Mar 28, 2009) =
+
+The stamp is now on 2.0! Lots of new features were added as the release matured. At this point, I'm not sure what could be missing.
+
+= ZJS 2.0 Beta (Dec 7, 2008) =
+
+The new version is ready to test. In addition to the list of new features below, there is also the *[enum $enum]*.
+
+= ZJS 2.0 Update (Nov 21, 2008) =
+
+The next major version adds the following:
+
+  * *[import $import]*
+  * *[module $module]*
+  * *[module $requires]*
+  * *[singleton $singleton]*
+  * *[ajax ajax]*
+  * *[browser browser detection]*
+
+Look for it in the next couple weeks.
+
+= ZJS 1.1 Released (Nov 1, 2008) =
+
+Containing numerous bug fixes and improvements.
+  * Non-essential methods have been split out of zjs.js into zjs-x.js to keep the size of the core as small as possible.
+  * New: zjs-all.js contains the entire library.
+  * All files have been minimized (via jsmin). Normal versions are available in the source repository.
+  * Unit tests now cover each method in ZJS.
+  * Several bugs found by extra unit tests have been fixed.
+  * Unit tests are now performed by the Ant build script. Cool! They can still be run with the test.html and new test-x.html pages.
+  * New: {{{<jsmin>}}} custom Ant task, written in Javascript! This is used to build the download ZIP, but is useful to anyone needing to run jsmin on their JS sources. Requires {{{<scriptdef>}}} and javascript services from Ant.
+
+= ZJS 1.0 Released (Aug 30, 2008) =
+
+Initial release.

@@ -1,0 +1,31 @@
+#summary Download Size Details
+
+= Introduction =
+
+When it comes to !JavaScript, everyone wants to know "how big is the download"? This is because users are painfully aware of how slow it can be to download large amounts of !JavaScript code.
+
+= Details =
+
+All sizes are in bytes.
+
+(as of 2011-Apr-2, v3.2)
+
+|| *Item* || *Base Size* || *Minimized* || *Min w/Deflate* || *Min Saved* ||
+|| zjs/ajax.js     || 17,131 || 3,831  || 1,651 || 13,300 (~77%) ||
+|| zjs/ajaxrec.js  || 4,498  || 2,313  || 962  || 2,185 (~48%) ||
+|| zjs/ajaxsim.js  || 8,481  || 2,979  || 1,262 || 5,502 (~64%) ||
+|| zjs/browser.js  || 11,797 || 4,014  || 1,385 || 7,783 (~65%) ||
+|| zjs/core.js     || 84,313 || 21,699 || 6,755 || 62,614 (~74%) ||
+|| zjs/events.js   || 21,796 || 5,860  || 2,194 || 15,936 (~73%) ||
+|| zjs/ext.js      || 29,711 || 9,356  || 2,934 || 20,355 (~68%) ||
+|| zjs/import.js   || 30,704 || 6,424  || 2,176 || 24,280 (~79%) ||
+|| zjs/text.js     || 21,685 || 6,142  || 2,083 || 15,543 (~71%) ||
+|| *zjs/zjs_lang.js^1^* || 157,509 || 42,631 || 12,581 || 114,878 (~72%) ||
+|| *zjs/zjs_plat.js^2^* || 217,144 || 56,474 || 16,698 || 160,670 (~73%) ||
+|| *zjs/zjs_all.js^3^*  || 230,125 || 61,482 || *17,960* || 168,643 (~73%) ||
+
+^1^ - Contains: *core*, *ext*, *text* and *events*.
+
+^2^ - Contains everything in *zjs_lang* plus: *ajax*, *browser* and *import*.
+
+^3^ - Contains everything in *zjs_plat* plus: *ajaxrec* and *ajaxsim*.

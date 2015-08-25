@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+===============================================================================
+    etc/jsmin.xml
+    Copyright (C) 2008, Donald W. Griffin
+    All rights reserved.
+    [MIT license :: see license.txt for details]
+
+    This file defines the <jsmin> custom Ant task.
+
+	Derived from the work by: Franck Marcia
+        http://fmarcia.info/jsmin
+
+	Which came from the original idea by: Douglas Crockford
+        http://javascript.crockford.com/jsmin.html
+        http://www.crockford.com/
+
+===============================================================================
+-->
+<project name="jsminproj" basedir=".">
+
+    <!--
+    This property allows us to reference to our helper jsmin.js file.
+    -->
+    <dirname property="jsminproj.basedir" file="${ant.file.jsminproj}"/>
+
+    <!--
+    This helper is used to capture the text content of an element.
+    -->
+    <macrodef name="jsminComment">
+        <attribute name="property"/>
+        <text name="text"/>
+        <sequential>
+            <property name="@{property}" value="@{text}"/>
+        </sequential>
+    </macrodef>
+
+    <!--
+    The <jsmin> Ant task. The guts of the code are in the etc/jsmin.js file.
+    -->
+    <scriptdef name="jsmin"
+               language="javascript" src="${jsminproj.basedir}/jsmin.js">
+
+        <!--
+        The jsmin compression level. The names for these are:
+
+           -1 : none (copy verbatim)
+            0 : minimal (original algorithm but keep linefeeds if single)
+            1 : conservative (original algorithm)
+            2 : agressive (remove more linefeed than the original algorithm but can be
+                           regressive)
+        -->
+        <attribute name="level"/>
+
+        <!--
+        The output directory to which each file will be written. The name of each
+        input file is preserved. This option is not mutually exclusive with outfile.
+        -->
+        <attribute name="outdir"/>
+
+        <!--
+        The output file to which each file will be appended. This option is not
+        mutually exclusive with outfile.
+        -->
+        <attribute name="outfile"/>
+
+        <!--
+        Default is verbose, but can specify "quiet" or "silent".
+        -->
+        <attribute name="verbosity"/>
+
+        <!--
+        The comment to emit into the output javascript file. This element is used
+        in preference to the comment attribute if both are specified. Only the
+        first such child element is used.
+        -->
+        <element name="comment" type="jsminComment"/>
+
+        <!--
+        The fileset child(ren) element(s). The order of fileset children determines
+        the order in which files are appended when using outfile. For example, the
+        files in the first fileset may be appeneded in any order, after which, the
+        files in the second fileset will be appended. No input file will be appended
+        multiple times even if present in multiple filesets.
+        -->
+        <element name="fileset" type="fileset"/>
+
+        <![CDATA[
+            jsminAnt(project, attributes, elements);
+        ]]>
+
+    </scriptdef>
+</project>

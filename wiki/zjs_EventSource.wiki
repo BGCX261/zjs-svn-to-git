@@ -1,0 +1,11 @@
+#summary zjs.EventSource
+ * *File:* zjs/events.js
+ * *Module:* zjs.events
+= Class EventSource =
+
+== Implemented Interfaces ==
+<blockquote>
+*[zjs_IEventSource zjs.IEventSource]*
+</blockquote>
+----
+<p>This class is a base from which one can derive and provide Event Source features.</p>

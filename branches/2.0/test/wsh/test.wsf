@@ -1,0 +1,36 @@
+<package>
+
+<comment>
+=============================================================================
+    test/wsh/test.wsf
+    Copyright (C) 2008, Donald W. Griffin
+    All rights reserved.
+    [MIT license :: see license.txt for details]
+=============================================================================
+</comment>
+
+<job>
+  <script src="faux-browser.js"/>
+  <script src="..\..\src\zjs\core.js"/>
+  <script src="..\unittest.js"/>
+  <script src="..\test.js"/>
+
+  <script language="jscript">
+
+    try
+    {
+        var con = { println : alert };
+
+        if (testDataToConsole(con, testRun()))
+            $throw("Test failed");
+    }
+    catch (e)
+    {
+        alert(e.message);
+    }
+
+  </script>
+
+</job>
+
+</package>

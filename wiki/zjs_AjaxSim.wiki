@@ -1,0 +1,84 @@
+#summary zjs.AjaxSim
+ * *File:* zjs/ajaxsim.js
+ * *Module:* zjs.ajaxsim
+= Class AjaxSim =
+
+----
+<p>This class manages a simulated Ajax request.</p>
+----
+== Constructor Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#ctor ctor]</b> (<b title="The key(s) to match against request URL's.">key</b>, <b title="The first result data.">res</b>)<br/>Initializes this object given the match criteria and result(s).</td>
+</tr>
+</table>
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#getResult getResult]</b> ()<br/>This method provides the results for a simulated Ajax request.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#match match]</b> (<b title="The URL of the request.">url</b>)<br/>This method returns true if the given URL should be simulated by this object.</td>
+</tr>
+</table>
+----
+== Constructor Details ==
+=== ctor ===
+<code language='js'>void ctor (key, res)</code>
+<blockquote>
+<p>Initializes this object given the match criteria and result(s). At least one result must be provided. If multiple are provided, they will be delivered in a round-robin sequence.</p>
+<b>Parameters:</b><br/><ol>
+<li>key
+<p>The key(s) to match against request URL's. This can be a single string or regex or an array of the same. If request URL matches one of the strings or regex's, it is considered a match and the results held by this object are delivered.</p>
+</li>
+<li>res
+<p>The first result data.</p>
+</li>
+</ol>
+</blockquote>
+----
+== Method Details ==
+=== getResult ===
+<code language='js'>object getResult ()</code>
+<blockquote>
+<p>This method provides the results for a simulated Ajax request. The URL and options are provided and a result object is returned.</p>
+<br/><b>Returns:</b><br/><blockquote>
+<b>Members:</b><br/><ul>
+<li>code
+<p>The HTTP status code (e.g., 200).</p>
+</li>
+<li>message
+<p>The HTTP status message (e.g., "OK").</p>
+</li>
+<li>headers <i>(optional)</i>
+<p>The HTTP headers for the response. This is an object with properties for each header.</p>
+</li>
+<li>responseXML <i>(optional)</i>
+<p>The XML response object.</p>
+</li>
+<li>responseText <i>(optional)</i>
+<p>The text response.</p>
+</li>
+<li>responseObj <i>(optional)</i>
+<p>The response data object.</p>
+</li>
+</ul>
+</blockquote>
+</blockquote>
+=== match ===
+<code language='js'>object match (url)</code>
+<blockquote>
+<p>This method returns true if the given URL should be simulated by this object.</p>
+<b>Parameters:</b><br/><ol>
+<li>url
+<p>The URL of the request.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if this object should provide the result, false if not.</p>
+</blockquote>
+</blockquote>

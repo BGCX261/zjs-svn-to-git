@@ -1,0 +1,42 @@
+#summary zjs.AjaxRecorder
+ * *File:* zjs/ajaxrec.js
+ * *Module:* zjs.ajaxrec
+= Class AjaxRecorder =
+
+----
+<p>This singleton class will record Ajax request and response data. When first created, it intercepts newXHR and wraps the returned object in order to capture the results.</p>
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>string</b></td>
+<td><b>[#generate generate]</b> ()<br/>Generates the code simulate the currently recorded requests and responses.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#wrap wrap]</b> (<b title="The XHR to wrap.">xhr</b>)<br/>Wraps the given XHR to record its information.</td>
+</tr>
+</table>
+----
+== Method Details ==
+=== generate ===
+<code language='js'>string generate ()</code>
+<blockquote>
+<p>Generates the code simulate the currently recorded requests and responses.</p>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The code to simulate the recorded data.</p>
+</blockquote>
+</blockquote>
+=== wrap ===
+<code language='js'>object wrap (xhr)</code>
+<blockquote>
+<p>Wraps the given XHR to record its information.</p>
+<b>Parameters:</b><br/><ol>
+<li>xhr
+<p>The XHR to wrap.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The wrapped object (an AjaxRecXHR).</p>
+</blockquote>
+</blockquote>

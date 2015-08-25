@@ -1,0 +1,111 @@
+#summary Integrating jsmin with Ant
+#labels Featured
+
+= Introduction =
+
+If you've used Ant to create WAR files or for other deployment operations, you've probably seen or used something similar to the following:
+
+{{{
+  <mkdir dir="${build.dir}/js"/>
+  <copy todir="${build.dir}/js">
+      <fileset dir="${js.dir}" includes="*.js"/>
+  </copy>
+}}}
+
+A straight copy of the !JavaScript sources from one directory to another. A drop-in replacement of `<jsmin>` would look like this:
+
+{{{
+  <jsmin outdir="${build.dir}/js" level="-1">
+      <fileset dir="${js.dir}" includes="*.js"/>
+  </jsmin>
+}}}
+
+The `<jsmin>` includes a free `<mkdir>` for the output directory. The *level="-1"* attribute essentially copies files unchanged. This can be handy for testing. A more normal use of `<jsmin>` would have *level="1"* or not present (which defaults to 1).
+
+= Requirements For `<jsmin>` =
+
+To use `<jsmin>`, Ant needs to be able to handle the `<scriptdef>` task and the *javascript* language. According to the [http://ant.apache.org/manual/install.html#librarydependencies current Ant docs] (as of 2008-Nov-2), this means the following JAR's are required:
+
+  * [http://jakarta.apache.org/bsf/ bsf.jar]
+  * [http://www.mozilla.org/rhino/ js.jar]
+  * [http://jakarta.apache.org/commons/logging/index.html commons-logging.jar] (needed by BSF)
+
+Be sure to check for the current status of these dependencies.
+
+= The `level` Attribute =
+
+Other values of the *level* attribute are:
+
+  * -1 = none (copy verbatim)
+  * 0 = minimal (original algorithm but keep linefeeds if single)
+  * 1 = conservative (original algorithm)
+  * 2 : agressive (remove more linefeed than the original algorithm but can be regressive)
+
+= The `outdir` Attribute =
+
+If present, this attribute contains the name of the directory to which each input file is written after being jsmin-ified. The leaf file names are preserved.
+
+= The `outfile` Attribute =
+
+If present, this attribute contains the name of the file to which each input file is appeneded, after being jsmin-ified.
+
+{{{
+  <jsmin outfile="${build.dir}/js/all.js">
+      <fileset dir="${js.dir}" includes="*.js"/>
+  </jsmin>
+}}}
+
+*NOTE:* If both *outdir* and *outfile* are present, both processes will be performed on the input files. At least one of them must be specified.
+
+{{{
+  <jsmin outdir="${build.dir}/js" outfile="${build.dir}/js/all.js">
+      <fileset dir="${js.dir}" includes="*.js"/>
+  </jsmin>
+}}}
+
+= The `comment` Child Element =
+
+To preserve some minimal file comment, the `<comment>` child element can be used.
+
+{{{
+  <jsmin outdir="${build.dir}/js" outfile="${build.dir}/js/all.js">
+<comment>/*
+    Copyright (C) 2008, Some Company
+    All rights reserved.
+*/</comment>
+      <fileset dir="${js.dir}" includes="*.js"/>
+  </jsmin>
+}}}
+
+The comment above is placed at the front of all jsmin-ified files (with *level != -1*).
+
+= The `fileset` Child Elements =
+
+Like `<copy>`, there can be multiple `<fileset>` children of a `<jsmin>` task. The ordering of these is important when using *outfile*. In a single `<fileset>`, the input files are processed in whatever order the underlying `<fileset>` chooses to present them. It is often the case, however, that concatenating files in a random order will not work.
+
+The order of appending can be controlled by using multiple `<fileset>` children. The files specified in each `<fileset>` are appended (in whatever order) before files from any subsequent `<fileset>` are processed. Further, a single input file is never appended twice, even if present in a later `<fileset>`.
+
+All this can be seen in how ZJS uses `<jsmin>` to create *zjs-all.js*:
+
+{{{
+  <jsmin outdir="${build.dir}/src"
+         outfile="${build.dir}/src/zjs-all.js">
+      <fileset dir="${src.dir}">
+          <include name="zjs-core.js"/>
+      </fileset>
+      <fileset dir="${src.dir}">
+          <include name="*.js"/>
+      </fileset>
+  </jsmin>
+}}}
+
+The `*.js` pattern in the second `<fileset>` does include *zjs.js*. But that file was already processed in the first `<fileset>` and is ignored. The above ensures that *zjs-all.js* has *zjs-core.js* at the front.
+
+= The `verbosity` Attribute =
+
+By default, `<jsmin>` generates messages as it processes files. These can be reduced or completely silenced with the *verbosity* attribute. The two values are:
+
+  * *verbosity="quiet"*
+  * *verbosity="silent"*
+
+*New in V2.0* - When jsmin generates a file, it will report not only the savings due to minimization, but also the deflate size. This is the actual download size (in bytes) when HTTP deflate encoding is used.

@@ -1,0 +1,43 @@
+<package>
+
+<comment>
+=============================================================================
+    test/wsh/test-text.wsf
+    Copyright (C) 2008-2011, Donald W. Griffin
+    All rights reserved.
+    [MIT license :: see license.txt for details]
+=============================================================================
+</comment>
+
+<job>
+  <script src="faux-browser.js"/>
+  <script src="..\..\src\zjs\core.js"/>
+  <script src="..\..\src\zjs\ext.js"/>
+  <script src="..\..\src\zjs\text.js"/>
+  <script src="..\unittest.js"/>
+  <script src="..\test.js"/>
+  <script src="..\test-text.js"/>
+
+  <script language="jscript">
+
+    try
+    {
+        var con = { println : alert };
+        var runner = new zjs.test.TestRunner({
+            tests: gTests
+        });
+
+        runner.run();
+        if (testDataToConsole(con, runner.getResults()))
+            $throw("Test failed");
+    }
+    catch (e)
+    {
+        alert(e.message);
+    }
+
+  </script>
+
+</job>
+
+</package>

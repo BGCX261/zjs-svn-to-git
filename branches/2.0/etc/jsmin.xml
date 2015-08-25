@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+===============================================================================
+    etc/jsmin.xml
+    Copyright (C) 2008, Donald W. Griffin
+    All rights reserved.
+    [MIT license :: see license.txt for details]
+
+    This file defines the <jsmin> custom Ant task.
+
+    Derived from the work by: Franck Marcia
+        http://fmarcia.info/jsmin
+
+    Which came from the original idea by: Douglas Crockford
+        http://javascript.crockford.com/jsmin.html
+        http://www.crockford.com/
+
+===============================================================================
+-->
+<project name="jsminproj" basedir=".">
+
+    <!--
+    This property allows us to reference to our helper jsmin.js file.
+    -->
+    <dirname property="jsminproj.basedir" file="${ant.file.jsminproj}"/>
+
+    <!--
+    This helper is used to capture the text content of an element. The idea is
+    to store @{text} in the specified property. To avoid conflicts, the caller
+    happens to choose a very unique property name, set that name as a dynamic
+    attribute on this task instance and then execute. Once executed, the value
+    of the specified property can be retrieved by the caller.
+    -->
+    <macrodef name="jsminComment">
+        <attribute name="property"/>
+        <text name="text"/>
+        <sequential>
+            <property name="@{property}" value="@{text}"/>
+        </sequential>
+    </macrodef>
+
+    <!--
+    The <jsmin> Ant task. The guts of the code are in the etc/jsmin.js file. As
+    an example:
+
+        <jsmin outdir="${build.dir}">
+            <fileset dir="${src.dir}" includes="*.js"/>
+        </jsmin>
+    -->
+    <scriptdef name="jsmin"
+               language="javascript" src="${jsminproj.basedir}/jsmin.js">
+
+        <!--
+        The jsmin compression level. The names for these are:
+
+           -1 : none (copy verbatim)
+            0 : minimal (original algorithm but keep linefeeds if single)
+            1 : conservative (original algorithm)
+            2 : agressive (remove more linefeed than the original algorithm but can be
+                           regressive)
+        -->
+        <attribute name="level"/>
+
+        <!--
+        The output directory to which each file will be written. The name of each
+        input file is preserved. This option is an independent value (not mutually
+        exclusive) with respect to outfile. If both a specified, both forms of
+        output will be produced.
+        -->
+        <attribute name="outdir"/>
+
+        <!--
+        The output file to which each file will be appended. This option is an
+        independent value (not mutually exclusive) with respect to outdir. If both
+        a specified, both forms of output will be produced.
+        -->
+        <attribute name="outfile"/>
+
+        <!--
+        Determines how much output is produced. By default, output is rather
+        verbose. This attribute can specify "quiet" or "silent" mode.
+        -->
+        <attribute name="verbosity"/>
+
+        <!--
+        The comment to emit into any javascript output file. The comment is the
+        body of the first instance of the <comment> element.
+        -->
+        <element name="comment" type="jsminComment"/>
+
+        <!--
+        The fileset child(ren) element(s). The order of fileset children determines
+        the order in which files are appended when using outfile. For example, the
+        files in the first fileset will be appended before the files in the second
+        fileset, followed by the third fileset, etc.. There is no means to control
+        order within a given fileset.
+
+        No input file will be appended multiple times even if present in multiple
+        filesets.
+        -->
+        <element name="fileset" type="fileset"/>
+
+        <!--
+        The body of the <scriptdef> is where the logic goes, but that is not a
+        nice place to find lots of code. We simply call out to a method in the
+        jsmin.js file.
+        -->
+        <![CDATA[
+            antTaskGuts(project,
+                            attributes.get("outdir"),
+                            attributes.get("outfile"),
+                            attributes.get("level") || 1,
+                            attributes.get("verbosity"),
+                            elements.get("fileset"),
+                            elements.get("comment"));
+
+        ]]>
+
+    </scriptdef>
+</project>

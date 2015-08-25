@@ -1,0 +1,316 @@
+#summary Comparing Styles For Class Emulation
+
+I thought it might be useful to catalog a few examples of the various approaches to solving this problem.
+
+*Disclaimer:* I do not claim to be a master at these toolkits, so I may be off. Please feel free to offer corrections or best practices.
+
+=ZJS v3=
+
+{{{
+    $namespace("foo.bar", {
+
+    Point : $class(
+    {
+        ctor : function (x, y)
+        {
+            this.x = x;
+            this.y = y;
+        },
+
+        offset : function (dx, dy)
+        {
+            this.x += dx;
+            this.y += dy;
+        }
+    }),
+
+    Point3D : $class("Point",
+    {
+        ctor : function (x, y, z)
+        {
+            $super(arguments).call(this, x, y);
+            this.z = z;
+        },
+
+        offset : function (dx, dy, dz)
+        {
+            $super(arguments).call(this, dx, dy);
+            this.z += dz;
+        }
+    })
+
+    });
+}}}
+
+==Comments==
+
+ * In v3 of ZJS, *[Class $class]* now accepts a string base class name. This name will be resolved to the actual base class when the returned "class thunk" is added to a *[namespace $namespace]*.
+ * The class name is resolved in namespace-scoped lookup. First "Point" is requested from the *foo.bar* namespace. If that failed, *foo* would be checked, then global scope.
+
+=ZJS (prior to v3)=
+
+{{{
+    $namespace("foo.bar", {
+
+    Point : $class(
+    {
+        ctor : function (x, y)
+        {
+            this.x = x;
+            this.y = y;
+        },
+
+        offset : function (dx, dy)
+        {
+            this.x += dx;
+            this.y += dy;
+        }
+    })
+
+    });
+
+    $namespace(foo.bar, {
+
+    Point3D : $class(foo.bar.Point,
+    {
+        ctor : function (x, y, z)
+        {
+            $super(arguments).call(this, x, y);
+            this.z = z;
+        },
+
+        offset : function (dx, dy, dz)
+        {
+            $super(arguments).call(this, dx, dy);
+            this.z += dz;
+        }
+    })
+
+    });
+}}}
+
+==Comments==
+
+ * The *Point3D* class must be added to the *foo.bar* namespace in a separate call to *[namespace $namespace]* because its base class must be added before *[Class $class]* can extend it.
+
+=Dojo=
+
+See [http://dojotoolkit.org/book/dojo-book-0-9/part-3-programmatic-dijit-and-dojo/object-orientation/inheritance here].
+
+{{{
+    dojo.declare("foo.bar.Point", null,
+    {
+        constructor : function (x, y)
+        {
+            this.x = x;
+            this.y = y;
+        },
+
+        offset : function (dx, dy)
+        {
+            this.x += dx;
+            this.y += dy;
+        }
+    });
+
+    dojo.declare("foo.bar.Point3D", foo.bar.Point,
+    {
+        constructor : function (x, y, z)
+        {
+            this.z = z;
+        },
+
+        offset : function (dx, dy, dz)
+        {
+            this.inherited(arguments);
+            this.z += dz;
+        }
+    });
+}}}
+
+==Analysis==
+
+ * Dojo has a built-in call to super for constructors. This is a blessing most of the time, but when the arguments need to be transformed, it is impossible (as far as I can tell).
+ * More verbose since full names are passed to *dojo.declare*.
+ * More verbose name for constructor method. Mixed since some may find it easier to remember than *ctor*.
+ * Supports multiple-inheritance, but results are static classes (no mechanism for safe/correct manipulation provided).
+
+=Ext.js Approach=
+
+See [http://extjs.com/learn/Tutorial:Extending_Ext_Class here].
+
+{{{
+    Ext.namespace("foo.bar");
+
+    foo.bar.Point = Ext.extend(Object,
+    {
+        constructor : function (x, y)
+        {
+            this.x = x;
+            this.y = y;
+        },
+
+        offset : function (dx, dy)
+        {
+            this.x += dx;
+            this.y += dy;
+        }
+    });
+
+    foo.bar.Point3D = Ext.extend(foo.bar.Point,
+    {
+        constructor : function (x, y, z)
+        {
+            foo.bar.Point3D.superclass.constructor.call(this, x, y);
+        },
+
+        offset : function (dx, dy, dz)
+        {
+            foo.bar.Point3D.superclass.offset.call(this, x, y);
+            this.z += dz;
+        }
+    });
+}}}
+
+==Analysis==
+
+ * Mostly clean syntax (at least with newest version).
+ * Multiple choice of styles for class definition creates confusion.
+ * Clunky super-call syntax (full class name required).
+ * Class has no knowledge of its name (from what I can tell).
+
+=John Resig's Approach=
+
+See [http://ejohn.org/blog/simple-javascript-inheritance/ here].
+
+{{{
+    if (!foo)
+        foo = { };
+    if (!foo.bar)
+        foo.bar = { };
+
+    foo.bar.Point = Class.extend(
+    {
+        init : function (x, y)
+        {
+            this.x = x;
+            this.y = y;
+        },
+
+        offset : function (dx, dy)
+        {
+            this.x += dx;
+            this.y += dy;
+        }
+    });
+
+    foo.bar.Point3D = foo.bar.Point.extend(
+    {
+        init : function (x, y, z)
+        {
+            this._super(x, y);
+            this.z = z;
+        },
+
+        offset : function (dx, dy, dz)
+        {
+            this._super(dx, dy);
+            this.z += dz;
+        }
+    });
+});
+
+}}}
+
+==Analysis==
+
+ * Fairly clean, but intrusive. The *extend* "static" method is added to every class and *`_super`* is reserved as a property name.
+ * No support for namespaces (just classes).
+ * The *`_super`* method is a thunk and therefore its presence in the call stack cannot be avoided.
+ * The choice of *init* for the constructor function is a commonly used name for classes with 2 stage construction.
+ * Result is a static class (no mechanism for safe/correct manipulation provided).
+
+==Douglas Crockford's Approach==
+
+See [http://javascript.crockford.com/inheritance.html here].
+
+{{{
+    if (!foo)
+        foo = { };
+    if (!foo.bar)
+        foo.bar = { };
+
+    foo.bar.Point = function (x, y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+
+    foo.bar.Point.method("offset", function (dx, dy)
+    {
+        this.x += dx;
+        this.y += dy;
+    });
+
+    foo.bar.Point3D = function (x, y, z)
+    {
+        foo.bar.Point.call(this, x, y); // ???
+        this.z = z;
+    }
+
+    foo.bar.Point3D.method("offset", function (dx, dy, dz)
+    {
+        this.uber('offset', dx, dy); // ???
+        this.z += dz;
+    });
+}}}
+
+==Analysis==
+
+ * Very verbose to the point of being error prone, especially with *uber* (*super*) calls requiring the method name as a string.
+ * No method for bulk additions to a class.
+ * No support for namespaces (just classes).
+ * The *uber* method is a thunk and therefore its presence in the call stack cannot be avoided.
+ * While classes can be augmented at any time, there is no provision for chaining methods of the same name.
+
+=YUI=
+
+See [http://developer.yahoo.com/yui/examples/yahoo/yahoo_extend.html here].
+
+{{{
+    YAHOO.namespace("foo.bar");
+
+    foo.bar.Point = function (x, y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+
+    YAHOO.lang.extend(foo.bar.Point, Object,
+    {
+        offset : function (dx, dy)
+        {
+            this.x += dx;
+            this.y += dy;
+        }
+    });
+
+    foo.bar.Point3D = function (x, y, z)
+    {
+        foo.bar.Point3D.superclass.constructor.call(this, x, y);
+    }
+
+    YAHOO.lang.extend(foo.bar.Point3D, foo.bar.Point,
+    {
+        offset : function (dx, dy, dz)
+        {
+            foo.bar.Point3D.superclass.offset.call(this, dx, dy);
+            this.z += dz;
+        }
+    });
+}}}
+
+==Analysis==
+
+ * Constructor and methods are handled differently.
+ * Clunky super-call syntax (same as ExtJS).

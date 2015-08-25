@@ -1,0 +1,82 @@
+#summary Browsers (and Non-Browsers) Supported by ZJS
+
+= Introduction =
+
+Following are results of the test suite in ZJS on various browsers and in different non-browser environments. Please leave comments or questions if you would like to test ZJS in other contexts or have results to share.
+
+= Details =
+
+Following are the details of the browsers that have been tested and those that are currently planned.
+
+== IE ==
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><th>6</th><th>7</th><th>8</th></tr>
+  <tr>
+    <th>PASS</th>
+    <td>?</td>
+    <td>?</td>
+  </tr>
+</table>
+
+== Firefox ==
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><th>1</th><th>1.5</th><th>2</th><th>3</th><th>3.1</th></tr>
+  <tr>
+    <td>?</td>
+    <td>?</td>
+    <td>?</td>
+    <th>PASS</th>
+    <td>?</td>
+  </tr>
+</table>
+
+== Safari ==
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><th>For...</th><th>1</th><th>2</th><th>3</th><th>3.2</th></tr>
+  <tr>
+    <th>Mac</th>
+    <td>?</td>
+    <td>?</td>
+    <td>?</td>
+    <td>?</td>
+  </tr>
+  <tr>
+    <th>Windows</th>
+    <td>?</td>
+    <td>?</td>
+    <td>?</td>
+    <th>PASS</th>
+  </tr>
+</table>
+
+==Chrome==
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><th>0.2</th><th>0.3</th><th>0.4</th></tr>
+  <tr>
+    <td>?</td>
+    <td>?</td>
+    <th>PASS (154.29)</th>
+  </tr>
+</table>
+
+==Opera==
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><th>7</th><th>8</th><th>9</th></tr>
+  <tr>
+    <td>?</td>
+    <td>?</td>
+    <th>PASS (9.62)</th>
+  </tr>
+</table>
+
+|| Konqueror || ? ||
+|| Netscape || ? ||
+
+Non-browser environments are also supported by zjs.core and zjs.ext modules.
+
+|| *Environment* || *Status* ||
+|| Rhino || PASS ||
+|| WSH || PASS ||

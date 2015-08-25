@@ -1,0 +1,45 @@
+#summary zjs.IEventModel
+ * *File:* zjs/events.js
+ * *Module:* zjs.events
+= Interface IEventModel =
+*[zjs_IBasicEventModel zjs.IBasicEventModel]*
+ <tt>|<br/>
+ +--</tt> *zjs.IEventModel*
+----
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#create create]</b> (<b title="The event parameters.">params</b>)<br/>Creates and initializes an event object using the given parameters.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#fire fire]</b> (<b title="The event object.">ev</b>)<br/>This method delivers an instance of this type of event to the specified obj.</td>
+</tr>
+</table>
+----
+== Method Details ==
+=== create ===
+<code language='js'>object create (params)</code>
+<blockquote>
+<p>Creates and initializes an event object using the given parameters.</p>
+<b>Parameters:</b><br/><ol>
+<li>params
+<p>The event parameters.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The new event object.</p>
+</blockquote>
+</blockquote>
+=== fire ===
+<code language='js'>void fire (ev)</code>
+<blockquote>
+<p>This method delivers an instance of this type of event to the specified obj. The event's type is used to determine which subscribers will receive the event.</p>
+<b>Parameters:</b><br/><ol>
+<li>ev
+<p>The event object.</p>
+</li>
+</ol>
+</blockquote>

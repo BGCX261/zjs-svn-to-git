@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+===============================================================================
+    etc/antutils.xml
+    Copyright (C) 2008-2009, Donald W. Griffin
+    All rights reserved.
+    [MIT license :: see license.txt for details]
+
+    This file defines the <jsbuild>, <jslint> and <jsmin> custom Ant tasks.
+
+    jslint:
+
+        Derived from orignal work by Douglas Crockford
+            http://www.jslint.com/
+
+    jsmin:
+
+        Derived from the work by: Franck Marcia
+            http://fmarcia.info/jsmin
+
+        Which came from the original idea by: Douglas Crockford
+            http://javascript.crockford.com/jsmin.html
+            http://www.crockford.com/
+
+===============================================================================
+-->
+<project name="antutilsproj" basedir=".">
+
+    <!--
+    This property allows us to reference to our helper antutils.js file.
+    -->
+    <dirname property="antutilsproj.basedir" file="${ant.file.antutilsproj}"/>
+
+    <!--
+    Since we can only use the src attribute to include a single .JS file, we must
+    combine all the files we need to bootstrap things:
+    -->
+    <property name="antutil.tempdir" location="${antutilsproj.basedir}/../build/temp/antutil"/>
+    <mkdir dir="${antutil.tempdir}"/>
+
+    <concat destfile="${antutil.tempdir}/zjsant.js" force="yes">
+        <filelist dir="${antutilsproj.basedir}" files="antcore.js"/>
+        <filelist dir="${antutilsproj.basedir}/../src" files="json2.js"/>
+
+        <filelist dir="${antutilsproj.basedir}/../src/zjs" 
+                  files="core.js,ext.js,text.js,events.js"/>
+
+        <!--
+        These (at least antutils.js) need to come before the Ant tasks:
+        -->
+        <filelist dir="${antutilsproj.basedir}"
+                  files="utils.js,antutils.js,jsmin.js,jslint.js,zdoc.js"/>
+
+        <!--
+        These are the various Ant tasks and are not order specific:
+        -->
+        <fileset dir="${antutilsproj.basedir}" includes="ant-*.js"/>
+    </concat>
+
+    <scriptdef name="zdoc"
+               language="javascript" src="${antutil.tempdir}/zjsant.js">
+        <!--
+        The output file or directory (depending on format).
+        -->
+        <attribute name="out"/>
+
+        <!--
+        The output format.
+        -->
+        <attribute name="format"/>
+
+        <!--
+        True to force ouput.
+        -->
+        <attribute name="force"/>
+
+        <attribute name="verbosity"/>
+
+        <!--
+        The fileset child(ren) element(s). All files will be parsed.
+        -->
+        <element name="fileset" type="fileset"/>
+
+        <!--
+        A sequential set of tasks to execute if the output was regenerated.
+        Only the first such element is executed.
+        -->
+        <element name="beforebuild" type="sequential"/>
+
+        <!--
+        A sequential set of tasks to execute if the output was regenerated.
+        Only the first such element is executed.
+        -->
+        <element name="afterbuild" type="sequential"/>
+
+        <![CDATA[
+            zdocAntTask(project,
+                        elements.get("fileset"),
+                        attributes.get("out"),
+                        attributes.get("format"),
+                        attributes.get("force"),
+                        attributes.get("verbosity"),
+                        elements.get("beforebuild"),
+                        elements.get("afterbuild")
+                        );
+        ]]>
+    </scriptdef>
+
+    <!--
+    The <jslint> Ant task. The guts of the code are in the etc/antutils.js file. As
+    an example:
+
+        <jslint src="${build.dir}/file.js"
+                report="${build.dir}/lint-file.html"
+                console="true"
+                options="evil=true,strict=false,onevar=false,undef=true,browser=true"
+                nowarnings="false"
+                />
+    -->
+    <scriptdef name="jslint"
+               language="javascript" src="${antutil.tempdir}/zjsant.js">
+
+        <!--
+        The file to process.
+        -->
+        <attribute name="src"/>
+
+        <!--
+        The file to which a JSLint report will be written.
+        -->
+        <attribute name="report"/>
+
+        <!--
+        True to write a text only report to the stdout console.
+        -->
+        <attribute name="console"/>
+
+        <!--
+        The list of JSLint options. The syntax is "n1=v1,n2=v2". For a list of
+        JSLint options, see http://www.jslint.com/lint.html.
+        -->
+        <attribute name="options"/>
+
+        <!--
+        True to report on globals, false to only report errors/warnings.
+        -->
+        <attribute name="globals"/>
+
+        <!--
+        @@@
+        -->
+        <attribute name="if"/>
+
+        <!--
+        The fileset child(ren) element(s). All files will be analyzed.
+        -->
+        <element name="fileset" type="fileset"/>
+
+        <!--
+        The body of the <scriptdef> is where the logic goes, but that is not a
+        nice place to find lots of code. We simply call out to a method in the
+        antutils.js file.
+        -->
+        <![CDATA[
+            jslintAntTask(project,
+                new zjsAnt.FileSet(project, attributes.get("src"), elements.get("fileset")),
+                attributes.get("report"),
+                attributes.get("console"),
+                attributes.get("options"),
+                attributes.get("globals"),
+                attributes.get("if")
+                );
+        ]]>
+    </scriptdef>
+
+    <!--
+    This helper is used to capture the text content of an element. The idea is
+    to store @{text} in the specified property. To avoid conflicts, the caller
+    happens to choose a very unique property name, set that name as a dynamic
+    attribute on this task instance and then execute. Once executed, the value
+    of the specified property can be retrieved by the caller.
+    -->
+    <macrodef name="jsminComment">
+        <attribute name="property"/>
+        <text name="text"/>
+        <sequential>
+            <property name="@{property}" value="@{text}"/>
+        </sequential>
+    </macrodef>
+
+    <!--
+    The <jsmin> Ant task. The guts of the code are in the etc/antutils.js file. As
+    an example:
+
+        <jsmin outdir="${build.dir}">
+            <comment>Some text perhaps copyright</comment>
+            <fileset dir="${src.dir}" includes="*.js"/>
+        </jsmin>
+    -->
+    <scriptdef name="jsmin"
+               language="javascript" src="${antutil.tempdir}/zjsant.js">
+
+        <!--
+        The jsmin compression level. The names for these are:
+
+           -1 : none (copy verbatim)
+            0 : minimal (original algorithm but keep linefeeds if single)
+            1 : conservative (original algorithm)
+            2 : agressive (remove more linefeed than the original algorithm but can be
+                           regressive)
+        -->
+        <attribute name="level"/>
+
+        <!--
+        The output directory to which each file will be written. The name of each
+        input file is preserved. This option is an independent value (not mutually
+        exclusive) with respect to outfile. If both a specified, both forms of
+        output will be produced.
+        -->
+        <attribute name="outdir"/>
+
+        <!--
+        The output file to which each file will be appended. This option is an
+        independent value (not mutually exclusive) with respect to outdir. If both
+        a specified, both forms of output will be produced.
+        -->
+        <attribute name="outfile"/>
+
+        <!--
+        Determines how much output is produced. By default, output is rather
+        verbose. This attribute can specify "quiet" or "silent" mode.
+        -->
+        <attribute name="verbosity"/>
+
+        <!--
+        The comment to emit into any javascript output file. The comment is the
+        body of the first instance of the <comment> element.
+        -->
+        <element name="comment" type="jsminComment"/>
+
+        <!--
+        The fileset child(ren) element(s). The order of fileset children determines
+        the order in which files are appended when using outfile. For example, the
+        files in the first fileset will be appended before the files in the second
+        fileset, followed by the third fileset, etc.. There is no means to control
+        order within a given fileset.
+
+        No input file will be appended multiple times even if present in multiple
+        filesets.
+        -->
+        <element name="fileset" type="fileset"/>
+
+        <!--
+        The body of the <scriptdef> is where the logic goes, but that is not a
+        nice place to find lots of code. We simply call out to a method in the
+        antutils.js file.
+        -->
+        <![CDATA[
+            jsminAntTask(project,
+                            attributes.get("level") || 1,
+                            attributes.get("verbosity"),
+                            elements.get("fileset"),
+                            elements.get("comment"),
+                            attributes.get("outdir"),
+                            attributes.get("outfile"));
+        ]]>
+
+    </scriptdef>
+
+    <!--
+    The <jsbuild> Ant task. The guts of the code are in the etc/antutils.js file. As
+    an example:
+
+        <jsbuild out="${build.dir}/file.js" packages="zjs=${src.dir};foo=${foo.dir}"
+                 modules="zjs.*;test.*">
+            <comment>Some text perhaps copyright</comment>
+        </jsmin>
+
+    If the output file was at least as new as all the input files, this task does
+    not rewrite the output file.
+    -->
+    <scriptdef name="jsbuild"
+               language="javascript" src="${antutil.tempdir}/zjsant.js">
+
+        <!--
+        The jsmin compression level. The names for these are:
+
+           -1 : none (copy verbatim)
+            0 : minimal (original algorithm but keep linefeeds if single)
+            1 : conservative (original algorithm)
+            2 : agressive (remove more linefeed than the original algorithm but can be
+                           regressive)
+        -->
+        <attribute name="level"/>
+
+        <!--
+        The output file to which each file will be appended. This is required.
+        -->
+        <attribute name="out"/>
+
+        <!--
+        The paths for all packages containing modules to be packaged in the build.
+        -->
+        <attribute name="packages"/>
+
+        <!--
+        The names of all modules to package. Any module required will also be
+        packaged if its path is specified in the packages list.
+        -->
+        <attribute name="modules"/>
+
+        <!--
+        The names of all modules to not package.
+        -->
+        <attribute name="exclude"/>
+
+        <!--
+        Determines how much output is produced. By default, output is rather
+        verbose. This attribute can specify "quiet" or "silent" mode.
+        -->
+        <attribute name="verbosity"/>
+
+        <!--
+        The comment to emit into any javascript output file. The comment is the
+        body of the first instance of the <comment> element.
+        -->
+        <element name="comment" type="jsminComment"/>
+
+        <!--
+        A sequential set of tasks to execute if the output file was generated.
+        Only the first such element is executed.
+        -->
+        <element name="onbuild" type="sequential"/>
+
+        <!--
+        The body of the <scriptdef> is where the logic goes, but that is not a
+        nice place to find lots of code. We simply call out to a method in the
+        antutils.js file.
+        -->
+        <![CDATA[
+            jsbuildAntTask(project,
+                            attributes.get("packages")+"",
+                            attributes.get("modules")+"",
+                            attributes.get("exclude"),
+                            attributes.get("out")+"",
+                            attributes.get("level") || 1,
+                            attributes.get("verbosity")+"",
+                            elements.get("comment"),
+                            elements.get("onbuild")
+                            );
+
+        ]]>
+
+    </scriptdef>
+
+</project>

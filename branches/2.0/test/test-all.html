@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+=============================================================================
+    test/test-all.html
+    Copyright (C) 2008, Donald W. Griffin
+    All rights reserved.
+    [MIT license :: see license.txt for details]
+=============================================================================
+-->
+<html>
+<head>
+  <title>ZJS-All Test Page</title>
+  <link href="test.css" rel="stylesheet"></link>
+
+  <!--[if IE]>
+  <script src="firebug/pi.js"></script>
+  <script src="firebug/firebug-lite.js"></script>
+  <![endif]-->
+
+  <script src="../src/zjs/all.js"></script>
+
+  <script>
+    function imported ()
+    {
+        console.info("imported baby!");
+    }
+
+    function setup ()
+    {
+        console.info("setup...");
+
+        zjs.Importer.getInstance().addPackagePath("imp", "");
+        $import("imp.imp3", imported);
+    }
+  </script>
+
+  <script src="unittest.js"></script>
+  <script src="test.js"></script>
+  <script src="test-x.js"></script>
+  <script src="test-imp.js"></script>
+</head>
+
+<body onload="setup();">
+    <script>
+        document.write("<pre>"+window.location.href+"</pre>");
+        runTests();
+    </script>
+</body>
+</html>

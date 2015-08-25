@@ -1,0 +1,175 @@
+#summary zjs.Browser
+ * *File:* zjs/browser.js
+ * *Module:* zjs.browser
+= Class Browser =
+
+----
+<p>This class performs browser and OS detection and stores the results.</p>
+----
+== Properties ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><p><b>chrome</b></p></td>
+<td>
+<p>True if the browser is Google Chrome of any version.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>engine</b></p></td>
+<td>
+<p>The name of the rendering engine ("msie", "gecko", etc.).</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>firefox</b></p></td>
+<td>
+<p>True if the browser is Firefox of any version.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>gecko</b></p></td>
+<td>
+<p>True if the browser is based on Gecko.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>ie</b></p></td>
+<td>
+<p>True if the browser is IE of any version.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>khtml</b></p></td>
+<td>
+<p>True if the browser is based on KHTML.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>linux</b></p></td>
+<td>
+<p>True if the browser if is running on Linux.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>mac</b></p></td>
+<td>
+<p>True if the browser if is running on Mac.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>name</b></p></td>
+<td>
+<p>The name of the browser.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>opera</b></p></td>
+<td>
+<p>True if the browser is Opera.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>os</b></p></td>
+<td>
+<p>The Operating System name ("Windows", "Mac" or "Linux").</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>safari</b></p></td>
+<td>
+<p>True if the browser is Safari of any version.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>version</b></p></td>
+<td>
+<p>The version of the browser.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>webkit</b></p></td>
+<td>
+<p>True if the browser is based on WebKit.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>win</b></p></td>
+<td>
+<p>True if the browser if is running on Windows.</p>
+</td></tr>
+</table>
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#addDecorations addDecorations]</b> (<b title="The element to which decorations are to be added.">el</b>)<br/>Adds decorations (CSS classes) to the given element.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#getDecorations getDecorations]</b> ()<br/>Returns decorations (CSS classes) based on this browser.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#is is]</b> (<b title="The name against which to match (more can follow).">name</b>)<br/>Returns true if this browser's name matches any of the given names.</td>
+</tr>
+</table>
+----
+== Method Details ==
+=== addDecorations ===
+<code language='js'>object addDecorations (el)</code>
+<blockquote>
+<p>Adds decorations (CSS classes) to the given element.</p>
+<p>The use of these class name in a CSS selector would be:</p>
+<pre>
+    .lt_IE7 .myclass {
+       ... some IE hack not needed in IE7 and newer
+    }</pre>
+<p>The optimal place to use this method for the `<`body`>` element would be in a `<`script`>` block like so:</p>
+<pre>
+    `<`body`>`
+      `<`script`>`zjs.browser.addDecorations(document.body);`<`/script`>`
+      ...</pre>
+<p>This technique ensures that the CSS classes are used during the first rendering of the page. Doing this from an onload handler would allow the page to render without the class names and then render again (i.e., it would flicker) once the new class names are assigned.</p>
+<b>Parameters:</b><br/><ol>
+<li>el
+<p>The element to which decorations are to be added.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The element.</p>
+</blockquote>
+</blockquote>
+=== getDecorations ===
+<code language='js'>object getDecorations ()</code>
+<blockquote>
+<p>Returns decorations (CSS classes) based on this browser. These classes are useful when browser-specific CSS is needed since CSS does not have clean ways to detect the browser.</p>
+<p>The CSS classes are the following:</p>
+<pre>
+  - *isIE | isFF | isSafari* : Added if IE, Firefox or Safari
+  - *notIE | notFF | notSafari* : Added if not IE, Firefox or Safari
+  - *isIE6 | isIE7 | isIE8*  : Added if IE and version == 6,7,8
+  - *notIE6 | notIE7 | notIE8* : Added if IE and version != 6,7,8
+  - *ge_IE6 | ge_IE7 | ge_IE8* : Added if IE and version greater or equal to 6,7,8
+  - *lt_IE6 | lt_IE7 | lt_IE8* : Added if IE and version less than 6,7,8
+  - *isFF2 | isFF3*  : Added if Firefox and version == 2,3
+  - *notFF2 | notFF3* : Added if Firefox and version != 2,3
+  - *ge_FF2 | ge_FF3* : Added if Firefox and version greater or equal 2,3
+  - *lt_FF2 | lt_FF3* : Added if Firefox and version less than 2,3</pre>
+<p>For example, using IE6, the CSS class names are:</p>
+<pre>
+        isIE isIE6 ge_IE6 notIE7 lt_IE7 notIE8 lt_IE8 notFF notSafari</pre>
+<p>And for Firefox 3, the CSS class names are:</p>
+<pre>
+        notIE isFF notFF2 ge_FF2 isFF3 ge_FF3 notSafari</pre>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The CSS classes to add and delete.</p>
+<b>Members:</b><br/><ul>
+<li>add : string[]
+<p>The classes to add.</p>
+</li>
+<li>del : string[]
+<p>The classes to delete.</p>
+</li>
+</ul>
+</blockquote>
+</blockquote>
+=== is ===
+<code language='js'>object is (name)</code>
+<blockquote>
+<p>Returns true if this browser's name matches any of the given names. The comparison ignores case.</p>
+<b>Parameters:</b><br/><ol>
+<li>name
+<p>The name against which to match (more can follow).</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if this browser's name matches any of the given names.</p>
+</blockquote>
+</blockquote>

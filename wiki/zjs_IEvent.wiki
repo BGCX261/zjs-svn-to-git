@@ -1,0 +1,33 @@
+#summary zjs.IEvent
+ * *File:* zjs/events.js
+ * *Module:* zjs.events
+= Interface IEvent =
+----
+<p>This interface is met by all Event objects.</p>
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#consume consume]</b> ()<br/>Marks this Event as consumed so that no further actions are taken.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#consumed consumed]</b> ()<br/>Returns true if this Event has been consumed.</td>
+</tr>
+</table>
+----
+== Method Details ==
+=== consume ===
+<code language='js'>void consume ()</code>
+<blockquote>
+<p>Marks this Event as consumed so that no further actions are taken.</p>
+</blockquote>
+=== consumed ===
+<code language='js'>object consumed ()</code>
+<blockquote>
+<p>Returns true if this Event has been consumed. If true, no further action should be taken for this event.</p>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if this Event has been consumed.</p>
+</blockquote>
+</blockquote>

@@ -1,0 +1,111 @@
+#summary zjs.Module
+ * *File:* zjs/import.js
+ * *Module:* zjs.import
+= Class Module =
+
+----
+<p>This class is used to manage a single module. These objects are collected and managed by the Importer singleton object.</p>
+----
+== Constructor Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#ctor ctor]</b> (<b title="The PackageManager-like object for this module.">pkgmgr</b>, <b title="This object's module path.">path</b>)<br/>Initialize this object given is module path and manager.</td>
+</tr>
+</table>
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#isReady isReady]</b> ()<br/>Returns true if this module is ready.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#load load]</b> (<b title="The callback to make when this module is ready.">onready</b>)<br/>Starts loading this module.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#notifyWhenReady notifyWhenReady]</b> (<b title="The callback to make when this module is ready.">fn</b>)<br/>Adds the given callback to the list to call when this module is ready.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#onLoad onLoad]</b> (<b title="The AjaxTransaction object (same as this.xact).">AjaxTransaction tr</b>)<br/>This callback method is called when a script has downloaded.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#onPreReady onPreReady]</b> ()<br/>This method is called once the pre-requisite modules are ready.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#onReady onReady]</b> ()<br/>This callback is called when a script has been loaded into the DOM.</td>
+</tr>
+</table>
+----
+== Constructor Details ==
+=== ctor ===
+<code language='js'>void ctor (pkgmgr, path)</code>
+<blockquote>
+<p>Initialize this object given is module path and manager.</p>
+<b>Parameters:</b><br/><ol>
+<li>pkgmgr
+<p>The PackageManager-like object for this module.</p>
+</li>
+<li>path
+<p>This object's module path.</p>
+</li>
+</ol>
+</blockquote>
+----
+== Method Details ==
+=== isReady ===
+<code language='js'>object isReady ()</code>
+<blockquote>
+<p>Returns true if this module is ready.</p>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if this module is ready.</p>
+</blockquote>
+</blockquote>
+=== load ===
+<code language='js'>void load (onready)</code>
+<blockquote>
+<p>Starts loading this module. The first step is to request it via an Ajax GET. This allows us to handle error conditions and process the script before it gets interpreted by the browser. When the script text loads, this object's onLoad method will be called.</p>
+<p>It is assumed that this module is not currently loaded. The source URL is captured (for later use), the callback is stored and the Ajax call is started.</p>
+<b>Parameters:</b><br/><ol>
+<li>onready
+<p>The callback to make when this module is ready.</p>
+</li>
+</ol>
+</blockquote>
+=== notifyWhenReady ===
+<code language='js'>void notifyWhenReady (fn)</code>
+<blockquote>
+<p>Adds the given callback to the list to call when this module is ready. It is assumed that this module is currently loading.</p>
+<b>Parameters:</b><br/><ol>
+<li>fn
+<p>The callback to make when this module is ready.</p>
+</li>
+</ol>
+</blockquote>
+=== onLoad ===
+<code language='js'>void onLoad (AjaxTransaction tr)</code>
+<blockquote>
+<p>This callback method is called when a script has downloaded. This is the first load via Ajax request. We examine the $requires content and then decide if we must load any dependencies before injecting the code into the DOM.</p>
+<p>If this module has requirements, these are loaded first. Once they have been made ready, the onPreReady method is called. If this module has no requirements, onPreReady is called now.</p>
+<b>Parameters:</b><br/><ol>
+<li>tr : AjaxTransaction
+<p>The AjaxTransaction object (same as this.xact).</p>
+</li>
+</ol>
+</blockquote>
+=== onPreReady ===
+<code language='js'>void onPreReady ()</code>
+<blockquote>
+<p>This method is called once the pre-requisite modules are ready. Only when these modules are fully ready can we inject this module's code.</p>
+<p>If we are not debugging, we can inject this module's code now. If we are debugging, we really need to use a script node with its "src" attribute (where this works). In this case, we'll be called back in this object's onReady method once the script node is ready. If we are ready now, we call onReady immediately.</p>
+</blockquote>
+=== onReady ===
+<code language='js'>void onReady ()</code>
+<blockquote>
+<p>This callback is called when a script has been loaded into the DOM. This may be due to a newly ready `<`script src=''`>` or Ajax injection.</p>
+</blockquote>

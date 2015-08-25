@@ -1,0 +1,66 @@
+#summary zjs.Object
+ * *File:* zjs/core.js
+ * *Module:* zjs.core
+= Class Object =
+
+----
+<p>This is the default base class for classes created by $class.</p>
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#$super $super]</b> (<i title="(Optional) The arguments object (not just an array).">Arguments args</i>)<br/>This method will call the super method on this object.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#getClass getClass]</b> ()<br/>Returns the class of this object.</td>
+</tr>
+</table>
+----
+== Method Details ==
+=== $super ===
+<code language='js'>object $super (Arguments args?)</code>
+<blockquote>
+<p>This method will call the super method on this object. If the environment provides the "caller" property on Functions, that is used to determine the super method. If not then the first parameter, if it is an "arguments" object, is used to retrieve the super via the "callee" property. See $super for details.</p>
+<p>All parameters passed to this method (other than the optional "arguments" used to determine the super method) are passed to the super method. For example:</p>
+<code language="js">
+    Derived : $class("Base", {
+        foo : function (x) {
+            var v = this.$super(arguments, x); // always good
+            // only "x" is passed to super.foo
+
+            // equivalent to:
+            var v = $super(arguments).call(this, x);
+            ...
+        }
+    })
+
+    // ... or ...
+
+    Derived : $class("Base", {
+        foo : function (x) {
+            var v = this.$super(x); // not universally supported
+
+            // equivalent to:
+            var v = $super().call(this, x);
+            ...
+        }
+    })</code>
+<b>Parameters:</b><br/><ol>
+<li>args : Arguments <i>(optional)</i>
+<p>The arguments object (not just an array).</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The value returned by the super method.</p>
+</blockquote>
+</blockquote>
+=== getClass ===
+<code language='js'>object getClass ()</code>
+<blockquote>
+<p>Returns the class of this object.</p>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The class of this object.</p>
+</blockquote>
+</blockquote>

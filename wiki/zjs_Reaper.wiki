@@ -1,0 +1,39 @@
+#summary zjs.Reaper
+ * *File:* zjs/events.js
+ * *Module:* zjs.events
+= Class Reaper =
+
+----
+<p>This class is used to manage destroyable "child" resource objects. The objects that fit into this category are those that need to have their destroy methods called when the owner object's destroy method is called.</p>
+<p>To use a Reaper, you simply construct it giving it the owner and child objects. For example:</p>
+<code language="js">
+   Owner : $class({
+       foo : function (x) {
+           var child = { destroy: function () { $log("destroy " + x); } };
+           var r = new zjs.Reaper(this, child);
+           return r;
+       }
+   });
+
+   var o = new Owner();
+   var r1 = o.foo(1);
+   var r2 = o.foo(2);</code>
+<p>In the above example, the foo method creates a "child" object that needs to be destroyed when "this" object (the child's owner) is destroyed, so it wraps it in a Reaper. The Reaper is returned in case the caller of "foo" may need to destroy the child. If the Reaper's destroy method is called, it calls "destroy" on "child" and removes the Reaper from the owner object.</p>
+<p>For example:</p>
+<code language="js">
+   zjs.destroy(o); // log gets "destroy 1" and "destroy 2"</code>
+<p>If instead we did this:</p>
+<code language="js">
+   zjs.destroy(r1); // log gets "destroy 1"
+   zjs.destroy(o); // log gets "destroy 2"</code>
+<p>It is important to note that Reaper adds its own destroy method to a class that uses it. In this example, Owner gains a destroy method. This is handled by using $mixin, so if the class provides its own destroy method, be sure to call $super. For example:</p>
+<code language="js">
+   Owner : $class({
+       destroy : function () {
+           $super(arguments).call(this); // important!
+           // ... do stuff ...
+       },
+
+       foo : function (x)
+   ...</code>
+<p>This may not be needed by Owner, but certainly would be required if a derived class came along. Though it might not be obvious because Owner did not explicitly define a destroy method. This is one of those cases where a composed method is best to always have a $super call in it (since doing so will never break).</p>

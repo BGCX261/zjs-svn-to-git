@@ -1,0 +1,34 @@
+<!--
+    etc/zdoc.wsf
+    Copyright (C) 2010-2011, Donald W. Griffin
+    All rights reserved.
+    [MIT license :: see license.txt for details]
+-->
+<package>
+
+<comment>Extracts documentation from source code</comment>
+
+<job>
+    <script src="..\src\zjs\core.js"/>
+    <script src="..\src\zjs\ext.js"/>
+    <script src="..\src\zjs\text.js"/>
+    <script src="..\src\zjs\events.js"/>
+
+    <script src="utils.js"/>
+    <script src="wshcore.js"/>
+    <script src="zdoc.js"/>
+    <script src="wsh-zdoc.js"/>
+
+    <script language="jscript">
+
+        //try {
+            zdocWsh(getScriptArgsArray());
+        //} catch (e) {
+        //    $log(e.message, "ERROR");
+        //}
+
+    </script>
+
+</job>
+
+</package>

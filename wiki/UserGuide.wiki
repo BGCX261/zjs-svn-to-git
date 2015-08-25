@@ -1,0 +1,1030 @@
+#summary The ZJS User's Guide
+#labels Featured
+
+*Contents*
+
+<wiki:toc max_depth="3" />
+
+=Introduction=
+
+The two central OO concepts that gave birth to ZJS are namespaces and classes.
+
+Organizing large amounts of code (in Javascript or any other language) requires partitioning symbols into separate scopes or namespaces. The primary goal of this feature of ZJS to provide a simple way to create and extend a namespace. Doing this manually tends to look like this:
+
+{{{
+    var foo =
+    {
+       bar : function () { ... }
+    }
+}}}
+
+The major drawbacks to the manual approach are:
+
+ * Safety - it is easy to smash a namespace or a member instead of adding.
+ * Anonymity - all the functions in the namespace have no name, complicating debugging.
+
+The second core features of ZJS is the emulation of the *class* keyword found in Java and other OO languages. Since Javascript is a much more dynamic language than Java et.al., just about anything is possible. There are just some trade-offs that must be considered.
+
+The main goals of the ZJS class model are:
+
+ * Classes are used to create objects with the *new* operator.
+ * Derivation leverages the Javascript prototype mechanism.
+ * Objects of derived type work naturally with the Javascript *instanceof* keyword.
+ * Classes are dynamic and open to extension, not just derivation.
+ * The use of class extension, derivation and object creation are independent and orderless.
+
+In ZJS a class is a lot like a *namespace*. For normal methods, classes are a bit different due to the *prototype* object involved, but for *static* methods, a class is almost exactly like a namespace.
+
+ZJS does not implement multiple-inheritance (MI). The reasons that MI is not provided are basically these:
+
+ * The Javascript prototype mechanism is a single inheritance (SI) model, meaning MI wouldn't fit very well with this definition of "inheritance".
+ * Even where MI is supported, it is typically avoided by developers citing (rightly or wrongly) that MI is "too complex".
+ * Often when MI is used, it is used to allow substitution of objects that meet multiple interfaces. This feature is part of the semi-typeless nature of Javascript, often referred to as [http://en.wikipedia.org/wiki/Duck_typing Duck Typing].
+
+Even though MI is not supported, mixins can be used to achieve similar results but in a more flexible and controlled manner.
+
+=Getting Started=
+
+A simple example will get us going:
+
+{{{
+    $namespace("foo.bar",{
+
+    Base : $class(
+    {
+        ctor : function (x, y)
+        {
+            this.x = x;
+            this.y = y;
+        },
+
+        stuff : function ()
+        {
+            return this.x + this.y;
+        }
+    }),
+
+    Derived : $class("Base",
+    {
+        ctor : function (x, y, z)
+        {
+            $super(arguments).call(this, x, y);
+            this.z = z;
+        },
+
+        stuff : function ()
+        {
+            var s = $super(arguments).call(this);
+            return s + this.z;
+        }
+    })
+
+    });
+}}}
+
+The above declaration defines classes *Base* and *Derived* and adds them to the *foo.bar* namespace. The namespace is created if necessary. The object literal passed to *$namespace* contains things to add to the namespace. If those names are already defined, by default, an error is thrown.
+
+The *$class* function creates a class using the object literal passed to it to define the class members. The base class is an optional first parameter. By default, classes derive from *zjs.Object* unless *null* is specified. In this case, the class has no base. That is it basically derives from Javascript's Object class. If a base class is requested that evaluates to *undefined*, an error is thrown (probably a bad lookup).
+
+The *ctor* method is the name ZJS uses for the constructor method. It is invoked when an object is created:
+
+{{{
+    var obj = new foo.bar.Derived(2, 5, 7); // calls foo.bar.Derived.ctor
+
+    // (obj instanceof foo.bar.Base) == true
+    // (obj instanceof foo.bar.Derived) == true
+
+    var s = obj.stuff();
+}}}
+
+In Javascript terms, the *obj* object has as its prototype object the object associated with the *foo.bar.Derived* constructor function, or the object known as *foo.bar.Derived.prototype*. This in turn has *foo.bar.Base.prototype* as its prototype, whose prototype is *zjs.Object.prototype* and lastly *Object.prototype*.
+
+=Classes=
+
+As one of the core concepts in ZJS, classes have several important details to consider. It is best to be familiar with at least one traditional OO language (e.g., Java, C++, C#).
+
+==Derivation==
+
+Notice the use of a string as the base class in the above example. Prior to version 3 of ZJS, this was not supported and the above code would have had to be split into two calls to *$namespace*; the first to add *foo.bar.Base* and the second to add *foo.bar.Derived* since it needed to explicitly reference *foo.bar.Base* in its call to *$class*. The search to resolve these names starts in the namespace where the derived class is added and then proceeds outwards to the global scope. The first found match is selected. Not only is this more compact, it makes refactoring namespace names simpler.
+
+In the derived class above, there are two uses of the *$super* function. This method is a central part of the ZJS class model. There is a [comparisons] page for the curious on other approaches, but the challenge in Javascript as it relates to super calls is that the prototype chain for an object only allows one value to be found given a name. In other words, consider this:
+
+{{{
+    var s = obj.stuff();
+}}}
+
+This will find the most-derived version of the method and call it as expected. The problem then is how that method finds the method that it has hidden from its base class. This is the job of *$super*. When called, *$super* is given the *arguments* object in the call of the more-derived method. This detail is important: the parameter to *$super* must be the *arguments* object of such a method call.
+
+For details on calling the returned super method, see *[http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Function:apply apply]* and *[http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Function:call call]*.
+
+==Statics==
+
+Most class members associate with object instances, but ZJS provides a simple way to mark members as associated with the class, also known as *static*. To add a member to the class rather than on each instance, wrap it in a call to *$static* like so:
+
+{{{
+    $namespace("foo.bar",{
+
+    Base : $class(
+    {
+        ctor : function (x, y)
+        {
+            this.x = x;
+            this.y = y;
+        },
+
+        stuff : function ()
+        {
+            return this.x + this.y;
+        },
+
+        // Prior to V3.1:
+        func : $static(function (str)
+        {
+            return str + str;
+        })
+        
+        // Or, New to V3.1+
+        $static:
+        {
+            func : function (str)
+            {
+                return str + str;
+            }
+        }
+    })
+
+    }); // foo.bar
+
+    var s = foo.bar.Base.func("abc"); // == "abcabc"
+}}}
+
+As with non-static methods, *$super* works as expected:
+
+{{{
+    $namespace("foo.bar",{
+
+    Derived : $class("Base",
+    {
+        ctor : function (x, y)
+        {
+            this.x = x;
+            this.y = y;
+        },
+
+        stuff : function ()
+        {
+            return this.x + this.y;
+        },
+
+        $static:
+        {
+            func : function (str)
+            {
+                return $super(arguments)(str) + "!!!";
+            }
+        }
+    })
+
+    }); // foo.bar
+
+    var s = foo.bar.Derived.func("abc"); // == "abcabc!!!"
+}}}
+
+The use of *$static* is not limited to methods. Any member can be made static in the same manner.
+
+In V3.1, the new $static syntax also creates a $static object for each class. This object's prototype is the $static object for its base class. In other words, this allows statics to be inherited. For example:
+
+{{{
+    var s = foo.bar.Derived.$static.func("abc");
+}}}
+
+The above would have worked even if "Derived" had not overridden "func". In that case, the "func" from "Base" would have been found (via the prototype chain).
+
+Finally, in V3.1, $static is also a property in the normal prototype chain for the class. This allows something like this:
+
+{{{
+    $namespace("foo.bar",{
+
+    Derived : $class("Base",
+    {
+        ...
+        stuff : function ()
+        {
+            return this.$static.func("a");
+        }
+        ...
+    })
+
+    }); // foo.bar
+}}}
+
+It is important to note that "this.$static" references the statics from the object's actual class, which might be a more derived class.
+
+==The Private Member Idiom==
+
+In most OO languages, class members can have access restrictions. Conventional wisdom says that this is not so in Javascript; that all things are public essentially. This is not strictly speaking a true statement. By using closures in Javascript, we can get the effect of private content. Consider:
+
+{{{
+    $namespace("foo.bar",{
+
+    Foo : $class(function ()
+    {
+    // private
+
+    // public
+        return {
+            ctor : function ()
+            {
+            },
+
+            stuff : function ()
+            {
+            }
+        };
+    })
+
+    });
+}}}
+
+At first glance, this may appear strange. The single argument to *$class* is just a function object. But *$class* expects an object from which to gather the class members. This technique is used often in Javascript to hide information in a function scope so that it is only visible to the functions inside that scope. In these cases, the anonymous function must be called immediately as well because it is really what the function returns that is needed by the outside world. In ZJS, this technique is supported by automatically calling the supplied function.
+
+In V3.1, the class being created is passed to the function that returns the class body. This can be useful for accessing statics. For example:
+
+{{{
+    $namespace("foo.bar",{
+
+    Foo : $class("Base", function (F) // F = foo.bar.Foo
+    {
+        return {
+            ...
+            stuff : function ()
+            {
+                return F.$static.func("a"); // also searches Base for static "func"
+            }
+            ...
+        };
+    })
+
+    }); // foo.bar
+}}}
+
+==Singleton==
+
+The Singleton design pattern is often expressed with a static method on the singleton class. A method is used to perform the lazy creation on first use of the object. An ideal implementation of singleton requires that it be impossible to create any other instances of the class.
+
+In ZJS, this is implemented by *$singleton*. For example:
+
+{{{
+    $namespace("foo.bar", {
+
+    Foo : $singleton(
+    {
+        ctor : function () { },
+        bar : function () { },
+        sbar : $static(function () { })
+    })
+
+    });
+
+    var f = foo.bar.Foo.getInstance(); // lazy create on first call
+
+    f.bar(); // call instance method on the single instance object...
+
+    foo.bar.Foo.sbar();
+}}}
+
+Like a class, a Singleton can also have *$static* methods. Unlike a class, a Singleton cannot be instantiated:
+
+{{{
+    var f = new foo.bar.Foo(); // ERROR
+}}}
+
+==Nested Classes==
+
+Because of the deep symmetry between classes and namespaces, nesting a *$class* member inside a *$class* works (almost) as expected. For example:
+
+{{{
+    $namespace("foo.bar", {
+
+    Outer : $class(
+    {
+        ctor : function ()
+        {
+        },
+
+        Inner : $class(
+        {
+            ctor : function ()
+            {
+            }
+        })
+    }
+
+    });
+}}}
+
+There is special code in *$class* to detect a nested class and treat it like a static member (bound to the class, not the instance). That is:
+
+{{{
+    var ai = new foo.bar.Outer.Inner();
+}}}
+
+In comparison to Java's inner classes, ZJS nested classes are equivalent to *static* inner classes.
+
+=Namespaces=
+
+Returning to namespaces, there are some features beyond that of creation and collision detection. In some cases (e.g., for cross-browser compatibility) it is often desirable to have different implementations for a given method.
+
+== $overwrite ==
+
+The simplest alternative is to overwrite an existing member with a new member:
+
+{{{
+    $namespace (foo, {
+
+    bar : $overwrite(function (x) { return x + K; })
+
+    });
+}}}
+
+If the *bar* member of *foo* is defined, it is now overwritten. If there was no *bar* member, there is now.
+
+== $replace ==
+
+More often, a replacement member is desired for an already defined namespace member. This looks like so:
+
+{{{
+    $namespace (foo, {
+
+    bar : $replace(function (x) { return x + K; })
+
+    });
+}}}
+
+If there is a *bar* member in *foo*, it is replaced. If not, an exception is thrown. This can help detect typos and other maintenance.
+
+== $override ==
+
+Finally, there are times where the predefined member and a new member are both required. This is similar to method overriding in classes and looks like this:
+
+{{{
+    $namespace (foo, {
+
+    bar : $override(function (x)
+    {
+        return x + $super(arguments)(x);
+    }}
+
+    });
+}}}
+
+In the above case, the predefined *bar* method is accessible to the override method using the *[Class $super]* method. Since there is no (meaningful) object instance involved, the call to the super method is simpler than with class methods. Further, unlike class methods, the original method does not call *$super*.
+
+Since code must be written to combine the two members, *$override* is only valid for function members.
+
+=Using $using=
+
+In some situations, it can be awkward to use fully qualified names to reference classes or methods. In languages with lexical scoping there are often ways to establish a short name for a class or group of classes. The *$using* pseudo keyword gives something similar to the following example in Java:
+
+{{{
+    import foo.bar.C;
+    import bar.foo.*
+}}}
+
+The primary place where this feature is needed is within a function scope. This is because most code lives (or could easily be wrapped) in a function. The challenge is that there are no great ways to inject symbols into a function's scope.
+
+So here is an example of *$using* for a single class:
+
+{{{
+    function f ()
+    {
+        eval($using(foo.bar.C));
+        // same as: var C = foo.bar.C;
+
+        var c = new C(); // same as "new foo.bar.C()"
+    }
+}}}
+
+The key to this technique of injection into a local scope is the *eval* function. The *$using* method returns a string suitable to pass to *eval* and inject *var* statements for the symbol or symbols using their name for the variables.
+
+Here is an example of *$using* for an entire namespace:
+
+{{{
+    function f ()
+    {
+        eval($using(foo.bar));
+        // foreach T in foo.bar: var T = foo.bar.T;
+
+        var c = new C(); // same as "new foo.bar.C()"
+    }
+}}}
+
+This technique can be combined with The Private Member Idiom to make such shortcuts available to all methods of a class.
+
+=Reliability Techniques=
+
+==$log==
+
+A cross-browser way to say something. In Firebug, this goes to the *console*. Prior to v3.2, *alert* was used when *console* was not avaiable. In v3.2 this was changed to store messages in the array *$log.out*. This array is limited to *$log.limit* entries, after which, the oldest elements are removed to make room for new entries. This change allows *$log* to work in non-browser environments as well as improves debuggability in IE or other environments where a debugger could inspect *$log.out*.
+
+==$throw==
+
+A shorthand way to throw exceptions. This ensures that the thrown object uses the Javascript *Error* class. For example,
+
+{{{
+    $throw("Bad things");
+
+    // vs:
+
+    throw new Error("Bad things");
+}}}
+
+This provides an easy place to set a breakpoint to intercept throws before they throw the real exception. Or to log them if desired. An optional 2^nd^ argument can be given to specify the type of Javascript exception to throw. Some other predefined types include *!EvalError*, *!RangeError*, *!ReferenceError*, *!SyntaxError*, *!TypeError* and *URIError*.
+
+This method also ensures that thrown exceptions have a *message* property (as they should in standard use).
+
+==$panic==
+
+A simple call placed where "we should never be". Possibly in *default* blocks of *switch* statements or that final *else* on an *if/elseif*.
+
+==$assert==
+
+This simple method goes a long way towards catching problems as early as possible. In ZJS, the *$assert* function works like this:
+
+{{{
+    var s = $assert(foo(x, y), "Failed to do something to ", x, " and ", y);
+}}}
+
+The predicate (above is *foo(x,y)*) is evaluated and must be true(thy). If so, it is returned. If not, the *$panic* method is called given the concatenated arguments beyond the predicate. This helps avoid building the entire error message for the case where the predicate is true (which is hopefully most of the time).
+
+==Dependency Checks==
+
+The *$module* and *$requires* functions, respectively, declare availability of a module and check availability of a module. The usage of *$module* is simple. At or near the top of a Javascript file, you insert the *$module* statement giving it the full *module path*. Like so:
+
+{{{
+    // In bar/myfoo.js
+
+    $module("bar.myfoo");
+}}}
+
+The first thing done is to check that the module has not already been declared. The next thing is for "bar.myfoo" to be marked as is an available module, and as the current module.
+
+To declare dependencies, use *$requires* like so:
+
+{{{
+    // In foo/mybar.js
+
+    $module("foo.mybar");
+
+    $requires("bar.myfoo");
+}}}
+
+If the developer *script*'s in *mybar.js*, but forgets *myfoo.js*, the embedded *$requires* call will complain that the dependency isn't met:
+
+{{{
+  PANIC: Missing required module 'bar.myfoo' (required by foo.mybar)
+  Present:
+    >> foo.mybar
+}}}
+
+=Enumerations=
+
+The good, old *enum* is sadly lacking in Javascript. It was also lacking in Java until quite recently. Even so, when Java added *enum* support, they went all out. In Java, an *enum* is a class of sorts. It can have methods and each enumerated constant can override the methods of the *enum*. In ZJS, the *enum* is basically the same as in Java.
+
+A basic *enum* is declared like this:
+
+{{{
+    $namespace(foo, {
+
+    State : $enum(["FOO", "BAR", "FOOBAR"])
+
+    }); // foo
+}}}
+
+One thing to notice is that enumerated constants are defined as strings (their name) and they are placed in an array literal. Once so declared, it is used like so:
+
+{{{
+    var en = foo.State.FOO;
+
+    // (en instanceof foo.State) == true
+}}}
+
+If you have an *enum* value (an instance), you can get its key properties:
+
+ * *id* - The unique ID (the index in the values[]).
+ * *name* - The user-given name.
+ * *ordinal* - The user-controlled value. This may be assigned implicitly or explicitly, but is always an integer value.
+
+For example:
+
+{{{
+    $log("The ordinal of " + en.name + " is " + en.ordinal + " (id="+en.id+")");
+}}}
+
+Comparison can be performed most efficiently using the *"==="* operator:
+
+{{{
+    if (en === foo.State.FOO)
+        ...
+}}}
+
+One can also *switch* on a value:
+
+{{{
+    switch (en)
+    {
+        case foo.State.FOO: ...
+        case foo.State.BAR: ...
+        case foo.State.FOOBAR: ...
+    }
+}}}
+
+==Ordinal Control==
+
+The ordinal values are assigned by default as 0, 1, 2 and so forth. These can be specified if desired:
+
+{{{
+    $namespace(foo, {
+
+    State : $enum(["FOO", "BAR=42", "FOOBAR"])
+
+    }); // foo
+}}}
+
+In the above example, we would have:
+
+{{{
+    foo.State.FOO.ordinal == 0
+    foo.State.BAR.ordinal == 42
+    foo.State.FOOBAR.ordinal == 43
+}}}
+
+==Custom Enum Methods==
+
+Since an *enum* is a class, new methods and properties can be added using *$mixin*. In fact, this is most conveniently done by passing an object literal as the 2^nd^ argument to *$enum*:
+
+{{{
+    $namespace(foo, {
+
+    State : $enum(["FOO", "BAR", "FOOBAR"],
+    {
+        method : function (x) { return this.name + x; }
+    })
+
+    }); // foo
+}}}
+
+This performs a *$mixin* using *"$enum"* as the key.
+
+Given the above:
+
+{{{
+    assertEquals("BAR__", foo.State.BAR.method("__");
+}}}
+
+==Constant-Specific Custom Methods==
+
+As with Java, each enumeration constant can also have additional content. To do this, insert an object literal with the content following the string containing the name of the constant. For example:
+
+{{{
+    $namespace("foo", {
+
+    State : $enum
+    (
+        [
+            "FOO",
+            "BAR",
+            {
+                method : function (x) { return $super(arguments,this) + "!!"; }
+            }
+            "FOOBAR"
+        ],
+        {
+            method : function (x) { return this.name + x; }
+        }
+    )
+
+    });
+}}}
+
+The object literal is not counted in the ordinal sequence (i.e., *foo.State.FOOBAR.ordinal* == 2). Given the above:
+
+{{{
+    assertEquals("FOOBAR__", foo.State.FOOBAR.method("__");
+    assertEquals("BAR__!!", foo.State.BAR.method("__");
+}}}
+
+=Mixins=
+
+Many approaches to class emulation in Javascript sacrifice much of the dynamic nature of the language. The goal of mixins is to provide a safe mechanism for extending classes by adding new methods or even providing extensions to existing methods.
+
+This facility can be helpful in several situations:
+
+ * Provide browser-specific behaviors in separate files.
+ * Partition a "fat" base class into smaller pieces.
+ * Allow library users to modify base class behavior.
+
+Consider this class:
+
+{{{
+    $namespace("foo.bar", {
+
+    C : $class(
+    {
+        ctor : function ()
+        {
+        },
+        fiz : function ()
+        {
+            return "X";
+        }
+    })
+
+    });
+}}}
+
+A mixin to class C might look like this:
+
+{{{
+    $mixin(foo.bar.C, "uniqueTag",
+    {
+        ctor : function ()
+        {
+            $super(arguments).call(this);
+        },
+        fiz : function ()
+        {
+            return $super(arguments).call(this) + "Y";
+        }
+    });
+}}}
+
+The "uniqueTag" need only be unique to the mixins for *foo.bar.C*. The rest of it, however, looks just like a normal *$class* body. In fact, *$class* simply sets up the skeleton, empty class and calls *$mixin*!
+
+In many ways, one can think of a mixin like a derived class. For example, notice the calls to *$super* in the overriding methods. These work as you might expect. To see a simple test, consider this:
+
+{{{
+    var c = new foo.bar.C();
+    var s = c.fiz(); // = "XY"
+}}}
+
+The call to *fiz* first enters the mixin's implementation. That method calls the super method (in this case the original method) with returns "X" and then appends "Y". The important difference between mixin and derivation is that derivation creates a Javascript prototype chain while mixin adjusts the prototype object. To see how this effects things, imagine a derived type.
+
+{{{
+    $namespace("foo.bar", {
+
+    D : $class(foo.bar.C,
+    {
+        ctor : function ()
+        {
+            $super(arguments).call(this);
+        },
+        fiz : function ()
+        {
+            return $super(arguments).call(this) + "Z";
+        }
+    })
+
+    });
+}}}
+
+The *foo.bar.D* class is created using a prototype object of *foo.bar.C*. This relationship cannot be changed (at least not in all browsers). The implementation of mixin edits the prototype object, which means the mixin will have the same effect if it is performed before or after the creation of the derived class.
+
+==Mixing Instances==
+
+It is supported to use *$mixin* on instances as well as classes. Consider:
+
+{{{
+    var c = new foo.bar.C();
+
+    $mixin(c, "whif",
+    {
+        funcC : function () { ... }
+    });
+}}}
+
+Methods added to an instance have full access to *$super* and will not interfere with other instances of the same class.
+
+==Design Considerations==
+
+There are some additional design points to be aware of when using mixins that don't come up with basic inheritance.
+
+===Method Priority===
+When adding methods to a class, the default is to insert similarly named methods in front of any previous method by that name. While this default is typically acceptable, it can be controlled using *$priority*.
+
+===Calling Super===
+In standard OO practice methods that have no super method do not attempt to call their super method as if they did. To fully realize some of the features of mixins, you may opt to call *$super* even in such cases. The reason has to do with method priority. In particular, methods with below normal priority. A mixin that adds such a method to a class intentionally places a method after the class-defined method. It essentially adds a super method.
+
+In a nutshell then, if a class is designed to fully support mixin, it should consider calling *$super*, even in methods that have no super method because they may gain one via a user-supplied *$mixin*.
+
+{{{
+    $namespace("foo.bar", {
+
+    C : $class(
+    {
+        ctor : function ()
+        {
+            $super(arguments).call(this); // $super for mixin
+        },
+        fiz : function ()
+        {
+            return ($super(arguments).call(this) || "") + "X"; // $super for mixin
+        }
+    })
+
+    });
+}}}
+
+===Reusing Mixins===
+It is sometimes desirable to mixin the same logic in to multiple classes. The follow code, however, is *not* the right way to do this:
+
+{{{
+    var code = {
+        funcA : function () { ... },
+        funcB : function () { ... }
+    };
+
+    $mixin(foo.bar.C, "code", code); // BAD
+    $mixin(foo.bar.D, "code", code); // BAD
+}}}
+
+The problem with the above is that the function objects in the *code* object are added to both classes. Each time this is done, ZJS decorates them with class-specific information and things go all wrong after the first decoration.
+
+The right way to accomplish this in ZJS is to wrap the reusable code in a function. For example:
+
+{{{
+    function addCode (c)
+    {
+        $mixin(c, "code",
+        {
+            funcA : function () { ... },
+            funcB : function () { ... }
+        });
+    }
+
+    addCode(foo.bar.C);
+    addCode(foo.bar.D);
+}}}
+
+Each time *addCode* is called, new function objects are created and added to the given class.
+
+=Conditional Members=
+
+Both namespace and class members can be conditionalized for simplicity. This approach was inspired by Dean Edwards work in [http://code.google.com/p/base2/ base2].
+
+In an ideal world a single version of a class or namespace method would be sufficient for all cases. In the real world, browsers often create situations where a single method must perform many environmental checks in order to do "the right thing". This can easily become a performance bottleneck if such checks are made inside loops. This is especially challenging when writing a library because its methods may be called by library users from their loops.
+
+For example:
+
+{{{
+    Foo : $class(
+    {
+        bar : function () { ... },
+
+        "?zjs.browser.ie" :
+        {
+            bar : function () { ... }
+        }
+    });
+}}}
+
+The leading "?" character in the property name indicates that this is a (boolean) conditional member. The text beyond the "?" is the condition that will be evaluated. In the above case, if *zjs.browser.ie* is true, the *bar* method will be overridden.
+
+Conditional members of the form "?expr" are called *_boolean conditional members_* and of the form "=expr" are called *_selection conditional members_*. The "expr" part is evaluated (using *$eval*). For boolean conditional members, the evaluated condition determines if the associated value is included. For selection conditional members, the value of the expression is used to select a member of the value as the value to include.
+
+{{{
+    $namespace(foo, {
+
+    "=zjs.browser.engine" :
+    {
+        msie :
+        {
+            bar : function () { ... },
+            bif : function () { ... }
+        },
+        gecko :
+        {
+            bar : function () { ... },
+            bif : function () { ... }
+        },
+        webkit :
+        {
+            bar : function () { ... },
+            bif : function () { ... }
+        },
+        "*" :
+        {
+            bar : function () { ... },
+            bif : function () { ... }
+        }
+    }
+
+    });
+}}}
+
+The selection expression value is processed by first looking for a property of the expression value, or basically, "value[eval(expr)]". If that property is not a member of the object, the "`*`" member is used (if present). Essentially, the "`*`" member is the default case of the "switch".
+
+In both forms, if the selected result is a function, it is called to return the object containing the members (to support The Private Member Idiom). This is also helpful to save time and memory since the members may not be needed for boolean conditions and only one of the members will be needed in selection conditions.
+
+These conditional members are processed a bit differently for namespaces and classes. For namespaces, it is as if the members are added by multiple calls to *$namespace*. The first call adds all unconditional members and subsequent calls add the appropriate conditional members. For classes, conditional members are added using *$mixin*, again after the unconditional members are added.
+
+This means that there is no guaranteed order in which conditional members will be added to the namespace (which can effect *$super* calls).
+
+=Ajax=
+
+The key to powerful web pages is clean, transparent server communication. The unfortunately named [http://www.w3.org/TR/XMLHttpRequest/ XMLHttpRequest] class (a.k.a., "XHR" for obvious reasons; also described [https://developer.mozilla.org/En/XMLHttpRequest here], [http://en.wikipedia.org/wiki/XMLHttpRequest here], [http://developer.apple.com/internet/webcontent/xmlhttpreq.html here] and [http://msdn.microsoft.com/en-us/library/ms535874(VS.85).aspx here]) is the heart of that communication. The problem with the name, for the curious, is that the XHR is neither XML nor HTTP specific. It can request non-XML content from non-HTTP URL's. Further, the object is not only a request; it also contains response data.
+
+Prior to XHR, web developers had to rely on numerous, unsavory hacks to communicate and most of them were far from transparent. In some cases, there may still be reasons to consider using some of these [http://www.quirksmode.org/blog/archives/2005/01/with_httpmapsea.html other techniques].
+
+Beyond its name, the main problem with XHR is its verbosity and a good bit of non-standard work to create an instance. Most code snippets show simply how to properly create an XHR object, not how to effectively use it. The goal in ZJS is to make using XHR a simple function call 99% of the time. The way ZJS can provide such an omni-capable single method is the use of an object parameter that contains many optional properties. The caller simply has to supply the properties that are appropriate to have complete control over the underlying XHR object. Behind the single method is a wrapper class to manage the XHR object and provide the necessary glue.
+
+A simple use case (perform a GET on the given resource):
+
+{{{
+    var tr = zjs.ajax("http://foo.com/bar",
+    {
+        ondone : function (xact) // tr === xact
+        {
+            // Use xact.response
+        }
+    });
+}}}
+
+The following will send an object (in JSON format) in a POST:
+
+{{{
+    var tr = zjs.ajax("http://foo.com/bar",
+    {
+        object : { foo : "bar", bar : 42 },
+        ondone : function ()
+        {
+            // Use tr.response
+        }
+    });
+}}}
+
+For further details, see *[zjs_AjaxTransaction zjs.AjaxTransaction]*.
+
+=Dynamic Loading=
+
+Traditional languages provide a means to load required code as needed. This feature is missing in Javascript, which requires the HTML container document to make required dependencies available. The *$module* and *$requires* functions help expose problems in this regard, but do not provide the ability to load required code on-the-fly. To do this, ZJS provides *$import*.
+
+The *$import* function loads Javascript code asynchronously. This has many good effects, but one major downside: it requires that the developer deal with the state where the desired Javascript is not yet loaded. With this approach, the page remains responsive while code is being loaded. This can be used to prefetch the code in the background or on-demand with some sort of "busy" status. More benefits are examined more below.
+
+The *$import* method recursively loads dependencies of the requested modules. To detect and satisfy dependencies, *$import* must fetch the Javascript code using Ajax techniques and scan for *$requires* statements. For performance reasons, this code is injected into the DOM once the requirements have been satisfied.
+
+The hard work of *$import* is delegated to the *[zjs_Importer Importer]* singleton object. That is also where this mechanism can be configured and extended.
+
+The signature of *$import* is:
+
+{{{
+    $import(modpaths [, modpaths]* [, onload]?)
+}}}
+
+The first argument is one or more module paths. This can be a single module path string (e.g., "foo.bar.bif") or an array of module path strings (e.g., ["foo.bar.bif", "bar.fiz.baz"]). In the case of an array, all of the modules are requested in parallel. When all are loaded, the next batch is started or the user callback (if any) is made.
+
+For modules that use the ZJS *$requires* statement, a single array argument is all that is needed (and probably on *onload* callback as well). This yields:
+
+{{{
+    $import(["foo.bar.bif", bonzi.booze"], onload);
+}}}
+
+This will load the given two modules in parallel and automatically load any modules required by these. Once all modules have loaded, the *onload* callback is made.
+
+==Identifying Script Modules==
+
+Following is the ideal method to describe the module for a *script*:
+
+{{{
+    <script id="foo.bar.bif" src="../js/foo/bar/bif.js"></script>
+}}}
+
+This is sufficient to tell *$import* how to create a standard *[zjs_PackageManager zjs.PackageManager]* to handle the "foo" root package. When the *Importer* singleton is initialized, it will find such *script* tags, parse the path, recognize the matching pattern, split out the "../js/" prefix (and even a suffix following ".js") and automatically register a standard *!PackageManager*.
+
+==Dependency Scanning==
+
+In the simplest sense, *$import* parses Javascript code and extracts module paths contained in *$requires* statements to determine what modules must be loaded before a given module. The complications come from the need to parse Javascript. In order to avoid writing a complete Javascript parser, *$import* (actually, the standard *!PackageManager*) takes some regex shortcuts. These shortcuts yield some limitations that must be understood.
+
+ * Place *$requires* statements one per line. Trailing comments using *//* are fine
+ * To comment out a *$requires* statement, use *//* on each line (before the statement).
+ * Do *not* use block comments to comment out *$requires* statements. The parser will still identify them as requirements if they are on a line by themselves.
+
+For example:
+
+{{{
+    // Good:
+    $requires("foo.bar");
+
+    $requires("foo.bar"); // OK also
+
+    //$requires("foo.bar"); // no longer a dependency
+
+    /*
+    $requires("foo.bar"); // bad - still a depedency!
+    */
+}}}
+
+== Use With Non-ZJS Code ==
+To allow *$import* to be used with non-ZJS based code (i.e., code that does not use *$requires*), *$import* can handle any number of module paths arguments. When the first batch has been loaded, the next batch is started. This continues through all of the given module paths. This is essentially what *script* tags achieve, but is simply now deferred from page load.
+
+For example:
+
+{{{
+    $import(["foo.bar.bif", "bar.fiz.baz"],
+            ["bif.boo.zip", "jazz.rip.fifi"],
+            "bonzi.booze",
+            onload);
+}}}
+
+Batch 1 (foo.bar.bif and bar.fiz.baz) is requested in parallel. When complete, the next batch (bif.boo.zip and jazz.rip.fifi) is requested in parallel. Then the single module bonzi.booze is requested. Finally, when that module loads, the user's *onload* method is called.
+
+==Extending==
+
+The *[zjs_PackageManager PackageManager]* extension point is used by *$import* to allow user control over the following:
+
+  * Mapping of *module path* to URL.
+  * Finding dependencies for a module.
+
+Since *$import* requests are made in terms of a *module path* (e.g., "foo.bar.bif"), it uses these path strings to associate a *!PackageManager* object. In particular, it uses the first component of the module path, or the *root package* name. For example, given the previous module path "foo.bar.bif", a *!PackageManager* object is associated with "foo".
+
+One can use the standard *!PackageManager*, to resolve modules. This implementation converts a *module path* to a URL by replacing *.*'s with */*'s, adding *.js* and the sandwiching that between a prefix and suffix. For example:
+
+{{{
+    zjs.Importer.getInstance().addPackagePath("foo", "/rootpath/", "?suffix=x");
+}}}
+
+To write a custom *!PackageManager*, one must implement the *[zjs_IPackageManager IPackageManager]* interface and register an instance with the *Importer* like so:
+
+{{{
+    zjs.Importer.getInstance().addPackageManager("foo", new CustomPkgMgr());
+}}}
+
+The custom *!PackageManager* can either derive from *[zjs_PackageManager zjs.PackageManager]* or implement *[zjs_IPackageManager IPackageManager]*.
+
+==Debugging==
+
+The normal injection technique used by *$import* does not get along with tools like Firebug. These tools really need the *src* attribute to clue them into things such as breakpoints. This means that the *script* element must be added with its *src* attribute and be allowed to (re)fetch the code. While this may trigger a cache hit, it is only desirable in the case of debugging. This is an area where performance must be sacrificed for usability (fortunately, only for testing and debugging use).
+
+Using ZJS, one can include the following statement to make *$import* generate a *script* tag with *src* attribute for better debugging:
+
+{{{
+    zjs.config.debug = true;
+    
+    // or for $import only:
+
+    zjs.Importer.getInstance().config.debug = true;
+}}}
+
+An even more clever technique is to use a query string (where it doesn't cause problems of course):
+
+{{{
+URL: http://foo.bar.com/path/file.jsp?debug=1
+
+    if (window.location.href.indexOf("debug=1") > 0)
+        zjs.config.debug = true;
+
+}}}
+
+==Comparison==
+
+The more significant benefits can be seen by examining the negatives avoided with the alternative approach: consider [http://dojotoolkit.org/book/dojo-book-0-9/part-3-programmatic-dijit-and-dojo/modules-and-namespaces/what-does-dojo-require- Dojo]. While it solves the negative state management of *$import*, its fundamental approach is quite problematic.
+
+Essentially, Dojo uses synchronous [https://developer.mozilla.org/En/XMLHttpRequest XHR] requests to fetch !JavaScript code and then injects it into the DOM. The use of synchronous XHR requests is a problem because many round trips are required to get to the required set of packages. It is a violation of [http://en.wikipedia.org/wiki/Fallacies_of_Distributed_Computing The 2nd Fallacy of Distributed Computing]. The proper use of `<script>` tags or *$import* is superior because it enables the browser's magic of multiple, simultaneous requests. Further, if supported, [http://en.wikipedia.org/wiki/HTTP_pipelining HTTP pipelining] can be used to gain even more performance.
+
+The second major drawback is that this form of code injection is hostile to debuggers like [http://getfirebug.com/ FireBug]. Now that there are real development tools in the browser, this flaw is most troublesome. The work around for Dojo is to fall back to `<script>` tags _when you want to debug_ the code. In reality, this means you have to change the code in order to debug the code and then change it back before commit.
+
+=Browsers & CSS=
+
+Even though ZJS is not about browsers, implementing *$import* (and the *Ajax* support it required) forces some acknowledgement. The *[zjs_Browser zjs.Browser]* class and *zjs.browser* object provide browser detection. In addition to just detecting browsers, the *Browser* class also provides a very helpful way to allow CSS rules to take advantage of this information.
+
+There are often times when CSS needs to be browser-specific. This is most common when supporting IE6, but the problem can come up for many reasons. Typical solutions require exploiting CSS parser bugs (most notably, the [http://www.webmasterworld.com/forum83/4161.htm Holly Hack]).
+
+Using *zjs.browser*, this can be made much simpler:
+
+{{{
+    <body>
+        <script>zjs.browser.addDecorations(document.body);</script>
+        ...
+}}}
+
+The above code uses the browser detection results to decorate the *body* element of the page to assist the CSS with targeting specific browsers. When the above is run on IE 6, it will modify to *body* element to be:
+
+{{{
+    <body class="isIE isIE6 ge_IE6 notIE7 lt_IE7 notIE8 lt_IE8 notFF notSafari">
+}}}
+
+And when run on Firefox 3, it produces:
+
+{{{
+    <body class="notIE isFF notFF2 ge_FF2 isFF3 ge_FF3 notSafari">
+}}}
+
+We can now see how this will allow CSS rules to be written that fire only on IE 6 using perfectly correct CSS:
+
+{{{
+    .isIE6 .someClass #someId {
+        /* apply styles */
+    }
+}}}
+
+A better (non-ZJS) solution would be to generate these classes on the *body* tag at server (where the browser can also be detected). Even so, this is not always an option (e.g., static .HTML files).

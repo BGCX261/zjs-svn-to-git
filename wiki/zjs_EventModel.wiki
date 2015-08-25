@@ -1,0 +1,11 @@
+#summary zjs.EventModel
+ * *File:* zjs/events.js
+ * *Module:* zjs.events
+= Class EventModel =
+
+== Implemented Interfaces ==
+<blockquote>
+*[zjs_IBasicEventModel zjs.IBasicEventModel]*, *[zjs_IEventModel zjs.IEventModel]*
+</blockquote>
+----
+<p>This class implements the mechanics of an event model.</p>

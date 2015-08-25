@@ -1,0 +1,24 @@
+#summary Date
+ * *File:* zjs/text.js
+ * *Module:* zjs.text
+= Class Date =
+
+----
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#toQueryParam toQueryParam]</b> ()<br/>Returns the value of this object formatted for a Query Parameter.</td>
+</tr>
+</table>
+----
+== Method Details ==
+=== toQueryParam ===
+<code language='js'>object toQueryParam ()</code>
+<blockquote>
+<p>Returns the value of this object formatted for a Query Parameter.</p>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The value of this object formatted for a Query Parameter.</p>
+</blockquote>
+</blockquote>

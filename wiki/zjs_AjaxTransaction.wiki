@@ -1,0 +1,216 @@
+#summary zjs.AjaxTransaction
+ * *File:* zjs/ajax.js
+ * *Module:* zjs.ajax
+= Class AjaxTransaction =
+
+----
+<p>This class manages an XHR transaction (request/response). It provides easy to control mechanisms for using XHR via the "options" parameter to the ctor. The underlying XHR object is available via the "xhr" property. The active options are stored in the "opt" property, but this should be viewed as read-only.</p>
+----
+== Properties ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><p><b>aborted</b></p></td>
+<td>
+<p>This property is set to true if this object's destroy method is called.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>defaults</b></p></td>
+<td>
+<p>This static object holds default values for transactions.</p>
+<b>Members:</b><br/><ul>
+<li>jsonReplacer
+<p>Used in JSON.stringify</p>
+</li>
+<li>jsonReviver
+<p>Used in JSON.parse</p>
+</li>
+<li>jsonSpace
+<p>USed in JSON.stringify</p>
+</li>
+</ul>
+</td></tr>
+<tr valign='top'>
+<td><p><b>response</b></p></td>
+<td>
+<p>This property holds the details of the response. It is set when the response is ready and is null prior to that time.</p>
+<b>Members:</b><br/><ul>
+<li>code
+<p>The HTTP status code (from *status* property of XHR).</p>
+</li>
+<li>error
+<p>This property is only set on failure. This is a Javascript Error object and is suitable for throwing as an exception.</p>
+</li>
+<li>message
+<p>The HTTP status text (from *statusText* property of XHR) or the exception message if no status text was received.</p>
+</li>
+<li>success
+<p>This property is true if the request was successful, false otherwise. This property attempts to take into account the various protocols and success codes, but may be fallible (please report bugs as discovered, but be specific about protocols and root causes).</p>
+</li>
+<li>data
+<p>The data (an alias for either *object*, *text* or *xml* property).</p>
+</li>
+<li>object
+<p>The deserialized JSON object (via json2.js) from the responseText (if type is application/json).</p>
+</li>
+<li>text
+<p>The responseText (if type is not xml or JSON).</p>
+</li>
+<li>type
+<p>The MIME type from the "Content-Type" header.</p>
+</li>
+<li>xml
+<p>The responseXML (if type is "application/xml").</p>
+</li>
+</ul>
+</td></tr>
+</table>
+----
+== Constructor Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#ctor ctor]</b> (<b title="The requested URL (required).">url</b>, <b title="The options for the transaction.">opt</b>)<br/>Construct given URL (required) and an optional bag of options.</td>
+</tr>
+</table>
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#destroy destroy]</b> ()<br/>Destroys this object, aborting the underlying XHR.</td>
+</tr>
+<tr valign='top'>
+<td><b>string[]</b></td>
+<td><b>[#getAllResponseHeaders getAllResponseHeaders]</b> ()<br/>Calls the underlying XHR's getAllResponseHeaders method.</td>
+</tr>
+<tr valign='top'>
+<td><b>string</b></td>
+<td><b>[#getResponseHeader getResponseHeader]</b> ()<br/>Calls the underlying XHR's getResponseHeader method.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#send send]</b> ()<br/>Calls the underlying XHR's send method.</td>
+</tr>
+</table>
+----
+== Constructor Details ==
+=== ctor ===
+<code language='js'>void ctor (url, opt)</code>
+<blockquote>
+<p>Construct given URL (required) and an optional bag of options.</p>
+<b>Parameters:</b><br/><ol>
+<li>url
+<p>The requested URL (required).</p>
+</li>
+<li>opt
+<p>The options for the transaction.</p>
+<b>Members:</b><br/><ul>
+<li>ondone : Function
+<code language='js'>void ondone (AjaxTransaction tx)</code>
+<blockquote>
+<p>Callback for transition to DONE(4) state.</p>
+<b>Parameters:</b><br/><ol>
+<li>tx : AjaxTransaction
+<p>This object instance.</p>
+</li>
+</ol>
+</blockquote>
+</li>
+<li>accept <i>(optional)</i>
+<p>The HTTP "Accept" header to send to the server.</p>
+</li>
+<li>onheaders : Function <i>(optional)</i>
+<code language='js'>void onheaders (AjaxTransaction tx)</code>
+<blockquote>
+<p>Callback for transition to HEADERS_RECEIVED(2) state.</p>
+<b>Parameters:</b><br/><ol>
+<li>tx : AjaxTransaction
+<p>This object instance.</p>
+</li>
+</ol>
+</blockquote>
+</li>
+<li>onloading : Function <i>(optional)</i>
+<code language='js'>void onloading (AjaxTransaction tx)</code>
+<blockquote>
+<p>Callback for transition to LOADING(3) state.</p>
+<b>Parameters:</b><br/><ol>
+<li>tx : AjaxTransaction
+<p>This object instance.</p>
+</li>
+</ol>
+</blockquote>
+</li>
+<li>onreadystatechange : Function <i>(optional)</i>
+<code language='js'>void onreadystatechange (AjaxTransaction tx)</code>
+<blockquote>
+<p>Callback for each state transition. This is called on all calls from the XHR object, whether the state has changed or not. The other "onX" callbacks are only called on the initial transition to that state.</p>
+<b>Parameters:</b><br/><ol>
+<li>tx : AjaxTransaction
+<p>This object instance.</p>
+</li>
+</ol>
+</blockquote>
+</li>
+<li>jsonReplacer <i>(optional)</i>
+<p>Controls JSON-ification of objects (see json2.js)</p>
+</li>
+<li>jsonReviver <i>(optional)</i>
+<p>Transformation method for parsed JSON values (see json2.js)</p>
+</li>
+<li>jsonSpace <i>(optional)</i>
+<p>Controls spaces/indents in JSON output (see json2.js)</p>
+</li>
+<li>headers <i>(optional)</i>
+<p>An array of [key, value] arrays of HTTP headers.</p>
+</li>
+<li>username <i>(optional)</i>
+<p>The user's login name (for HTTP auth).</p>
+</li>
+<li>password <i>(optional)</i>
+<p>The user's password (for HTTP auth).</p>
+</li>
+<li>object <i>(optional)</i>
+<p>The object to convert to JSON (typically for a POST).</p>
+</li>
+<li>content <i>(optional)</i>
+<p>The content of the request (typically a POST).</p>
+</li>
+<li>contentType <i>(optional)</i>
+<p>The type of content for the request.</p>
+</li>
+<li>verb <i>(optional)</i>
+<p>The HTTP request verb (e.g., "GET", "POST"). This is infered as GET or POST based on the presence of content to send.</p>
+</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+----
+== Method Details ==
+=== destroy ===
+<code language='js'>void destroy ()</code>
+<blockquote>
+<p>Destroys this object, aborting the underlying XHR.</p>
+</blockquote>
+=== getAllResponseHeaders ===
+<code language='js'>string[] getAllResponseHeaders ()</code>
+<blockquote>
+<p>Calls the underlying XHR's getAllResponseHeaders method.</p>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The value returned by the wrapped object.</p>
+</blockquote>
+</blockquote>
+=== getResponseHeader ===
+<code language='js'>string getResponseHeader ()</code>
+<blockquote>
+<p>Calls the underlying XHR's getResponseHeader method.</p>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The value returned by the wrapped object.</p>
+</blockquote>
+</blockquote>
+=== send ===
+<code language='js'>void send ()</code>
+<blockquote>
+<p>Calls the underlying XHR's send method.</p>
+</blockquote>

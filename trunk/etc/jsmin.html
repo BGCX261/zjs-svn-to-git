@@ -1,0 +1,69 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+
+	<title>JS Minifier</title>
+	<script type="text/javascript" src="jsmin.js"></script>
+	<script type="text/javascript">
+		function $(i) {
+			return document.getElementById(i);
+		}
+		function go() {
+			$('output').value = jsmin($('comment').value, $('input').value, $('level').value);
+			$('outputtitle').style.display = $('output').style.display = $('statstitle').style.display = $('stats').style.display = 'block';
+			$('oldsize').value = jsmin.oldSize;
+			$('newsize').value = jsmin.newSize;
+			$('ratio').value = (Math.round(jsmin.newSize / jsmin.oldSize * 1000) / 10) + '%';
+		}
+		function bw() {
+			$('comment').value = $('input').value = $('output').value = '';
+			$('outputtitle').style.display = $('output').style.display = $('statstitle').style.display = $('stats').style.display = 'none';
+		}
+	</script>
+	<style type="text/css">
+		#comment { width:95%; height:4em; }
+		#input { width:95%; height:10em; }
+		#go { font-weight:bold; }
+		#outputtitle, #statstitle, #stats { display:none; }
+		#oldsize, #newsize, #ratio { text-align:right; width:4em; }
+		#output { width:95%; height:10em;display:none; }
+		h2 { margin-bottom:0; }
+	</style>
+</head><body bgcolor="linen">
+
+	<h1>JS Minifier</h1>
+	<p>By Franck Marcia<br>
+	From the <a href="http://javascript.crockford.com/jsmin.html">original idea</a> of <a href="http://www.crockford.com/">Douglas Crockford</a><br>
+	Last modified: 2006/08/31</p>
+
+	<p>Modified by Don Griffin<br>
+	Last modified: 2008/10/26</p>
+	<hr>
+
+	<h2>Comments</h2>
+	<textarea id="comment" name="comment"></textarea>
+
+	<h2>Code</h2>
+	<textarea id="input" name="input"></textarea>
+	<br><br>
+
+	<center>
+		Level:&nbsp;
+		<select id="level">
+			<option value="1">minimal</option>
+			<option value="2" selected="selected">conservative</option>
+			<option value="3">agressive</option>
+		</select>
+		&nbsp;&nbsp;
+		<input id="go" value="JSMin" onclick="go();return false;" type="submit">
+		&nbsp;&nbsp;
+		<input value="Clear" onclick="bw();return false;" type="submit"><br><br>
+		<small><b>Minimal</b>: original algorithm but keep linefeeds if single - <b>Conservative</b>: original algorithm - <b>Agressive</b>: remove more linefeed than the original algorithm but can be regressive</small>
+	</center>
+
+	<h2 style="display: block;" id="outputtitle">Output</h2>
+	<textarea style="display: block;" id="output" name="output"></textarea>
+	<h2 style="display: block;" id="statstitle">Stats</h2>
+	<div style="display: block;" id="stats">Old size: <input id="oldsize"> New size: <input id="newsize"> Ratio: <input id="ratio"></div>
+
+</body></html>

@@ -1,0 +1,29 @@
+#summary Builds vs. Javascript
+
+= Introduction =
+
+It is often the case that !JavaScript is written and deployed "as is". This works because it is the browser that finally compiles and executes the code.
+
+This model, however, creates significant problems:
+
+ * Developers are encouraged (either explicitly or implicitly) to make their code smaller to reduce the download size.
+   * Use short (meaningless) names.
+   * Don't use whitespace (horizontal or vertical).
+ * Don't write comments into the code, again to reduce size.
+ * Encouraged to make fewer, larger files rather than lots of smaller files (to reduce overhead for multi-file download).
+
+Basically, a list of code anti-patterns. And in a place where the tools and ability to deal with bugs are the most limited.
+
+= !JavaScript and Ant =
+
+Since the beginning, ZJS used [http://fmarcia.info/jsmin/test.html jsmin] (as do many others) to take the well formatted, documented source and produce a smaller file for better downloads. This was originally a manual process using the aforementioned page. Not an ideal situation.
+
+In release 1.1, ZJS gained an Ant build script with a `<`[jsmin]`>` custom task. This custom task is easily reusable by other projects.
+
+In release 2.0, the `<`[jsmin]`>` custom task also reports the "deflated" size of the output files. This will be essentially the size of the download whenever that HTTP transfer encoding is available.
+
+= Unit Tests =
+
+A typical part of a build process is to invoke unit tests. Often this cannot be done for !JavaScript. In release 1.1, ZJS also runs its [testing unit tests] from the build process.
+
+In release 2.0, the build also uses WSH (Windows Script Host) to run unit tests. On Windows this will basically use the IE script engine.

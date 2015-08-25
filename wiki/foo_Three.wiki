@@ -1,0 +1,173 @@
+#summary foo.Three
+ * *File:* test-doc2.js
+ * *Module:* abc
+= Class Three =
+*[foo_One foo.One]*
+ <tt>|<br/>
+ +--</tt> *[foo_Two foo.Two]*
+  <tt>|<br/>
+  +--</tt> *foo.Three*
+
+== Implemented Interfaces ==
+<blockquote>
+*[foo_Intf1 foo.Intf1]*, *[foo_Intf2 foo.Intf2]*, *[foo_Intf3 foo.Intf3]*
+</blockquote>
+----
+<p>This is test class three.</p>
+<code language="js">
+   this.code();
+   that.code();</code>
+<p>comments..</p>
+----
+== Config Properties ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><p><b>init1</b></p></td>
+<td>
+<p>This config property does something.</p>
+<p>And should be used when appropriate.</p>
+<b>Members:</b><br/><ul>
+<li>bar : int
+<p>The number of interest.</p>
+</li>
+<li>jazz : string
+<p>And a string as well.</p>
+</li>
+</ul>
+</td></tr>
+</table>
+----
+== Properties ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><p><b>prop1</b></p></td>
+<td>
+<p>This property represents something.</p>
+<p>And can be used when needed.</p>
+<b>Members:</b><br/><ul>
+<li>foo : int
+<p>The foo thing.</p>
+</li>
+<li>bar : string
+<p>And the bar thing.</p>
+</li>
+</ul>
+</td></tr>
+</table>
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#$foreach $foreach]</b> (<b title='The sequence overwhich to iterate.'>array|object it</b>, <i title='(Optional) Options that control the iteration.'>object opt</i>, <b title='The function to call for each iteration or the method name on the object.'>Function fn</b>, <i title='(Optional) The object scope ("this" pointer) to pass to fn function.'>object scope</i>)<br/>This method iterates over a collection.</td>
+</tr>
+</table>
+----
+== Method Details ==
+=== $foreach ===
+<code language='js'>object $foreach (array|object it, object opt?, Function fn, object scope?)</code>
+<blockquote>
+<p>This method iterates over a collection. Each iteration calls a user-supplied method passing the current item and related information.</p>
+<p>This is a 2nd paragraph.</p>
+<b>Parameters:</b><br/><ol>
+<li>it : array|object
+<p>The sequence overwhich to iterate.</p>
+</li>
+<li>opt : object <i>(optional)</i>
+<p>Options that control the iteration.</p>
+<b>Members:</b><br/><ul>
+<li>begin <i>(optional)</i>
+<p>The begin index for the iteration (default = 0).</p>
+</li>
+<li>end <i>(optional)</i>
+<p>The end index for the iteration (default = length).</p>
+</li>
+<li>delta <i>(optional)</i>
+<p>The number of slots in the array to skip (default = 1).</p>
+</li>
+<li>value <i>(optional)</i>
+<p>The initial value to pass to fn (default = undefined).</p>
+</li>
+<li>args <i>(optional)</i>
+<p>The arguments to pass to each function (only if fn is a method name).</p>
+</li>
+</ul>
+</li>
+<li>fn : Function
+<code language='js'>object fn (value, etc)</code>
+<blockquote>
+<p>The function to call for each iteration or the method name on the object.</p>
+<b>Parameters:</b><br/><ol>
+<li>value
+<p>The current value being iterated.</p>
+</li>
+<li>etc
+<p>An object containing other useful information passed to each call.</p>
+<b>Members:</b><br/><ul>
+<li>array
+<p>True if the iteration is over an array.</p>
+</li>
+<li>key
+<p>The name of the current element (same as index for an array).</p>
+</li>
+<li>index
+<p>The current index being iterated.</p>
+</li>
+<li>value
+<p>The value returned from the last call of fn (starts as undefined).</p>
+</li>
+<li>$break
+<p>A boolean that can be set to true to end the loop.</p>
+</li>
+</ul>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The value to store in etc.value and/or return from $foreach.</p>
+</blockquote>
+</blockquote>
+</li>
+<li>scope : object <i>(optional)</i>
+<p>The object scope ("this" pointer) to pass to fn function. This does not apply when fn is a method name.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The last value returned by fn or passed to $break.</p>
+<b>Members:</b><br/><ul>
+<li>foo
+<p>Some foo</p>
+</li>
+<li>goo <i>(optional)</i>
+<p>Some goo</p>
+</li>
+</ul>
+</blockquote>
+<br/><b>Throws:</b><br/><blockquote>
+<p>Once in a while</p>
+<b>Members:</b><br/><ul>
+<li>bar
+<p>Some bar</p>
+</li>
+<li>jazz <i>(optional)</i>
+<p>Some jazz</p>
+</li>
+</ul>
+</blockquote>
+</blockquote>
+----
+== Events ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><p><b>foo</b></p></td>
+<td>
+<p>The foo event is fired when something happens. It has some data as well.</p>
+<b>Members:</b><br/><ul>
+<li>bar : int
+<p>The number of interest.</p>
+</li>
+<li>jazz : string
+<p>And a string as well.</p>
+</li>
+</ul>
+</td></tr>
+</table>

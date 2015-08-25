@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="zjs" default="build" basedir=".">
+    <description>Builds ZJS</description>
+    <property name="zjs.dir" location="${basedir}"/>
+    <import file="${zjs.dir}/etc/jsmin.xml"/>
+
+    <target name="detectOS">
+        <condition property="osmac">
+            <os family="mac"/>
+        </condition>
+        <condition property="osunix">
+            <and>
+                <os family="unix"/> <!-- Mac OS X is a Unix -->
+                <not>
+                    <os family="mac"/>
+                </not>
+            </and>
+        </condition>
+        <condition property="oswin">
+            <os family="windows"/>
+        </condition>
+    </target>
+
+    <target name="init" depends="detectOS">
+        <loadproperties srcfile="${zjs.dir}/zjs-props.conf"/>
+        <property name="zjs.version"
+           value="${zjs.version.major}.${zjs.version.minor}.${zjs.version.rev}${zjs.version.wart}"/>
+
+        <property name="build.dir" location="${zjs.dir}/build"/>
+        <property name="docs.dir" location="${zjs.dir}/doc"/>
+        <property name="etc.dir" location="${zjs.dir}/etc"/>
+        <property name="src.dir"  location="${zjs.dir}/src"/>
+        <property name="test.dir"  location="${zjs.dir}/test"/>
+        <property name="wshtest.dir"  location="${zjs.dir}/test/wsh"/>
+        <property name="testapp.dir"  location="${zjs.dir}/zjstest"/>
+        <property name="zjs.zipdir" value="zjs_${zjs.version}"/>
+        <echo>ZJS ${zjs.version}</echo>
+        <echo>build.dir = ${build.dir}</echo>
+    </target>
+
+    <target name="clean" depends="init" description="Clean output directory">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="build" depends="init" description="Builds ZJS">
+
+        <jsmin outdir="${build.dir}/src"
+               level="1"
+               verbosity="quiet">
+            <fileset dir="${src.dir}">
+                <include name="json2.js"/>
+            </fileset>
+        </jsmin>
+
+        <jsmin outdir="${build.dir}/src/zjs"
+               outfile="${build.dir}/src/zjs/all.js"
+               level="1"
+               verbosity="quiet">
+<comment>/*
+	ZJS ${zjs.version}
+	Copyright (C) 2008-2009, Donald W. Griffin
+	All rights reserved.
+	[MIT license -- see license.txt for details]
+*/</comment>
+            <fileset dir="${src.dir}/zjs">
+                <include name="core.js"/>
+            </fileset>
+            <fileset dir="${src.dir}/zjs">
+                <include name="ext.js"/>
+            </fileset>
+            <fileset dir="${src.dir}/zjs">
+                <include name="ajax.js"/>
+            </fileset>
+            <fileset dir="${src.dir}/zjs">
+                <include name="browser.js"/>
+            </fileset>
+            <fileset dir="${src.dir}/zjs">
+                <include name="*.js"/>
+            </fileset>
+        </jsmin>
+
+        <propertyfile file="${build.dir}/zjs.properties">
+            <entry key="zjs.version.major" value="${zjs.version.major}"/>
+            <entry key="zjs.version.minor" value="${zjs.version.minor}"/>
+            <entry key="zjs.version.rev"   value="${zjs.version.rev}"/>
+            <entry key="zjs.version.wart"  value="${zjs.version.wart}"/>
+            <entry key="zjs.version"       value="${zjs.version}"/>
+        </propertyfile>
+
+        <mkdir dir="${build.dir}/test"/>
+        <copy todir="${build.dir}/test">
+            <fileset dir="${test.dir}" includes="**/*"/>
+        </copy>
+
+        <zip destfile="${build.dir}/${zjs.zipdir}.zip">
+            <zipfileset dir="${build.dir}" includes="**/*">
+                <exclude name="**/*.zip"/>
+                <exclude name="temp/**"/>
+            </zipfileset>
+            <zipfileset dir="${docs.dir}" includes="**/*" prefix="doc"/>
+            <zipfileset dir="${etc.dir}" includes="**/*" prefix="etc"/>
+            <zipfileset dir="${testapp.dir}" prefix="zjstest">
+                <include name="nbproject/**/*"/>
+                <include name="src/**/*"/>
+                <include name="web/**/*"/>
+            </zipfileset>
+        </zip>
+
+    </target>
+
+    <target name="testWsh" depends="init" if="oswin">
+        <echo>WSH Test:</echo>
+        <exec executable="cmd" dir="${wshtest.dir}">
+            <arg value="/c"/>
+            <arg value="test.cmd"/>
+        </exec>
+        <echo>WSH Test-Text:</echo>
+        <exec executable="cmd" dir="${wshtest.dir}">
+            <arg value="/c"/>
+            <arg value="test-text.cmd"/>
+        </exec>
+        <echo>WSH Test-X:</echo>
+        <exec executable="cmd" dir="${wshtest.dir}">
+            <arg value="/c"/>
+            <arg value="test-x.cmd"/>
+        </exec>
+    </target>
+
+    <target name="test" depends="init, testWsh" description="Test ZJS">
+        <jsmin outfile="${build.dir}/temp/test.js" level="-1" verbosity="quiet">
+            <fileset dir="${test.dir}">
+                <include name="faux-browser.js"/>
+            </fileset>
+            <fileset dir="${src.dir}">
+                <include name="zjs/core.js"/>
+            </fileset>
+            <fileset dir="${test.dir}">
+                <include name="unittest.js"/>
+            </fileset>
+            <fileset dir="${test.dir}">
+                <include name="test.js"/>
+            </fileset>
+        </jsmin>
+
+        <jsmin outfile="${build.dir}/temp/test-x.js" level="-1" verbosity="quiet">
+            <fileset dir="${test.dir}">
+                <include name="faux-browser.js"/>
+            </fileset>
+            <fileset dir="${src.dir}">
+                <include name="zjs/core.js"/>
+            </fileset>
+            <fileset dir="${src.dir}">
+                <include name="zjs/ext.js"/>
+            </fileset>
+            <fileset dir="${test.dir}">
+                <include name="unittest.js"/>
+            </fileset>
+            <fileset dir="${test.dir}">
+                <include name="test.js"/>
+            </fileset>
+            <fileset dir="${test.dir}">
+                <include name="test-x.js"/>
+            </fileset>
+        </jsmin>
+
+        <jsmin outfile="${build.dir}/temp/test-text.js" level="-1" verbosity="quiet">
+            <fileset dir="${test.dir}">
+                <include name="faux-browser.js"/>
+            </fileset>
+            <fileset dir="${src.dir}">
+                <include name="zjs/core.js"/>
+            </fileset>
+            <fileset dir="${src.dir}">
+                <include name="zjs/ext.js"/>
+            </fileset>
+            <fileset dir="${src.dir}">
+                <include name="zjs/text.js"/>
+            </fileset>
+            <fileset dir="${test.dir}">
+                <include name="unittest.js"/>
+            </fileset>
+            <fileset dir="${test.dir}">
+                <include name="test.js"/>
+            </fileset>
+            <fileset dir="${test.dir}">
+                <include name="test-text.js"/>
+            </fileset>
+        </jsmin>
+
+        <scriptdef name="zjstest"
+                   language="javascript" src="${build.dir}/temp/test.js">
+            runTests(self);
+        </scriptdef>
+
+        <scriptdef name="zjstest-x"
+                   language="javascript" src="${build.dir}/temp/test-x.js">
+            runTests(self);
+        </scriptdef>
+
+        <scriptdef name="zjstest-text"
+                   language="javascript" src="${build.dir}/temp/test-text.js">
+            runTests(self);
+        </scriptdef>
+
+        <zjstest/>
+        <zjstest-text/>
+        <zjstest-x/>
+    </target>
+
+</project>

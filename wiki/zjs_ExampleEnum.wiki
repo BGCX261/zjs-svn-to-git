@@ -1,0 +1,166 @@
+#summary zjs.ExampleEnum
+ * *File:* zjs/core.js
+ * *Module:* zjs.core
+= Class ExampleEnum =
+*[zjs_Enum zjs.Enum]*
+ <tt>|<br/>
+ +--</tt> *zjs.ExampleEnum*
+
+----
+<p>This class describes what an enum type defined by $enum contains. This is not an actual type.</p>
+----
+== Properties ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><p><b>id</b></p></td>
+<td>
+<p>The ID which is the index of the enumerated constant in the list of constants.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>name</b></p></td>
+<td>
+<p>The user-given name of the constant.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>ordinal</b></p></td>
+<td>
+<p>The associated value (either implicit or explicit).</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>values</b></p></td>
+<td>
+<p>This property contains each of the enum constants in their declared order.</p>
+</td></tr>
+</table>
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#findById findById]</b> (<b title="The ID of the enum constant to find.">string id</b>)<br/>Returns the enum constant instance with the given *id* value or null if there is no match.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#findByOrdinal findByOrdinal]</b> (<b title="The ordinal of the enum constant to find.">int ord</b>)<br/>Returns the enum constant instance with the given *ordinal* value or null if there is no match.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#getById getById]</b> (<b title="The ID of the enum constant to find.">string id</b>)<br/>Returns the enum constant instance with the given *id* value.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#getByName getByName]</b> (<b title="The *name* of the enum constant to find.">string name</b>)<br/>Returns the enum constant instance with the given *name* value.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#getByOrdinal getByOrdinal]</b> (<b title="The ID of the enum constant to find.">string id</b>, <b title="The *ordinal* of the enum constant to find.">int ord</b>)<br/>Returns the enum constant instance with the given *ordinal* value.</td>
+</tr>
+<tr valign='top'>
+<td><b>string</b></td>
+<td><b>[#getFullName getFullName]</b> ()<br/>Returns the full-name (including namespace) of this constant.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#parseName parseName]</b> (<b title="The *name* of the enum constant to find.">string name</b>)<br/>Returns the enum constant instance with the given *name* value or null if there is no match.</td>
+</tr>
+</table>
+----
+== Method Details ==
+=== findById ===
+<code language='js'>object findById (string id)</code>
+<blockquote>
+<p>Returns the enum constant instance with the given *id* value or null if there is no match.</p>
+<b>Parameters:</b><br/><ol>
+<li>id : string
+<p>The ID of the enum constant to find.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The enum constant instance with the given *id* or null if no match.</p>
+</blockquote>
+</blockquote>
+=== findByOrdinal ===
+<code language='js'>object findByOrdinal (int ord)</code>
+<blockquote>
+<p>Returns the enum constant instance with the given *ordinal* value or null if there is no match.</p>
+<b>Parameters:</b><br/><ol>
+<li>ord : int
+<p>The ordinal of the enum constant to find.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The enum constant instance with the given *ordinal* or null if no match.</p>
+</blockquote>
+</blockquote>
+=== getById ===
+<code language='js'>object getById (string id)</code>
+<blockquote>
+<p>Returns the enum constant instance with the given *id* value. If there is no match, an exception is thrown.</p>
+<b>Parameters:</b><br/><ol>
+<li>id : string
+<p>The ID of the enum constant to find.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The enum constant instance with the given *id* value.</p>
+</blockquote>
+<br/><b>Throws:</b><br/><blockquote>
+<p>If there is no match.</p>
+</blockquote>
+</blockquote>
+=== getByName ===
+<code language='js'>object getByName (string name)</code>
+<blockquote>
+<p>Returns the enum constant instance with the given *name* value. If there is no match, an exception is thrown.</p>
+<b>Parameters:</b><br/><ol>
+<li>name : string
+<p>The *name* of the enum constant to find.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The enum constant instance with the given *name*.</p>
+</blockquote>
+<br/><b>Throws:</b><br/><blockquote>
+<p>If there is no match.</p>
+</blockquote>
+</blockquote>
+=== getByOrdinal ===
+<code language='js'>object getByOrdinal (string id, int ord)</code>
+<blockquote>
+<p>Returns the enum constant instance with the given *ordinal* value. If there is no match, an exception is thrown.</p>
+<b>Parameters:</b><br/><ol>
+<li>id : string
+<p>The ID of the enum constant to find.</p>
+</li>
+<li>ord : int
+<p>The *ordinal* of the enum constant to find.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The enum constant instance with the given *ordinal*.</p>
+</blockquote>
+<br/><b>Throws:</b><br/><blockquote>
+<p>If there is no match.</p>
+</blockquote>
+</blockquote>
+=== getFullName ===
+<code language='js'>string getFullName ()</code>
+<blockquote>
+<p>Returns the full-name (including namespace) of this constant.</p>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The full-name (including namespace) of this constant.</p>
+</blockquote>
+</blockquote>
+=== parseName ===
+<code language='js'>object parseName (string name)</code>
+<blockquote>
+<p>Returns the enum constant instance with the given *name* value or null if there is no match.</p>
+<b>Parameters:</b><br/><ol>
+<li>name : string
+<p>The *name* of the enum constant to find.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The enum constant instance with the given *name* or null if no match.</p>
+</blockquote>
+</blockquote>

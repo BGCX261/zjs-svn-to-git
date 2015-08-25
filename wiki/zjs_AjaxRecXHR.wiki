@@ -1,0 +1,7 @@
+#summary zjs.AjaxRecXHR
+ * *File:* zjs/ajaxrec.js
+ * *Module:* zjs.ajaxrec
+= Class AjaxRecXHR =
+
+----
+<p>This class mimics the XmlHttpRequest object interface for recording a request. An instance of this type may be returned by newXHR.</p>

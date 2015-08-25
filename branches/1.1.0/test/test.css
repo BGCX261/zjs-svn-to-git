@@ -1,0 +1,9 @@
+/*=============================================================================
+    test/test.css
+    Copyright (C) 2008, Donald W. Griffin
+    All rights reserved.
+    [MIT license :: see license.txt for details]
+=============================================================================*/
+td { color: white; }
+.passed { background-color: green; }
+.failed { background-color: red; }

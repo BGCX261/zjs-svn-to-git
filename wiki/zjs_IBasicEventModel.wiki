@@ -1,0 +1,34 @@
+#summary zjs.IBasicEventModel
+ * *File:* zjs/events.js
+ * *Module:* zjs.events
+= Interface IBasicEventModel =
+----
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#subscribe subscribe]</b> (<b title="The object to which the subscriber is added.">obj</b>, <b title="The type of the event.">type</b>, <b title="The handler method to subscribe.">fn</b>)<br/>This method adds a subscriber for this event type to the specified object.</td>
+</tr>
+</table>
+----
+== Method Details ==
+=== subscribe ===
+<code language='js'>object subscribe (obj, type, fn)</code>
+<blockquote>
+<p>This method adds a subscriber for this event type to the specified object.</p>
+<b>Parameters:</b><br/><ol>
+<li>obj
+<p>The object to which the subscriber is added.</p>
+</li>
+<li>type
+<p>The type of the event.</p>
+</li>
+<li>fn
+<p>The handler method to subscribe.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>An object whose destroy method will unsubscribe the handler.</p>
+</blockquote>
+</blockquote>

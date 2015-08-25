@@ -1,0 +1,1048 @@
+#summary Global
+
+== Namespaces ==
+
+ * *[zjs]*
+
+== Classes ==
+
+ * *[Boolean]*
+ * *[Date]*
+ * *[Function]*
+ * *[Number]*
+ * *[String]*
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#$assert $assert]</b> (<b title="The boolean condition to test (that should be true).">cond</b>)<br/>Asserts that the given condition is true.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#$break $break]</b> (<b title="The return value of $foreach.">val</b>)<br/>Breaks from a $foreach loop and returns a value.</td>
+</tr>
+<tr valign='top'>
+<td><b>class</b></td>
+<td><b>[#$class $class]</b> (<i title="(Optional) The base class or base class name.">class|string base</i>, <b title="An object containing the members of the class.">object members</b>)<br/>Defines a new class optionally derived from a given base.</td>
+</tr>
+<tr valign='top'>
+<td><b>class</b></td>
+<td><b>[#$enum $enum]</b> (<b title="The array of names and content for each enum constant.">array names</b>, <i title="(Optional) The members of the new enum class.">object members</i>)<br/>Declares an enumeration type.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#$eval $eval]</b> (<b title="The code fragment to evaluate.">js</b>)<br/>This method evaluates its argument and returns the result.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#$foreach $foreach]</b> (<b title="The sequence overwhich to iterate.">it</b>, <i title="(Optional) Options that control the iteration.">opt</i>, <b title="The function to call for each iteration or the method name on the object.">Function fn</b>, <i title="(Optional) The object scope (&quot;this&quot; pointer) to pass to fn function (not name).">scope</i>)<br/>Iterates over an object or array-like collection, calling a method for each item.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#$foreach_sorted $foreach_sorted]</b> (<b title="The sequence overwhich to iterate.">it</b>, <i title="(Optional) Options that control the iteration.">opt</i>, <b title="The function to call for each iteration or the method name on the object.">Function fn</b>, <i title="(Optional) The object scope (&quot;this&quot; pointer) to pass to fn function (not name).">scope</i>)<br/></td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#$import $import]</b> (<b title="One or more module paths.">string|string[] modpaths</b>, <i title="(Optional) The method to call once all modules have been loaded.">function onload</i>)<br/>Loads a sequence of modules and calls an optional completion callback.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#$log $log]</b> (<b title="The message to log.">msg</b>, <b title="The log level (e.g., &quot;info&quot; or &quot;warn&quot;).">type</b>)<br/>Logs a message to the console or stores it to an internal buffer.</td>
+</tr>
+<tr valign='top'>
+<td><b>class|object</b></td>
+<td><b>[#$mixin $mixin]</b> (<b title="The class (or instance) to which to add new members.">class|object klass</b>, <b title="The unique (to the class/instance) name for these members.">string tag</b>, <b title="The members to add to the class or instance.">object members</b>)<br/>This method modifies a class or instance by adding additional class members.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#$module $module]</b> (<b title="The module path of the registering module.">modpath</b>)<br/>Registers the current module.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#$namespace $namespace]</b> (<i title="(Optional) The parent namespace.">object ns</i>, <i title="(Optional) The name of the sub-namespace.">string sub</i>, <i title="(Optional) The members to add to the (possibly new) namespace.">object mem</i>)<br/>Ensures that a namespace exists and adds the given members to it.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#$new $new]</b> (<b title="The type of object to create.">class T</b>, <i title="(Optional) The constructor arguments array.">array args</i>)<br/>Creates a new object of the specified type using the given ctor arguments.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#$override $override]</b> (<b title="The value with which to override.">v</b>)<br/>Marks a namespace method as an override of a current namespace function.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#$overwrite $overwrite]</b> (<b title="The value with which to overwrite.">v</b>)<br/>Marks a namespace member so as to overwrite any potentially existant member.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#$panic $panic]</b> (<b title="The message to display.">msg</b>, <i title="(Optional) Any number of additional components of the message to join.">fragment1</i>)<br/>Alerts and/or logs a panic message.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#$priority $priority]</b> (<b title="The priority of the given method.">pr</b>, <b title="The function object.">fn</b>)<br/>Decorates a method with a call priority.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#$replace $replace]</b> (<b title="The value with which to replace.">v</b>)<br/>Marks a namespace member as an replacement of a current namespace member.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#$requires $requires]</b> (<b title="The module path of the required module.">modpath</b>)<br/>Declares that the given module path is required.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#$singleton $singleton]</b> (<i title="(Optional) The base class from which the singleton derives.">base</i>, <b title="The members of the singleton class.">members</b>)<br/>Creates a class that is instantiated on the first call of getInstance.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#$static $static]</b> (<b title="The member to mark as static.">member</b>)<br/>Wraps the given member so that $class will handle it as a static member.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#$super $super]</b> (<i title="(Optional) The arguments object (not just an array).">Arguments args</i>)<br/>This method determines the super method given an arguments object.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#$supercall $supercall]</b> (<b title="The arguments object (not just an array).">Arguments args</b>, <i title="(Optional) The &quot;this&quot; pointer to use when invoking the super method.">object that</i>, <i title="(Optional) The arguments to pass to the super method (instead of args).">object[] params</i>)<br/>This method is a shorthand for calling the super method.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#$throw $throw]</b> (<b title="The message to wrap in the error object.">msg</b>, <b title="The type of error object.">type</b>)<br/>Wraps the given message (msg) in an Error object and throws it.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#$using $using]</b> (<b title="The set of namespaces or other symbol to include (one or more of these).">sym</b>)<br/>Builds a string that is passed to the eval method to import symbols.</td>
+</tr>
+</table>
+----
+== Method Details ==
+=== $assert ===
+<code language='js'>object $assert (cond)</code>
+<blockquote>
+<p>Asserts that the given condition is true. If not, an exception is thrown. The arguments beyond the first, if any, are concatenated into an error message. It is a good idea to pass several string fragments instead of passing one already built since the assert may not fire and the message not be needed.</p>
+<b>Parameters:</b><br/><ol>
+<li>cond
+<p>The boolean condition to test (that should be true).</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The cond object passed (if truthy).</p>
+</blockquote>
+<br/><b>Throws:</b><br/><blockquote>
+<p>An error if the cond is falsey.</p>
+</blockquote>
+</blockquote>
+=== $break ===
+<code language='js'>void $break (val)</code>
+<blockquote>
+<p>Breaks from a $foreach loop and returns a value.</p>
+<b>Parameters:</b><br/><ol>
+<li>val
+<p>The return value of $foreach.</p>
+</li>
+</ol>
+</blockquote>
+=== $class ===
+<code language='js'>class $class (class|string base?, object members)</code>
+<blockquote>
+<p>Defines a new class optionally derived from a given base. To create a class that derives from the default base (zjs.Object), you would do this:</p>
+<code language="js">
+   $class({
+       member : function () { ... }
+   ));</code>
+<p>To derive from a specific base class, you can do this:</p>
+<code language="js">
+   $class(Base, {
+       member : function () { ... }
+   ));</code>
+<p>To help detect errors, a base class, if specified, must not be "undefined". It can be null which indicates that the class has no base (which is effectively Object).</p>
+<p>When adding classes to a namespace (the typical case), it is helpful to specify the base class by name. For example:</p>
+<code language="js">
+   $namespace(foo, {
+       Base : $class({
+       }),
+
+       Derived : $class("Base", {  // note: foo.Base cannot be evaluated yet
+       })
+   });</code>
+<p>In the above, "Base" is used to indicate that "foo.Base" is the desired base. Not only is this more convenient than fully specifying the base class, it is necessary to defer the evaluation until Base has been added to the namespace. In previous versions of ZJS, this required closing the $namespace call that registered Base and making another call to $namespace to register the derived class so that foo.Base could be evaluated.</p>
+<b>Parameters:</b><br/><ol>
+<li>base : class|string <i>(optional)</i>
+<p>The base class or base class name.</p>
+</li>
+<li>members : object
+<p>An object containing the members of the class.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The newly created class.</p>
+</blockquote>
+</blockquote>
+=== $enum ===
+<code language='js'>class $enum (array names, object members?)</code>
+<blockquote>
+<p>Declares an enumeration type. Each enumerated constant is essentially a static member of the class generated for the enum.</p>
+<p>To avoid ambiguity with other static members, it is best to use all capital letters for enum constants. For example,</p>
+<code language="js">
+   $namespace("foo", {
+
+   State : $enum(["FOO", "BAR", "FOOBAR"])
+
+   });
+
+   var s = foo.State.FOO;
+
+   assertTrue(foo.State.FOOBAR instanceof foo.State);</code>
+<p>The ordinal values are assigned by default as 0, 1, 2 and so forth. These can be specified if desired:</p>
+<code language="js">
+   $namespace(foo, {
+
+   State : $enum(["FOO", "BAR=42", "FOOBAR"])
+
+   })</code>
+<p>In the above example, we would have:</p>
+<code language="js">
+   foo.State.FOO.ordinal == 0
+   foo.State.BAR.ordinal == 42
+   foo.State.FOOBAR.ordinal == 43</code>
+<p>To add user-defined methods to an enum, you add them via the 2nd argument to this method:</p>
+<code language="js">
+   $namespace("foo", {
+
+   State : $enum(["FOO", "BAR", "FOOBAR"], {
+       method : function (x) { return this.name + x; }
+   })
+
+   });</code>
+<p>This form of $enum calls $mixin using the 2nd argument. Furhter mixins are also possible. Given the above:</p>
+<code language="js">
+   assertEquals("BAR__", foo.State.BAR.method("__"));</code>
+<p>Lastly, as with Java, each constant instance can have its own methods and/or overrides. These are added in a similar way but immediately following the enum constant.</p>
+<code language="js">
+   $namespace("foo", {
+
+   State : $enum([
+       "FOO",
+       "BAR", {
+           method : function (x) { return $super(arguments,this) + "!!"; }
+       }
+       "FOOBAR"
+   ],{
+       method : function (x) { return this.name + x; }
+   })
+
+   });</code>
+<p>Given the above:</p>
+<code language="js">
+   assertEquals("FOOBAR__", foo.State.FOOBAR.method("__");
+   assertEquals("BAR__!!", foo.State.BAR.method("__");</code>
+<b>Parameters:</b><br/><ol>
+<li>names : array
+<p>The array of names and content for each enum constant.</p>
+</li>
+<li>members : object <i>(optional)</i>
+<p>The members of the new enum class.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The enum class.</p>
+</blockquote>
+</blockquote>
+=== $eval ===
+<code language='js'>void $eval (js)</code>
+<blockquote>
+<p>This method evaluates its argument and returns the result. This is a global method to ensure no local symbols are included in the scope chain that might create problems with the evaluated text. This is not a perfect "eval at global scope", but it is close enough.</p>
+<b>Parameters:</b><br/><ol>
+<li>js
+<p>The code fragment to evaluate.</p>
+</li>
+</ol>
+</blockquote>
+=== $foreach ===
+<code language='js'>object $foreach (it, opt?, Function fn, scope?)</code>
+<blockquote>
+<p>Iterates over an object or array-like collection, calling a method for each item.</p>
+<p>The simplest usage looks like this:</p>
+<code language="js">
+   $foreach([1, 2, 3, 4], function (x) {
+       // called with x=1, x=2, x=3 and x=4
+   });</code>
+<p>To preserve the "this" pointer, pass the scope parameter:</p>
+<code language="js">
+   $foreach([1, 2, 3, 4], function (x) {
+       // called with this and x=1, x=2, x=3 and x=4
+   }, this);</code>
+<p>To end the loop early, there are a few alternatives:</p>
+<code language="js">
+   $foreach([1, 2, 3, 4], function (x) {
+       if (x == 3)
+           return $break(42);
+       // more code
+   });
+
+   $foreach([1, 2, 3, 4], function (x) {
+       if (x == 3)
+           return $break;
+       // more code
+   });
+
+   $foreach([1, 2, 3, 4], function (x, etc) {
+       if (x == 3)
+           etc.$break = true;
+       // more code
+   });</code>
+<p>The first use of $break exits the loop immediately and returns its argument (42) from $foreach. The second alternative breaks the loop and $foreach returns the value most recently returned by the functin.</p>
+<p>This can generate warnings (JSLint or IDE) if not all of the control paths in the function return a value. The last alternative simply flags the loop in $foreach to break. The downside here is that the "more code" will be run unless an "else" or "return" is also added.</p>
+<p>There are a couple ways to pass data from the loop back to the outside (other than standard closure techniques). For starters, the return value of $foreach is the value last returned by the function (unless the function returns $break). For example:</p>
+<code language="js">
+   var v = $foreach([1, 2, 3, 4], function (x) {
+       return x;
+   });
+
+   // v == 4</code>
+<p>Also, $break can optionally set the return value:</p>
+<code language="js">
+   var v = $foreach([1, 2, 3, 4], function (x) {
+       if (x == 3)
+           return $break;
+       return x;
+   });
+
+   // v == 2 (last value returned up to $break)
+
+   var v = $foreach([1, 2, 3, 4], function (x) {
+       if (x == 3)
+           return $break(42);
+       return x;
+   });
+
+   // v == 42</code>
+<p>The previous iteration return value is supplied in the "etc" argument to the given function. On the first call, this value is undefined. For example:</p>
+<code language="js">
+   var v = $foreach([1, 2, 3, 4], function (x, etc) {
+       return x + (etc.value || 0);
+   });
+
+   // v == 10 (1+2+3+4)</code>
+<p>As a convenience, if the function is a string, that string is assumed to be the name of a method on each element. That is, the following:</p>
+<code language="js">
+   $foreach([obj1, obj2], "foo");</code>
+<p>Is equivalent to:</p>
+<code language="js">
+   $foreach([obj1, obj2], function (obj) {
+       if (obj.foo)
+           obj.foo();
+   });</code>
+<p>The options object provides control over the looping.</p>
+<p>For example:</p>
+<code language="js">
+   var s = $foreach(["a","b","c","d","e"], { begin:1, end:4, delta:2, value:"_" },
+       function (v, etc) {
+           return etc.value + v;
+       });
+
+   // s = "_bd"</code>
+<p>Since all of the properties have a default value, not all must be passed:</p>
+<code language="js">
+   var s = $foreach(["a","b","c","d","e"], { begin:1, end:4, value:"_" },
+       function (v, etc) {
+           return etc.value + v;
+       });
+
+   // s = "_bcd"
+
+   var s = $foreach(["a","b","c","d","e"], { begin:1 }, function (v, etc) {
+       return (etc.value || "") + v;
+   });
+
+   // s = "_bcde"</code>
+<p>If the "fn" parameter is a string (method name), the options object can also provide an "args" property. That is:</p>
+<code language="js">
+   $foreach([obj1, obj2], { args: [1, 2] }, "foo");</code>
+<p>Is equivalent to:</p>
+<code language="js">
+   $foreach([obj1, obj2], function (obj) {
+       if (obj.foo)
+           obj.foo(1, 2);
+   });</code>
+<b>Parameters:</b><br/><ol>
+<li>it
+<p>The sequence overwhich to iterate.</p>
+</li>
+<li>opt <i>(optional)</i>
+<p>Options that control the iteration.</p>
+<b>Members:</b><br/><ul>
+<li>begin <i>(optional)</i>
+<p>The begin index for the iteration (default = 0).</p>
+</li>
+<li>end <i>(optional)</i>
+<p>The end index for the iteration (default = length).</p>
+</li>
+<li>delta <i>(optional)</i>
+<p>The number of slots in the array to skip (default = 1).</p>
+</li>
+<li>value <i>(optional)</i>
+<p>The initial value to pass to fn (default = undefined).</p>
+</li>
+<li>args <i>(optional)</i>
+<p>The arguments to pass to each function (only if fn is a method name).</p>
+</li>
+</ul>
+</li>
+<li>fn : Function
+<code language='js'>object fn (value, etc)</code>
+<blockquote>
+<p>The function to call for each iteration or the method name on the object.</p>
+<b>Parameters:</b><br/><ol>
+<li>value
+<p>The current value being iterated.</p>
+</li>
+<li>etc
+<p>An object containing other useful information passed to each call.</p>
+<b>Members:</b><br/><ul>
+<li>array
+<p>True if the iteration is over an array.</p>
+</li>
+<li>key
+<p>The name of the current element (same as index for an array).</p>
+</li>
+<li>index
+<p>The current index being iterated.</p>
+</li>
+<li>value
+<p>The value returned from the last call of fn (starts as undefined).</p>
+</li>
+<li>$break
+<p>A boolean that can be set to true to end the loop.</p>
+</li>
+</ul>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The value to store in etc.value and/or return from $foreach or $break.</p>
+</blockquote>
+</blockquote>
+</li>
+<li>scope <i>(optional)</i>
+<p>The object scope ("this" pointer) to pass to fn function (not name).</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The last value returned by fn or passed to $break.</p>
+</blockquote>
+</blockquote>
+=== $foreach_sorted ===
+<code language='js'>object $foreach_sorted (it, opt?, Function fn, scope?)</code>
+<blockquote>
+<b>Parameters:</b><br/><ol>
+<li>it
+<p>The sequence overwhich to iterate.</p>
+</li>
+<li>opt <i>(optional)</i>
+<p>Options that control the iteration.</p>
+<b>Members:</b><br/><ul>
+<li>begin <i>(optional)</i>
+<p>The begin index for the iteration (default = 0).</p>
+</li>
+<li>end <i>(optional)</i>
+<p>The end index for the iteration (default = length).</p>
+</li>
+<li>delta <i>(optional)</i>
+<p>The number of slots in the array to skip (default = 1).</p>
+</li>
+<li>value <i>(optional)</i>
+<p>The initial value to pass to fn (default = undefined).</p>
+</li>
+<li>args <i>(optional)</i>
+<p>The arguments to pass to each function (only if fn is a method name).</p>
+</li>
+</ul>
+</li>
+<li>fn : Function
+<code language='js'>object fn (value, etc)</code>
+<blockquote>
+<p>The function to call for each iteration or the method name on the object.</p>
+<b>Parameters:</b><br/><ol>
+<li>value
+<p>The current value being iterated.</p>
+</li>
+<li>etc
+<p>An object containing other useful information passed to each call.</p>
+<b>Members:</b><br/><ul>
+<li>array
+<p>True if the iteration is over an array.</p>
+</li>
+<li>key
+<p>The name of the current element (same as index for an array).</p>
+</li>
+<li>index
+<p>The current index being iterated.</p>
+</li>
+<li>order
+<p>The original (unsorted) index of the item being iterated.</p>
+</li>
+<li>value
+<p>The value returned from the last call of fn (starts as undefined).</p>
+</li>
+<li>$break
+<p>A boolean that can be set to true to end the loop.</p>
+</li>
+</ul>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The value to store in etc.value and/or return from $foreach or $break.</p>
+</blockquote>
+</blockquote>
+</li>
+<li>scope <i>(optional)</i>
+<p>The object scope ("this" pointer) to pass to fn function (not name).</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The last value returned by fn or passed to $break.</p>
+</blockquote>
+</blockquote>
+=== $import ===
+<code language='js'>void $import (string|string[] modpaths, function onload?)</code>
+<blockquote>
+<p>Loads a sequence of modules and calls an optional completion callback. For example:</p>
+<code language="js">
+   $import(["foo.bar.bif", "bar.fiz.baz"],
+           ["bif.boo.zip", "jazz.rip.fifi"],
+           "bonzi.booze",
+           onload);</code>
+<p>Batch 1 (foo.bar.bif and bar.fiz.baz) is requested in parallel. When complete, the next batch (bif.boo.zip and jazz.rip.fifi) is requested in parallel. Then the single module bonzi.booze is requested. Finally, when that module loads, the user's onload method is called.</p>
+<p>This kind of loading is not necessary for modules that use $requires since they are automatically loaded in their transitive dependency order. For loading code that does not use $requires, however, its dependency needs are not expressed in the code.</p>
+<b>Parameters:</b><br/><ol>
+<li>modpaths : string|string[]
+<p>One or more module paths. These can be a single a module path string (e.g., "foo.bar.bif") or an array of modpath strings (e.g., ["foo.bar.bif", "bar.fiz.baz"]). In the case of an array, all of the modules are requested in parallel. When all are loaded, the next argument is started or the user callback (if any) is made.</p>
+</li>
+<li>onload : function <i>(optional)</i>
+<p>The method to call once all modules have been loaded.</p>
+</li>
+</ol>
+</blockquote>
+=== $log ===
+<code language='js'>void $log (msg, type)</code>
+<blockquote>
+<p>Logs a message to the console or stores it to an internal buffer. Without the console, these message can only be read in a debugger (like Visual Studio). This is done by inspecting "$log.out". The maximum number of messages is configurable by setting "$log.limit" (the default is 1000).</p>
+<b>Parameters:</b><br/><ol>
+<li>msg
+<p>The message to log.</p>
+</li>
+<li>type
+<p>The log level (e.g., "info" or "warn").</p>
+</li>
+</ol>
+</blockquote>
+=== $mixin ===
+<code language='js'>class|object $mixin (class|object klass, string tag, object members)</code>
+<blockquote>
+<p>This method modifies a class or instance by adding additional class members.</p>
+<p>Many approaches to class emulation in JavaScript sacrifice the dynamic nature of the language. The goal of mixins is to provide a safe mechanism for extending classes by adding new methods or even providing extensions to existing methods.</p>
+<p>The concept of mixins can be helpful in several situations:</p>
+<p>* Provide browser-specific behaviors in separate files. * Partition a "fat" base class into smaller pieces. * Allow library users to modify base class behavior.</p>
+<p>Consider this class:</p>
+<code language="js">
+   $namespace("foo.bar", {
+
+   C : $class({
+       ctor : function () {
+       },
+       fiz : function () {
+           return "X";
+       }
+   })
+
+   });</code>
+<p>A mixin to class C might look like this:</p>
+<code language="js">
+   $mixin(foo.bar.C, "uniqueTag", {
+       ctor : function () {
+           $super(arguments).call(this);
+       },
+       fiz : function () {
+           return $super(arguments).call(this) + "Y";
+       }
+   });</code>
+<p>The "uniqueTag" need only be unique to the mixins for to C. Other than that, the call looks just like a $class body. In fact, $class simply sets up the skeleton, empty class and calls this method with a null tag name.</p>
+<p>In many ways, one can think of a mixin like a derived class. For example, notice the calls to $super in the overriding methods. These work as you might expect. To see a simple test, consider this:</p>
+<code language="js">
+   var c = new foo.bar.C();
+   var s = c.fiz(); // = "XY"</code>
+<p>The call to fiz first enters the mixin's implementation. That method calls the super method (in this case the original method) with returns "X" and then appends "Y". The important difference between mixin and derivation is that derivation creates a Javascript prototype chain while mixin adjusts the prototype object. To see how this effects things, imagine a derived type.</p>
+<code language="js">
+   $namespace("foo.bar", {
+
+   D : $class(foo.bar.C, {
+       ctor : function () {
+           $super(arguments).call(this);
+       },
+       fiz : function () {
+           return $super(arguments).call(this) + "Z";
+       }
+   })
+
+   });</code>
+<p>The D class is created using a prototype object of C. This relationship cannot be changed (at least not in all browsers). The implementation of mixin edits the prototype object, which means the mixin will have the same effect if it is performed before or after the creation of the derived class.</p>
+<b>Parameters:</b><br/><ol>
+<li>klass : class|object
+<p>The class (or instance) to which to add new members.</p>
+</li>
+<li>tag : string
+<p>The unique (to the class/instance) name for these members.</p>
+</li>
+<li>members : object
+<p>The members to add to the class or instance.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The now modified klass or instance.</p>
+</blockquote>
+</blockquote>
+=== $module ===
+<code language='js'>void $module (modpath)</code>
+<blockquote>
+<p>Registers the current module. This method should be called at the top of a .js file, much like a package statement in Java.</p>
+<b>Parameters:</b><br/><ol>
+<li>modpath
+<p>The module path of the registering module.</p>
+</li>
+</ol>
+</blockquote>
+=== $namespace ===
+<code language='js'>void $namespace (object ns?, string sub?, object mem?)</code>
+<blockquote>
+<p>Ensures that a namespace exists and adds the given members to it.</p>
+<p>Examples:</p>
+<code language="js">
+   // Ensure the "nspace" exists and "sub" exists in nspace:
+   $namespace("nspace.sub");
+
+   // Assuming that "nspace" exists, ensure that "sub" exists in nspace:
+   $namespace(nspace, "sub");
+
+   // Ensure the "nspace" exists and "sub" exists in nspace and add to it:
+   $namespace("nspace.sub", {
+       ...
+   });
+
+   // Assuming that "nspace" exists, ensure that "sub" exists in nspace and
+   // add to it:
+   $namespace(nspace, "sub", {
+       ...
+   });
+
+   // Adds members to the existing namespace nspace.sub:
+   $namespace(nspace.sub, {
+       ...
+   });</code>
+<p>When members are added to the namespace, the members are contained in an object. The names of the properties of that object are the names to add to the target namespace.</p>
+<p>Specially named members are interpreted as conditional members. These are of the form "?expr" or "=expr" where the "expr" part is evaluated (using $eval).</p>
+<p>For boolean conditional members (begining with "?") the evaluated condition will determine if the associated value is included. For selection conditional members (begining with "="), the value of the expression is used to select a member of the value as the value to include.</p>
+<p>For example:</p>
+<code language="js">
+   $namespace(foo, {
+
+   "?zjs.browser.ie" : {
+       bar : function () { ... },
+       bif : function () { ... }
+   }
+
+   });</code>
+<p>The above will add "bar" and "bif" to the "foo" namespace when "zjs.browser.ie" evaluates true. Boolean conditional members whose values are functions (and whose expressions evaluate true) are executed and their return value is added to values.</p>
+<p>For example:</p>
+<code language="js">
+   $namespace(foo, {
+
+   "?zjs.browser.ie" : function () {
+       function helper () { ... }
+
+       return {
+           bar : function () { ... },
+           bif : function () { ... }
+       };
+   } // not called here!
+
+   });</code>
+<p>The above idiom is commonly used to create a scope to which only "bar" and "bif" have access. In other circumstances, this anonymous function is called inline to return its object. While this will work, it is wasteful in this case because the function need only be called when the expression is true. Since a function object would not be an appropriate value in this case, the decision to call the function should not create any surprises.</p>
+<p>For selection conditional members, the value of the expression determines which member is selected. For example:</p>
+<code language="js">
+   $namespace(foo, {
+
+   "=zjs.browser.engine" : {
+       msie : {
+           bar : function () { ... },
+           bif : function () { ... }
+       },
+       gecko : {
+           bar : function () { ... },
+           bif : function () { ... }
+       },
+       webkit : {
+           bar : function () { ... },
+           bif : function () { ... }
+       },
+       "*" : {
+           bar : function () { ... },
+           bif : function () { ... }
+       }
+   }
+
+   });</code>
+<p>The selection expression value is processed by first looking for a property of the expression value, or basically, "value[eval(expr)]". If that property is not a member of the object, the "*" member is used (if present). Essentially, the "*" member is the default cause of the "switch".</p>
+<p>As with the boolean conditional member, if the value of the property is a function, it is called. For example:</p>
+<code language="js">
+   $namespace(foo, {
+
+   "=zjs.browser.engine" : {
+       msie : function () {
+           return {
+               bar : function () { ... },
+               bif : function () { ... }
+           };
+       },
+       gecko : function () {
+           return {
+               bar : function () { ... },
+               bif : function () { ... }
+           };
+       },
+       webkit : function () {
+           return {
+               bar : function () { ... },
+               bif : function () { ... }
+           };
+       },
+       "*" : function () {
+           return {
+               bar : function () { ... },
+               bif : function () { ... }
+           };
+       }
+   }
+
+   });</code>
+<b>Parameters:</b><br/><ol>
+<li>ns : object <i>(optional)</i>
+<p>The parent namespace.</p>
+</li>
+<li>sub : string <i>(optional)</i>
+<p>The name of the sub-namespace.</p>
+</li>
+<li>mem : object <i>(optional)</i>
+<p>The members to add to the (possibly new) namespace.</p>
+</li>
+</ol>
+</blockquote>
+=== $new ===
+<code language='js'>object $new (class T, array args?)</code>
+<blockquote>
+<p>Creates a new object of the specified type using the given ctor arguments. The new object is returned.</p>
+<code language="js">
+   var obj = $new(T, ["abc", 42]);
+   // or equivalently:
+   var obj = new T("abc", 42);</code>
+<p>This method comes in handy when the ctor arguments are known dynamically. This works not only for ZJS classes, but for any constructor function.</p>
+<b>Parameters:</b><br/><ol>
+<li>T : class
+<p>The type of object to create.</p>
+</li>
+<li>args : array <i>(optional)</i>
+<p>The constructor arguments array.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The newly created object.</p>
+</blockquote>
+</blockquote>
+=== $override ===
+<code language='js'>object $override (v)</code>
+<blockquote>
+<p>Marks a namespace method as an override of a current namespace function. If any of these characteristics are unmet, an $assert will fire. The newly added method can use $super to access the previous namespace method.</p>
+<p>For example:</p>
+<code language="js">
+   $namespace(foo, {
+       bar : function () {
+           return "Hello";
+       }
+   });
+
+   $namespace(foo, {
+       bar : $override(function () {
+           var s = $super(arguments)();
+           return s + " World";
+       })
+   });
+
+   var s = foo.bar(); // = "Hello World"</code>
+<p>Without the $override, the second time "bar" was added to the foo namespace, an exception would have been thrown.</p>
+<b>Parameters:</b><br/><ol>
+<li>v
+<p>The value with which to override.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>An object with the given value that can be detected as an override.</p>
+</blockquote>
+</blockquote>
+=== $overwrite ===
+<code language='js'>object $overwrite (v)</code>
+<blockquote>
+<p>Marks a namespace member so as to overwrite any potentially existant member. It is valid for their not to be a member, but if there is, it is simply overwritten.</p>
+<p>For example:</p>
+<code language="js">
+   $namespace(foo, {
+       bar : function () {
+           return "Hello";
+       }
+   });
+
+   $namespace(foo, {
+       bar : $overwrite(function () {
+           return "World";
+       })
+   });
+
+   var s = foo.bar(); // = "World"</code>
+<p>Without the $overwrite, the second time "bar" was added to the foo namespace, an exception would have been thrown.</p>
+<b>Parameters:</b><br/><ol>
+<li>v
+<p>The value with which to overwrite.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>An object with the given value that can be detected as an overwrite.</p>
+</blockquote>
+</blockquote>
+=== $panic ===
+<code language='js'>void $panic (msg, fragment1?)</code>
+<blockquote>
+<p>Alerts and/or logs a panic message. These are always "bad" things, so it is a good idea to set a break point on the first line.</p>
+<b>Parameters:</b><br/><ol>
+<li>msg
+<p>The message to display.</p>
+</li>
+<li>fragment1 <i>(optional)</i>
+<p>Any number of additional components of the message to join.</p>
+</li>
+</ol>
+</blockquote>
+=== $priority ===
+<code language='js'>object $priority (pr, fn)</code>
+<blockquote>
+<p>Decorates a method with a call priority. This is used by $mixin to order the method call chain.</p>
+<code language="js">
+   $mixin(Foo, "bar", {
+       method : $priority(2, function (x) {
+       })
+   });</code>
+<b>Parameters:</b><br/><ol>
+<li>pr
+<p>The priority of the given method.</p>
+</li>
+<li>fn
+<p>The function object.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The given function object (now with its priority set).</p>
+</blockquote>
+</blockquote>
+=== $replace ===
+<code language='js'>object $replace (v)</code>
+<blockquote>
+<p>Marks a namespace member as an replacement of a current namespace member. If any of these characteristics are unmet, an $assert will fire. The newly added member simply replaces the previous member.</p>
+<b>Parameters:</b><br/><ol>
+<li>v
+<p>The value with which to replace.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>An object with the given value that can be detected as a replace.</p>
+</blockquote>
+</blockquote>
+=== $requires ===
+<code language='js'>void $requires (modpath)</code>
+<blockquote>
+<p>Declares that the given module path is required. If that module is not already loaded, a $panic ensues (an exception).</p>
+<b>Parameters:</b><br/><ol>
+<li>modpath
+<p>The module path of the required module.</p>
+</li>
+</ol>
+</blockquote>
+=== $singleton ===
+<code language='js'>object $singleton (base?, members)</code>
+<blockquote>
+<p>Creates a class that is instantiated on the first call of getInstance. Further, that is the only way to create an instance of that class. In almost every other way, this use is the same as $class.</p>
+<p>For example:</p>
+<code language="js">
+   Foo : $singleton({
+       ctor : function () { this.foo = 427; },
+       bar : $static(function () { return 42; }),
+       bif : function () { return this.foo; }
+   })
+
+   var f = Foo.getInstance(); // lazy creates single instance on first call
+   var x = f.bif(); // = 427
+   var y = Foo.bar(); // = 42
+
+   var f2 = new Foo(); // ERROR</code>
+<b>Parameters:</b><br/><ol>
+<li>base <i>(optional)</i>
+<p>The base class from which the singleton derives.</p>
+</li>
+<li>members
+<p>The members of the singleton class.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The singleton class.</p>
+</blockquote>
+</blockquote>
+=== $static ===
+<code language='js'>object $static (member)</code>
+<blockquote>
+<p>Wraps the given member so that $class will handle it as a static member. The difference is seen here:</p>
+<code language="js">
+     $namespace("N", {
+         C : $class({
+             foo : function () { ... },
+             bar : $static(function () { ... })
+         })
+     });
+
+     var c = new N.C();
+
+     c.foo();  // non-static
+     N.C.bar(); // static</code>
+<b>Parameters:</b><br/><ol>
+<li>member
+<p>The member to mark as static.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The static marker object to pass to $class.</p>
+</blockquote>
+</blockquote>
+=== $super ===
+<code language='js'>object $super (Arguments args?)</code>
+<blockquote>
+<p>This method determines the super method given an arguments object. The typical use for this method is like so:</p>
+<code language="js">
+   Base : $class({
+       foo : function (x) { ... }
+   }),
+
+   Derived : $class("Base", {
+       foo : function (x) {
+           var v = $super(arguments).call(this, x);
+           ...
+       }
+   })</code>
+<p>In the above, the returned super method is called, the parameters are passed on and its return value is stored.</p>
+<p>This has the virtue of being easy to debug because when a Step In goes first into $super, a Step Out can be used to get back to the call site and then a Step In will enter the super method.</p>
+<p>A method will always be returned. If there is no super method then $super.none is returned instead of null. This eliminates most special case handling.</p>
+<p>In browsers (or other environments) that support the "caller" property on Functions, the "arguments" parameter is ignored. In some cases applications can simply not pass this parameter (if they require such browsers). If this is the case, the call could look like this:</p>
+<code language="js">
+   Derived : $class("Base", {
+       foo : function (x) {
+           var v = $super().call(this, x); // not universally supported
+           ...
+       }
+   })</code>
+<p>At this time (Apr 2011), the following environments are known to support this usage: Firefox 3.6, IE8, Chrome 10, Opera 10 and WSH. Rhino does not support this feature.</p>
+<b>Parameters:</b><br/><ol>
+<li>args : Arguments <i>(optional)</i>
+<p>The arguments object (not just an array).</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The super method of the callee method.</p>
+</blockquote>
+</blockquote>
+=== $supercall ===
+<code language='js'>object $supercall (Arguments args, object that?, object[] params?)</code>
+<blockquote>
+<p>This method is a shorthand for calling the super method.</p>
+<code language="js">
+   ...
+   var v = $supercall(arguments, this);</code>
+<p>This accomplishes the same end result. All arguments are passed to the super method and its return value is returned.</p>
+<p>If the arguments need to be adjusted, this can be done using this form:</p>
+<code language="js">
+   ...
+   var v = $supercall(arguments, this, [x / 2]);</code>
+<p>In the above, the array contains the arguments to pass to the super method.</p>
+<p>In some cases, such as overriding a namespace method, the this pointer is irrelevant and $supercall can be used like this:</p>
+<code language="js">
+   $supercall(arguments);</code>
+<b>Parameters:</b><br/><ol>
+<li>args : Arguments
+<p>The arguments object (not just an array).</p>
+</li>
+<li>that : object <i>(optional)</i>
+<p>The "this" pointer to use when invoking the super method.</p>
+</li>
+<li>params : object[] <i>(optional)</i>
+<p>The arguments to pass to the super method (instead of args).</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The value returned by the super method.</p>
+</blockquote>
+</blockquote>
+=== $throw ===
+<code language='js'>void $throw (msg, type)</code>
+<blockquote>
+<p>Wraps the given message (msg) in an Error object and throws it. By default, the type of object is assumed to be Error, unless the 2nd parameter is supplied to override that default.</p>
+<b>Parameters:</b><br/><ol>
+<li>msg
+<p>The message to wrap in the error object.</p>
+</li>
+<li>type
+<p>The type of error object. Default is Error.</p>
+</li>
+</ol>
+<br/><b>Throws:</b><br/><blockquote>
+<p>Always throws an Error or the given type.</p>
+</blockquote>
+</blockquote>
+=== $using ===
+<code language='js'>object $using (sym)</code>
+<blockquote>
+<p>Builds a string that is passed to the eval method to import symbols.</p>
+<b>Parameters:</b><br/><ol>
+<li>sym
+<p>The set of namespaces or other symbol to include (one or more of these).</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>A string to eval that makes local vars for the contents of the syms.</p>
+</blockquote>
+</blockquote>
+----
+== Variables ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><p><b>$abstract</b></p></td>
+<td>
+<p>This pseudo-keyword is used to declare a method as abstract. We cannot "force" the derived class to implement the method beyond preventing instantiation. The default behavior for calling non-existant methods is sufficient for handling an abstract method, but it would be best to prevent the object's creation.</p>
+<p>For example:</p>
+<code language="js">
+   Base : $class({
+       foo : $abstract,
+
+       ...
+   }),
+
+   Derived : $class("Base", {
+       foo : function (x) { ... }
+   })</code>
+<p>In the above, Base is abstract because of "foo" but Derived is not because it implements foo. Abstractness is a class level concept and is not effected by any use of mixins.</p>
+<p>Once an abstract method is implemented, it cannot be made abstract again by a derived class. This is possible in some languages, but in Javascript it would be unreasonably intrusive to provide this support.</p>
+</td></tr>
+</table>

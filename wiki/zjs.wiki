@@ -1,0 +1,1280 @@
+#summary Namespace zjs
+= Description =
+
+<p>The root namespace for ZJS.</p>
+
+== Namespaces ==
+
+ * *[zjs_config config]*
+
+== Classes ==
+
+ * *[zjs_AjaxRecXHR AjaxRecXHR]*
+ * *[zjs_AjaxRecorder AjaxRecorder]*
+ * *[zjs_AjaxSim AjaxSim]*
+ * *[zjs_AjaxSimManager AjaxSimManager]*
+ * *[zjs_AjaxSimXHR AjaxSimXHR]*
+ * *[zjs_AjaxTransaction AjaxTransaction]*
+ * *[zjs_Bag Bag]*
+ * *[zjs_Browser Browser]*
+ * *[zjs_BubbledEvent BubbledEvent]*
+ * *[zjs_ClassPlugin ClassPlugin]*
+ * *[zjs_EmptyBag EmptyBag]*
+ * *[zjs_Enum Enum]*
+ * *[zjs_Event Event]*
+ * *[zjs_EventClassPlugin EventClassPlugin]*
+ * *[zjs_EventHandler EventHandler]*
+ * *[zjs_EventModel EventModel]*
+ * *[zjs_EventSource EventSource]*
+ * *[zjs_ExampleEnum ExampleEnum]*
+ * *[zjs_Importer Importer]*
+ * *[zjs_Module Module]*
+ * *[zjs_Object Object]*
+ * *[zjs_OneShotTimer OneShotTimer]*
+ * *[zjs_PackageManager PackageManager]*
+ * *[zjs_Reaper Reaper]*
+ * *[zjs_Template Template]*
+
+== Interfaces ==
+
+ * *[zjs_IBasicEventModel IBasicEventModel]*
+ * *[zjs_IEvent IEvent]*
+ * *[zjs_IEventHandler IEventHandler]*
+ * *[zjs_IEventModel IEventModel]*
+ * *[zjs_IEventSource IEventSource]*
+ * *[zjs_IPackageManager IPackageManager]*
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#addMeta addMeta]</b> (<b title="The object to which meta data is to be added.">obj</b>, <b title="The object containing the meta data properties to add.">meta</b>)<br/>Adds properties to the $meta container of the given object.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#addScript addScript]</b> (<b title="">script</b>)<br/>Adds the given script element to the document.</td>
+</tr>
+<tr valign='top'>
+<td><b>AjaxTransaction</b></td>
+<td><b>[#ajax ajax]</b> (<b title="The requested URL (required).">url</b>, <b title="The options for the transaction.">opt</b>)<br/>Creates an AjaxTransaction object, sends it and then returns it.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#array array]</b> (<b title="The iteratable collection to convert or copy to an new array.">it</b>)<br/>Converts the given iteratable sequence into a proper array.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#arrayCat arrayCat]</b> (<b title="The first array.">a</b>, <b title="The second array.">b</b>)<br/>Concatenates the two given arrays and returns the new array.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#arrayConv arrayConv]</b> (<b title="The iteratable collection to convert or copy to an array.">it</b>)<br/>Performs raw conversion using toArray.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#arrayCopy arrayCopy]</b> (<b title="The destination array.">dest</b>, <b title="The offset in the destination array.">doffset</b>, <b title="The source array.">src</b>, <b title="The offset in the source array.">soffset</b>, <b title="The number of elements to copy.">len</b>)<br/>Copies elements from one array to another.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#arrayTail arrayTail]</b> (<b title="The array from which to copy elements.">a</b>, <b title="The number of elements to skip.">skip</b>)<br/>This method returns the elements of the given array beyond a starting point.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#chain chain]</b> (<b title="The object that will be the prototype of the returned new object.">base</b>)<br/>Creates and returns a new object that has the given object as its prototype object.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#contains contains]</b> (<b title="The string to check for containing the pattern.">str</b>, <b title="The pattern find in the given string.">pat</b>)<br/>Returns true if str contains the given pattern, false if not.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#copy copy]</b> (<b title="The target object to which properties will be copied.">to</b>, <b title="The first source object from which properties will be copied.">from</b>, <i title="(Optional) The second source object from which to copy (may be more).">from2</i>)<br/>Copies the properties of a given source object (from) to a target object (to).</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#copyIf copyIf]</b> (<b title="The target object to which properties will be copied.">to</b>, <b title="The first source object from which properties will be copied.">from</b>, <i title="(Optional) The second source object from which to copy (may be more).">from2</i>)<br/>Copies the properties of a given source object (from) to a target object (to).</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#deref deref]</b> (<b title="The context object to dereference.">object</b>, <b title="The expression to evaluate in the given object's context.">expr</b>)<br/>Dereferences an expression in the context of a given object.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#destroy destroy]</b> (<b title="An object or array of objects to destroy (one of many).">obj</b>)<br/>This method destroys its arguments.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#detectBrowser detectBrowser]</b> (<b title="The environment object">env</b>)<br/>This function performs browser and OS detection.</td>
+</tr>
+<tr valign='top'>
+<td><b>class</b></td>
+<td><b>[#finishClass finishClass]</b> (<b title="The class to finish.">class klass</b>)<br/>This method is called to finishes a new class.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#format format]</b> (<b title="The template text.">string template</b>, <b title="The object containing the values to be inserted.">object object</b>, <i title="(Optional) The regex that captures the parts of a replacement.">regexp syntax</i>)<br/>This function formats a text string with replacement parameters.</td>
+</tr>
+<tr valign='top'>
+<td><b>function</b></td>
+<td><b>[#getComparer getComparer]</b> (<b title="The property to compare.">prop</b>)<br/>Returns a function for use in Array.sort that compares a property on each element.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#getMeta getMeta]</b> (<b title="The object for which meta data is desired.">obj</b>, <b title="When true, $meta is returned only if already present.">noadd</b>)<br/>Returns the $meta data property of the given object, adding one as needed.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#getMimeType getMimeType]</b> (<b title="The HTTP Content-Type header value.">contentType</b>)<br/>Returns the MIME type given a Content-Type value.</td>
+</tr>
+<tr valign='top'>
+<td><b>function</b></td>
+<td><b>[#getSorter getSorter]</b> (<b title="The property to compare.">prop</b>)<br/>Returns a function that sorts an array using a property on each element.</td>
+</tr>
+<tr valign='top'>
+<td><b>sring</b></td>
+<td><b>[#getType getType]</b> (<b title="The object for which the type is desired.">object obj</b>)<br/>This method returns the type of the given object.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#gsubst gsubst]</b> (<b title="The string to be substituted.">str</b>, <b title="The pattern to match.">string|regexp pattern</b>, <b title="The substitution value.">string|function|Template replacement</b>)<br/>Returns the string with every occurence of a given pattern replaced by either a regular string, the returned value of a function or a Template string.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#has has]</b> (<b title="The object to test.">obj</b>, <b title="The name of the property.">name</b>)<br/>Returns true if the given object has the specified property.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#hasOwn hasOwn]</b> (<b title="The object to test.">obj</b>, <b title="The name of the property.">name</b>)<br/>Returns true if the given object has the specified property.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#injectScript injectScript]</b> (<b title="The Javascript source code.">text</b>, <i title="(Optional) The ID of the new script element.">id</i>)<br/>Creates a new script element given its source text (and optional ID).</td>
+</tr>
+<tr valign='top'>
+<td><b>bool</b></td>
+<td><b>[#isArray isArray]</b> (<b title="The object to test.">obj</b>)<br/>Determines if the specified object is an array.</td>
+</tr>
+<tr valign='top'>
+<td><b>bool</b></td>
+<td><b>[#isArrayLike isArrayLike]</b> (<b title="The object to test.">obj</b>)<br/>Determines if the specified object is array-like.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#isBlank isBlank]</b> (<b title="The string to test.">s</b>)<br/>Returns true if the given string is blank.</td>
+</tr>
+<tr valign='top'>
+<td><b>bool</b></td>
+<td><b>[#isBool isBool]</b> (<b title="The object to test.">obj</b>)<br/>Determines if the specified object is a boolean.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#isClass isClass]</b> (<b title="The object to test for class-ness.">klass</b>)<br/>Returns true if the parameter passed represents a class generated by $class.</td>
+</tr>
+<tr valign='top'>
+<td><b>bool</b></td>
+<td><b>[#isDate isDate]</b> (<b title="The object to test.">obj</b>)<br/>Determines if the specified object is a Date.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#isEmpty isEmpty]</b> (<b title="The string to test.">s</b>)<br/>Returns true if the given string is empty.</td>
+</tr>
+<tr valign='top'>
+<td><b>bool</b></td>
+<td><b>[#isFunc isFunc]</b> (<b title="The object to test.">obj</b>)<br/>Determines if the specified object is a function.</td>
+</tr>
+<tr valign='top'>
+<td><b>bool</b></td>
+<td><b>[#isNumber isNumber]</b> (<b title="The object to test.">obj</b>)<br/>Determines if the specified object is a finite number.</td>
+</tr>
+<tr valign='top'>
+<td><b>bool</b></td>
+<td><b>[#isString isString]</b> (<b title="The object to test.">obj</b>)<br/>Determines if the specified object is a string.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#loadScript loadScript]</b> (<b title="The Javascript source URL.">src</b>, <b title="The handler to call when the script is fully loaded.">onload</b>, <i title="(Optional) The ID of the new script element.">id</i>)<br/>Creates a new script element given its source URL (and optional ID).</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#makeQueryPair makeQueryPair]</b> (<b title="The key of the pair.">key</b>, <b title="The value of the pair.">value</b>)<br/>Makes a query pair of "key=value" or "key".</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#makeQueryString makeQueryString]</b> (<b title="The parameters to convert.">params</b>)<br/>Converts the keys and values in the given parameters to a string.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#mixinEventHandler mixinEventHandler]</b> (<b title="The class to which to add IEventHandler.">T</b>)<br/>This method adds IEventHandler support to the given class.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#mixinEventSource mixinEventSource]</b> (<b title="The class to which the IEventSource methods are added.">T</b>)<br/>Adds the IEventSource methods to the specified class.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#newScript newScript]</b> (<i title="(Optional) The ID of the new script element.">id</i>)<br/>Creates a new script element, optionally setting its ID, and returns it.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#newXHR newXHR]</b> (<b title="The Ajax options object.">opt</b>)<br/>Creates a new XHR (XMLHttpRequest) object and returns it.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#parseQueryString parseQueryString]</b> (<b title="The query string to parse.">str</b>, <b title="The separator (default is &quot;&amp;&quot;).">sep</b>)<br/>Parses a query string into an object with properties named by the parameters.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#safeStr safeStr]</b> (<b title="The &quot;string&quot; to make safe to treat as a string.">str</b>)<br/>Ensures the given argument is a string (and not null).</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#sortBy sortBy]</b> (<b title="The array to sort.">array</b>, <b title="The property to compare.">prop</b>)<br/>Sorts the given array by the specified property on each element.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#subst subst]</b> (<b title="The string to be substituted.">str</b>, <b title="The pattern to match.">string|regexp pattern</b>, <b title="The substitution value.">string|function|Template replacement</b>, <i title="(Optional) The number of occurances to replace.">count</i>)<br/>Returns a string with the first count occurrences of pattern replaced by either a regular string, the returned value of a function or a Template string.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#trim trim]</b> (<b title="The string to trim.">str</b>, <b title="The character to trim (default is all whitespace).">ch</b>)<br/>Removes leading and trailing spaces or characters from the given string.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#trimLeft trimLeft]</b> (<b title="The string to trim.">str</b>, <b title="The character to trim (default is all whitespace).">ch</b>)<br/>Removes leading spaces or characters from the given string.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#trimRight trimRight]</b> (<b title="The string to trim.">str</b>, <b title="The character to trim (default is all whitespace).">ch</b>)<br/>Removes trailing spaces or characters from the given string.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#zeroPad zeroPad]</b> (<b title="The number to pad with 0's.">num</b>, <b title="The minimum length below which to pad.">len</b>)<br/>Pads the given number with 0's on the left to a specified length.</td>
+</tr>
+</table>
+----
+== Method Details ==
+=== addMeta ===
+<code language='js'>object addMeta (obj, meta)</code>
+<blockquote>
+<p>Adds properties to the $meta container of the given object.</p>
+<b>Parameters:</b><br/><ol>
+<li>obj
+<p>The object to which meta data is to be added.</p>
+</li>
+<li>meta
+<p>The object containing the meta data properties to add.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The given object.</p>
+</blockquote>
+</blockquote>
+=== addScript ===
+<code language='js'>void addScript (script)</code>
+<blockquote>
+<p>Adds the given script element to the document.</p>
+<b>Parameters:</b><br/><ol>
+<li>script
+</li>
+</ol>
+</blockquote>
+=== ajax ===
+<code language='js'>AjaxTransaction ajax (url, opt)</code>
+<blockquote>
+<p>Creates an AjaxTransaction object, sends it and then returns it.</p>
+<b>Parameters:</b><br/><ol>
+<li>url
+<p>The requested URL (required).</p>
+</li>
+<li>opt
+<p>The options for the transaction.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The newly created and sent AjaxTransaction.</p>
+</blockquote>
+</blockquote>
+=== array ===
+<code language='js'>object array (it)</code>
+<blockquote>
+<p>Converts the given iteratable sequence into a proper array. This can handle an arguments object or other forms. It always returns an array, even if that array is empty.</p>
+<b>Parameters:</b><br/><ol>
+<li>it
+<p>The iteratable collection to convert or copy to an new array.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The new array.</p>
+</blockquote>
+</blockquote>
+=== arrayCat ===
+<code language='js'>object arrayCat (a, b)</code>
+<blockquote>
+<p>Concatenates the two given arrays and returns the new array.</p>
+<b>Parameters:</b><br/><ol>
+<li>a
+<p>The first array.</p>
+</li>
+<li>b
+<p>The second array.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The new (concatenated) array.</p>
+</blockquote>
+</blockquote>
+=== arrayConv ===
+<code language='js'>object arrayConv (it)</code>
+<blockquote>
+<p>Performs raw conversion using toArray. This has issues and is specialized by some browsers.</p>
+<b>Parameters:</b><br/><ol>
+<li>it
+<p>The iteratable collection to convert or copy to an array.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The array.</p>
+</blockquote>
+</blockquote>
+=== arrayCopy ===
+<code language='js'>object arrayCopy (dest, doffset, src, soffset, len)</code>
+<blockquote>
+<p>Copies elements from one array to another. Similar to Java's System.arrayCopy method.</p>
+<b>Parameters:</b><br/><ol>
+<li>dest
+<p>The destination array. If null, a new array is created.</p>
+</li>
+<li>doffset
+<p>The offset in the destination array.</p>
+</li>
+<li>src
+<p>The source array.</p>
+</li>
+<li>soffset
+<p>The offset in the source array.</p>
+</li>
+<li>len
+<p>The number of elements to copy.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The destination or new array.</p>
+</blockquote>
+</blockquote>
+=== arrayTail ===
+<code language='js'>object arrayTail (a, skip)</code>
+<blockquote>
+<p>This method returns the elements of the given array beyond a starting point.</p>
+<b>Parameters:</b><br/><ol>
+<li>a
+<p>The array from which to copy elements.</p>
+</li>
+<li>skip
+<p>The number of elements to skip.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The array containing the remaining elements (or null if there are none).</p>
+</blockquote>
+</blockquote>
+=== chain ===
+<code language='js'>object chain (base)</code>
+<blockquote>
+<p>Creates and returns a new object that has the given object as its prototype object.</p>
+<b>Parameters:</b><br/><ol>
+<li>base
+<p>The object that will be the prototype of the returned new object.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>A new object that has the given object as its prototype object.</p>
+</blockquote>
+</blockquote>
+=== contains ===
+<code language='js'>object contains (str, pat)</code>
+<blockquote>
+<p>Returns true if str contains the given pattern, false if not.</p>
+<b>Parameters:</b><br/><ol>
+<li>str
+<p>The string to check for containing the pattern.</p>
+</li>
+<li>pat
+<p>The pattern find in the given string.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if str contains the given pattern, false if not.</p>
+</blockquote>
+</blockquote>
+=== copy ===
+<code language='js'>object copy (to, from, from2?)</code>
+<blockquote>
+<p>Copies the properties of a given source object (from) to a target object (to). This method accepts multiple source objects. In other words, the real signature is:</p>
+<code language="js">
+   zjs.copy(to, from1[, from2[, from3 ...] ])</code>
+<b>Parameters:</b><br/><ol>
+<li>to
+<p>The target object to which properties will be copied.</p>
+</li>
+<li>from
+<p>The first source object from which properties will be copied.</p>
+</li>
+<li>from2 <i>(optional)</i>
+<p>The second source object from which to copy (may be more).</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The target object.</p>
+</blockquote>
+</blockquote>
+=== copyIf ===
+<code language='js'>object copyIf (to, from, from2?)</code>
+<blockquote>
+<p>Copies the properties of a given source object (from) to a target object (to). The properties copied are only those not already on the target object. This method accepts multiple source objects. In other words, the real signature is:</p>
+<code language="js">
+   copyIf (to, from1[, from2[, from3 ...] ])</code>
+<b>Parameters:</b><br/><ol>
+<li>to
+<p>The target object to which properties will be copied.</p>
+</li>
+<li>from
+<p>The first source object from which properties will be copied.</p>
+</li>
+<li>from2 <i>(optional)</i>
+<p>The second source object from which to copy (may be more).</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The target object.</p>
+</blockquote>
+</blockquote>
+=== deref ===
+<code language='js'>object deref (object, expr)</code>
+<blockquote>
+<p>Dereferences an expression in the context of a given object. In other words, all variables in the expression are interpreted as dereferencing the context object.</p>
+<p>For example:</p>
+<code language="js">
+   var obj = { foo : [ { bar : 42 } ] };
+   var val = zjs.deref(obj, "foo[0]");
+
+   assertTrue(obj.foo[0] === val);</code>
+<p>The supported syntax includes dot operator and array indexing using numeric values or quoted strings (single or double).</p>
+<p>For example:</p>
+<code language="js">
+   val = zjs.deref(obj, "foo[0]['bar']");
+
+   assertTrue(obj.foo[0].bar === val);</code>
+<b>Parameters:</b><br/><ol>
+<li>object
+<p>The context object to dereference.</p>
+</li>
+<li>expr
+<p>The expression to evaluate in the given object's context.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The result of the specified expression dereferencing the given object.</p>
+</blockquote>
+</blockquote>
+=== destroy ===
+<code language='js'>object destroy (obj)</code>
+<blockquote>
+<p>This method destroys its arguments. For each argument, if it is an object with a destroy method, that method is called. For an array, the elements of that array are likewise destroyed, recursively.</p>
+<code language="js">
+   var obj = new Something();
+
+   obj = zjs.destroy(obj);</code>
+<b>Parameters:</b><br/><ol>
+<li>obj
+<p>An object or array of objects to destroy (one of many).</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>Always null.</p>
+</blockquote>
+</blockquote>
+=== detectBrowser ===
+<code language='js'>object detectBrowser (env)</code>
+<blockquote>
+<p>This function performs browser and OS detection. It is derived from code found here:</p>
+<p>http://www.quirksmode.org/js/detect.html</p>
+<p>The license of QuirksMode (http://www.quirksmode.org/about/copyright.html) is most friendly and compatible with the license of ZJS itself. In fact, it does not even have attribution requirements.</p>
+<p>The ZJS modifications to the code from QuirksMode are as follows:</p>
+<p>* Restructured into a function that can be unit tested. * The "attribs" objects found in the dataBrowser and dataOS arrays.</p>
+<p>As browser detection is fragle in general, the work required to maintain this code basically boils down to the maintenance of the two arrays. The mechanism should be largely stable since it is data-driven.</p>
+<b>Parameters:</b><br/><ol>
+<li>env
+<p>The environment object</p>
+<b>Members:</b><br/><ul>
+<li>nav
+<p>The navigator object.</p>
+</li>
+<li>win
+<p>The window object.</p>
+</li>
+</ul>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The details of the detected browser.</p>
+<b>Members:</b><br/><ul>
+<li>name
+<p>The name of the browser.</p>
+</li>
+<li>version
+<p>The version of the browser.</p>
+</li>
+<li>ie
+<p>True if the browser is IE of any version.</p>
+</li>
+<li>firefox
+<p>True if the browser is Firefox of any version.</p>
+</li>
+<li>gecko
+<p>True if the browser is based on Gecko.</p>
+</li>
+<li>chrome
+<p>True if the browser is Google Chrome of any version.</p>
+</li>
+<li>khtml
+<p>True if the browser is based on KHTML.</p>
+</li>
+<li>engine
+<p>The name of the rendering engine ("msie", "gecko", etc.).</p>
+</li>
+<li>safari
+<p>True if the browser is Safari of any version.</p>
+</li>
+<li>webkit
+<p>True if the browser is based on WebKit.</p>
+</li>
+<li>opera
+<p>True if the browser is Opera.</p>
+</li>
+<li>os
+<p>The Operating System name ("Windows", "Mac" or "Linux").</p>
+</li>
+<li>win
+<p>True if the browser if is running on Windows.</p>
+</li>
+<li>mac
+<p>True if the browser if is running on Mac.</p>
+</li>
+<li>linux
+<p>True if the browser if is running on Linux.</p>
+</li>
+</ul>
+</blockquote>
+</blockquote>
+=== finishClass ===
+<code language='js'>class finishClass (class klass)</code>
+<blockquote>
+<p>This method is called to finishes a new class. This is a separate method so it can be customized by the user as necessary. By default, this method does nothing.</p>
+<b>Parameters:</b><br/><ol>
+<li>klass : class
+<p>The class to finish.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The class object.</p>
+</blockquote>
+</blockquote>
+=== format ===
+<code language='js'>object format (string template, object object, regexp syntax?)</code>
+<blockquote>
+<p>This function formats a text string with replacement parameters. This is similar to Java's String.format, but uses Ruby-like named replacements. Templates are strings that have embedded symbols in the form #{fieldName} that are replaced by actual values when the template is applied to an object.</p>
+<p>A simple example follows.</p>
+<code language="js">
+   var s = zjs.format("The TV show #{title} was created by #{author}.",
+                           { title: "The Simpsons",
+                             author: "Matt Groening",
+                             network: "FOX" });
+
+   // s = "The TV show The Simpsons was created by Matt Groening."</code>
+<p>The next example shows the same template being used with a handful of distinct objects.</p>
+<code language="js">
+   //creating a few similar objects
+   var conversion1 = {from: "meters", to: "feet", factor: 3.28};
+   var conversion2 = {from: "kilojoules", to: "BTUs", factor: 0.9478};
+   var conversion3 = {from: "megabytes", to: "gigabytes", factor: 1024};
+
+   //the template  
+   var tl = "Multiply by #{factor} to convert from #{from} to #{to}.";
+
+   var s1 = zjs.format(t1, conversion1);
+   var s2 = zjs.format(t1, conversion2);
+   var s3 = zjs.format(t1, conversion3);
+
+   // s1 = "Multiply by 3.28 to convert from meters to feet."
+   // s2 = "Multiply by 0.9478 to convert from kilojoules to BTUs."
+   // s3 = "Multiply by 1024 to convert from megabytes to gigabytes."</code>
+<p>To include a literal that looks like a symbol in template, but is not supposed to be replaced, the backslash character ("\") can be used.</p>
+<code language="js">
+   // note: you're seeing two backslashes here because the backslash is also a 
+   // escaping character in JavaScript strings
+   var t = "in #{lang} we also use the \\#{variable} syntax for templates.";
+   var data = {lang:"Ruby", variable: "(not used)"};
+
+   var s = zjs.format(t, data);
+
+   // s = "in Ruby we also use the #{variable} syntax for templates."</code>
+<p>In the case where the default Ruby-like syntax is not desired, the format method accepts an optional third argument that is a regular expression object to match the replaceable symbols in the template string.</p>
+<p>For example, a template that uses a syntax using "[%=" and "%]":</p>
+<code language="js">
+   var syntax = /(^|.|\r|\n)(\[%=\s*(\w+)\s*%\])/; // "[%= field %]"
+   var t = "Name: [%= name %], Age: [%=age%]";
+
+   var s = zjs.format(t, {name: "John Smith", age: 26}, syntax);
+
+   // s = "Name: John Smith, Age: 26"</code>
+<p>Any syntax must provide at least three groupings in the regular expression. The first grouping is to capture what comes before the symbol, to detect the backslash escape character. The second grouping captures the entire symbol and will be completely replaced upon evaluation. Lastly, the third required grouping captures the name of the field inside the symbol.</p>
+<b>Parameters:</b><br/><ol>
+<li>template : string
+<p>The template text.</p>
+</li>
+<li>object : object
+<p>The object containing the values to be inserted.</p>
+</li>
+<li>syntax : regexp <i>(optional)</i>
+<p>The regex that captures the parts of a replacement.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The string with the parts of the template replaced by the given object values.</p>
+</blockquote>
+</blockquote>
+=== getComparer ===
+<code language='js'>function getComparer (prop)</code>
+<blockquote>
+<p>Returns a function for use in Array.sort that compares a property on each element.</p>
+<code language="js">
+   var fn = zjs.getComparer("name");
+   var array = [ { name: "xyz" }, { name: "abc" } ];
+   array.sort(fn);</code>
+<b>Parameters:</b><br/><ol>
+<li>prop
+<p>The property to compare.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<code language='js'>object  (lhs, rhs)</code>
+<blockquote>
+<p>The comparison function.</p>
+<b>Parameters:</b><br/><ol>
+<li>lhs
+<p>The left-hand side of the comparison.</p>
+</li>
+<li>rhs
+<p>The right-hand side of the comparison.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>0 if lhs==rhs, -1 if lhs `<` rhs and 1 if lhs `>` rhs.</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+=== getMeta ===
+<code language='js'>object getMeta (obj, noadd)</code>
+<blockquote>
+<p>Returns the $meta data property of the given object, adding one as needed.</p>
+<b>Parameters:</b><br/><ol>
+<li>obj
+<p>The object for which meta data is desired.</p>
+</li>
+<li>noadd
+<p>When true, $meta is returned only if already present.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The meta data object for the given object.</p>
+</blockquote>
+</blockquote>
+=== getMimeType ===
+<code language='js'>object getMimeType (contentType)</code>
+<blockquote>
+<p>Returns the MIME type given a Content-Type value. This requires some parsing due to the ";charset" muck that can appear following the MIME type.</p>
+<b>Parameters:</b><br/><ol>
+<li>contentType
+<p>The HTTP Content-Type header value.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The MIME type.</p>
+</blockquote>
+</blockquote>
+=== getSorter ===
+<code language='js'>function getSorter (prop)</code>
+<blockquote>
+<p>Returns a function that sorts an array using a property on each element.</p>
+<code language="js">
+   var sort = zjs.getSorter("name");
+   var array = [ { name: "xyz" }, { name: "abc" } ];
+   sort(array);</code>
+<b>Parameters:</b><br/><ol>
+<li>prop
+<p>The property to compare.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<code language='js'>object  (array)</code>
+<blockquote>
+<p>The sorter function.</p>
+<b>Parameters:</b><br/><ol>
+<li>array
+<p>The array to sort.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The array</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+=== getType ===
+<code language='js'>sring getType (object obj)</code>
+<blockquote>
+<p>This method returns the type of the given object. This is superior to typeof in many ways. See these posts:</p>
+<p>http://profiles.yahoo.com/blog/GSBHPXZFNRM2QRAP3PXNGFMFVU?eid=fam48bo6nChhLpXTWLYuo2PoctbJjTIo34SjoLBF9VV3glXt.w http://thinkweb2.com/projects/prototype/instanceof-considered-harmful-or-how-to-write-a-robust-isarray/ http://juhukinners.com/2009/01/11/typeof-considered-useless-or-how-to-write-robust-type-checks/</p>
+<p>Here is a summary table of the results from this method and typeof:</p>
+<pre>
+    Value               getType     typeof
+    ----------------------------------------
+    "juhu"              string      string
+    new String("juhu")  string      object
+    1.2                 number      number
+    new Number(1.2)     number      object
+    true                boolean     boolean
+    new Boolean(true)   boolean     object
+    new Date()          date        object
+    new Error()         error       object
+    [1,2,3]             array       object
+    new Array(1, 2, 3)  array       object
+    new Function("")    function    function
+    /abc/g              regexp      object (function in Safari)
+    new RegExp("c")     regexp      object (function in Safari)
+    {}                  object      object
+    new Object()        object      object
+
+    null                null        object
+    undefined           undefined   undefined
+    $class({...})       class       object
+    new foo.Bar()       foo.Bar     object (foo.Bar is a ZJS class)</pre>
+<b>Parameters:</b><br/><ol>
+<li>obj : object
+<p>The object for which the type is desired.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The type of the given object.</p>
+</blockquote>
+</blockquote>
+=== gsubst ===
+<code language='js'>object gsubst (str, string|regexp pattern, string|function|Template replacement)</code>
+<blockquote>
+<p>Returns the string with every occurence of a given pattern replaced by either a regular string, the returned value of a function or a Template string. The pattern can be a string or a regular expression.</p>
+<p>If its replacement argument is a string this works just like the native JavaScript method replace() set to global match.</p>
+<p>If you pass it a function for the replacement argument, it is invoked for every occurrence of the pattern with the current match as its one argument. Note that this argument is the returned value of the match() method called on the current pattern. It is in the form of an array where the first element is the entire match and every subsequent one corresponds to a parenthesis group in the regex.</p>
+<p>Lastly, you can use a Template string as the replacement in which you can also access the returned value of the match() method using the ruby inspired notation: #{0} for the first element of the array, #{1} for the second one, and so on.</p>
+<p>If you need an equivalent but without global match set on, try zjs.subst instead.</p>
+<p>NOTE: Do not use the "g" regex flag as this will create an infinite loop.</p>
+<b>Parameters:</b><br/><ol>
+<li>str
+<p>The string to be substituted.</p>
+</li>
+<li>pattern : string|regexp
+<p>The pattern to match.</p>
+</li>
+<li>replacement : string|function|Template
+<p>The substitution value.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The string with every occurence of pattern replaced.</p>
+</blockquote>
+</blockquote>
+=== has ===
+<code language='js'>object has (obj, name)</code>
+<blockquote>
+<p>Returns true if the given object has the specified property. If EVIL libraries (i.e., those that add to Object.prototype, like Prototype.js) are present, this method uses hasOwnPrototype. Otherwise it uses the "in" operator. This method is used instead of the "in" operator</p>
+<b>Parameters:</b><br/><ol>
+<li>obj
+<p>The object to test.</p>
+</li>
+<li>name
+<p>The name of the property.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if the given object has the specified property.</p>
+</blockquote>
+</blockquote>
+=== hasOwn ===
+<code language='js'>object hasOwn (obj, name)</code>
+<blockquote>
+<p>Returns true if the given object has the specified property. If EVIL libraries (i.e., those that add to Object.prototype, like Prototype.js) are present, this method uses hasOwnPrototype. Otherwise it returns true. This method is used in "for-in" loops to filter out EVIL properties.</p>
+<b>Parameters:</b><br/><ol>
+<li>obj
+<p>The object to test.</p>
+</li>
+<li>name
+<p>The name of the property.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if the given object hasOwnProperty of the specified property.</p>
+</blockquote>
+</blockquote>
+=== injectScript ===
+<code language='js'>object injectScript (text, id?)</code>
+<blockquote>
+<p>Creates a new script element given its source text (and optional ID). The new script element is added to the document and returned. This works on all of the supported browsers and the code is immediately "live" or "ready". This is a much better and more correct way to inject code than eval. The problem with evail is that the code is evaluated in the current context. Using this approach the code is added to the global scope as it ought to be.</p>
+<b>Parameters:</b><br/><ol>
+<li>text
+<p>The Javascript source code.</p>
+</li>
+<li>id <i>(optional)</i>
+<p>The ID of the new script element.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The new script element.</p>
+</blockquote>
+</blockquote>
+=== isArray ===
+<code language='js'>bool isArray (obj)</code>
+<blockquote>
+<p>Determines if the specified object is an array.</p>
+<b>Parameters:</b><br/><ol>
+<li>obj
+<p>The object to test.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if obj is an array, false if not.</p>
+</blockquote>
+</blockquote>
+=== isArrayLike ===
+<code language='js'>bool isArrayLike (obj)</code>
+<blockquote>
+<p>Determines if the specified object is array-like. This will include arrays as well as arguments objects.</p>
+<b>Parameters:</b><br/><ol>
+<li>obj
+<p>The object to test.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if obj is array-like, false if not.</p>
+</blockquote>
+</blockquote>
+=== isBlank ===
+<code language='js'>object isBlank (s)</code>
+<blockquote>
+<p>Returns true if the given string is blank.</p>
+<b>Parameters:</b><br/><ol>
+<li>s
+<p>The string to test.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if the given string is blank.</p>
+</blockquote>
+</blockquote>
+=== isBool ===
+<code language='js'>bool isBool (obj)</code>
+<blockquote>
+<p>Determines if the specified object is a boolean.</p>
+<b>Parameters:</b><br/><ol>
+<li>obj
+<p>The object to test.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if obj is a boolean, false if not.</p>
+</blockquote>
+</blockquote>
+=== isClass ===
+<code language='js'>object isClass (klass)</code>
+<blockquote>
+<p>Returns true if the parameter passed represents a class generated by $class.</p>
+<b>Parameters:</b><br/><ol>
+<li>klass
+<p>The object to test for class-ness.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if the parameter passed represents a class generated by $class.</p>
+</blockquote>
+</blockquote>
+=== isDate ===
+<code language='js'>bool isDate (obj)</code>
+<blockquote>
+<p>Determines if the specified object is a Date.</p>
+<b>Parameters:</b><br/><ol>
+<li>obj
+<p>The object to test.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if obj is a Date, false if not.</p>
+</blockquote>
+</blockquote>
+=== isEmpty ===
+<code language='js'>object isEmpty (s)</code>
+<blockquote>
+<p>Returns true if the given string is empty.</p>
+<b>Parameters:</b><br/><ol>
+<li>s
+<p>The string to test.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if the given string is empty.</p>
+</blockquote>
+</blockquote>
+=== isFunc ===
+<code language='js'>bool isFunc (obj)</code>
+<blockquote>
+<p>Determines if the specified object is a function.</p>
+<b>Parameters:</b><br/><ol>
+<li>obj
+<p>The object to test.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if obj is a function, false if not.</p>
+</blockquote>
+</blockquote>
+=== isNumber ===
+<code language='js'>bool isNumber (obj)</code>
+<blockquote>
+<p>Determines if the specified object is a finite number.</p>
+<b>Parameters:</b><br/><ol>
+<li>obj
+<p>The object to test.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if obj is a finite number, false if not.</p>
+</blockquote>
+</blockquote>
+=== isString ===
+<code language='js'>bool isString (obj)</code>
+<blockquote>
+<p>Determines if the specified object is a string.</p>
+<b>Parameters:</b><br/><ol>
+<li>obj
+<p>The object to test.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if obj is a string, false if not.</p>
+</blockquote>
+</blockquote>
+=== loadScript ===
+<code language='js'>object loadScript (src, onload, id?)</code>
+<blockquote>
+<p>Creates a new script element given its source URL (and optional ID). The new script element is added to the document and returned. When the script loads, the onload handler is called.</p>
+<p>NOTE: This does not work on Safari. Neither onreadystatechange nor onload events fire when the script text loads. It will load, we just cannot detect when the ready (code live) state is reached. This is believed to be true for all of the KHTML/WebKit-based browsers.</p>
+<b>Parameters:</b><br/><ol>
+<li>src
+<p>The Javascript source URL.</p>
+</li>
+<li>onload
+<p>The handler to call when the script is fully loaded.</p>
+</li>
+<li>id <i>(optional)</i>
+<p>The ID of the new script element.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The new script element.</p>
+</blockquote>
+</blockquote>
+=== makeQueryPair ===
+<code language='js'>object makeQueryPair (key, value)</code>
+<blockquote>
+<p>Makes a query pair of "key=value" or "key". If the value has a toQueryParam method, it is called to stringify the value. Following that, the value is encoded as a URI Component.</p>
+<b>Parameters:</b><br/><ol>
+<li>key
+<p>The key of the pair.</p>
+</li>
+<li>value
+<p>The value of the pair.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The formatted query pair.</p>
+</blockquote>
+</blockquote>
+=== makeQueryString ===
+<code language='js'>object makeQueryString (params)</code>
+<blockquote>
+<p>Converts the keys and values in the given parameters to a string. Since query parameters are basically unordered, the keys are sorted to ensure a consistent ordering. This helps cache detection and testing, even if it is a performance hit (albeit minor).</p>
+<b>Parameters:</b><br/><ol>
+<li>params
+<p>The parameters to convert.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The query string with the given parameters.</p>
+</blockquote>
+</blockquote>
+=== mixinEventHandler ===
+<code language='js'>void mixinEventHandler (T)</code>
+<blockquote>
+<p>This method adds IEventHandler support to the given class.</p>
+<b>Parameters:</b><br/><ol>
+<li>T
+<p>The class to which to add IEventHandler.</p>
+</li>
+</ol>
+</blockquote>
+=== mixinEventSource ===
+<code language='js'>void mixinEventSource (T)</code>
+<blockquote>
+<p>Adds the IEventSource methods to the specified class.</p>
+<b>Parameters:</b><br/><ol>
+<li>T
+<p>The class to which the IEventSource methods are added.</p>
+</li>
+</ol>
+</blockquote>
+=== newScript ===
+<code language='js'>object newScript (id?)</code>
+<blockquote>
+<p>Creates a new script element, optionally setting its ID, and returns it. The new element is NOT added to the document.</p>
+<b>Parameters:</b><br/><ol>
+<li>id <i>(optional)</i>
+<p>The ID of the new script element.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The new script element.</p>
+</blockquote>
+</blockquote>
+=== newXHR ===
+<code language='js'>object newXHR (opt)</code>
+<blockquote>
+<p>Creates a new XHR (XMLHttpRequest) object and returns it. This handles IE vs. The Rest Of The World issues.</p>
+<p>NOTE: It is *NOT* recommended to call this method. All the features of XHR are better handled by the zjs.AjaxTransaction class and the zjs.ajax method. This method is exposed only in the unlikely case that the more friendly wrappers are unsuited for some situation.</p>
+<b>Parameters:</b><br/><ol>
+<li>opt
+<p>The Ajax options object.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>A new and uninitialized XHR object.</p>
+</blockquote>
+</blockquote>
+=== parseQueryString ===
+<code language='js'>object parseQueryString (str, sep)</code>
+<blockquote>
+<p>Parses a query string into an object with properties named by the parameters. If a parameter occurs multiple times, the value is an array of values.</p>
+<b>Parameters:</b><br/><ol>
+<li>str
+<p>The query string to parse.</p>
+</li>
+<li>sep
+<p>The separator (default is "`&`").</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The object containing the query parameters.</p>
+</blockquote>
+</blockquote>
+=== safeStr ===
+<code language='js'>object safeStr (str)</code>
+<blockquote>
+<p>Ensures the given argument is a string (and not null). This can be important if accessing string methods or properties.</p>
+<b>Parameters:</b><br/><ol>
+<li>str
+<p>The "string" to make safe to treat as a string.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The safe string object.</p>
+</blockquote>
+</blockquote>
+=== sortBy ===
+<code language='js'>object sortBy (array, prop)</code>
+<blockquote>
+<p>Sorts the given array by the specified property on each element.</p>
+<code language="js">
+   var array = [ { name: "xyz" }, { name: "abc" } ];
+   zjs.sortBy(array, "name");</code>
+<b>Parameters:</b><br/><ol>
+<li>array
+<p>The array to sort.</p>
+</li>
+<li>prop
+<p>The property to compare.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The array.</p>
+</blockquote>
+</blockquote>
+=== subst ===
+<code language='js'>object subst (str, string|regexp pattern, string|function|Template replacement, count?)</code>
+<blockquote>
+<p>Returns a string with the first count occurrences of pattern replaced by either a regular string, the returned value of a function or a Template string. The pattern can be a string or a regular expression.</p>
+<p>Unlike zjs.gsubst, this method takes an exttra optional parameter which specifies the number of occurrences of the pattern to be replaced. If not specified, it will default to 1.</p>
+<p>Apart from that, zjs.subst works just like zjs.gsubst. Please refer to it for a complete explanation.</p>
+<b>Parameters:</b><br/><ol>
+<li>str
+<p>The string to be substituted.</p>
+</li>
+<li>pattern : string|regexp
+<p>The pattern to match.</p>
+</li>
+<li>replacement : string|function|Template
+<p>The substitution value.</p>
+</li>
+<li>count <i>(optional)</i>
+<p>The number of occurances to replace.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The string with the first count occurence of pattern replaced.</p>
+</blockquote>
+</blockquote>
+=== trim ===
+<code language='js'>object trim (str, ch)</code>
+<blockquote>
+<p>Removes leading and trailing spaces or characters from the given string.</p>
+<b>Parameters:</b><br/><ol>
+<li>str
+<p>The string to trim.</p>
+</li>
+<li>ch
+<p>The character to trim (default is all whitespace).</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The trimmed string.</p>
+</blockquote>
+</blockquote>
+=== trimLeft ===
+<code language='js'>object trimLeft (str, ch)</code>
+<blockquote>
+<p>Removes leading spaces or characters from the given string.</p>
+<b>Parameters:</b><br/><ol>
+<li>str
+<p>The string to trim.</p>
+</li>
+<li>ch
+<p>The character to trim (default is all whitespace).</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The trimmed string.</p>
+</blockquote>
+</blockquote>
+=== trimRight ===
+<code language='js'>object trimRight (str, ch)</code>
+<blockquote>
+<p>Removes trailing spaces or characters from the given string.</p>
+<b>Parameters:</b><br/><ol>
+<li>str
+<p>The string to trim.</p>
+</li>
+<li>ch
+<p>The character to trim (default is all whitespace).</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The trimmed string.</p>
+</blockquote>
+</blockquote>
+=== zeroPad ===
+<code language='js'>object zeroPad (num, len)</code>
+<blockquote>
+<p>Pads the given number with 0's on the left to a specified length.</p>
+<b>Parameters:</b><br/><ol>
+<li>num
+<p>The number to pad with 0's.</p>
+</li>
+<li>len
+<p>The minimum length below which to pad.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The 0-padded number.</p>
+</blockquote>
+</blockquote>
+----
+== Variables ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><p><b>ACCEPT</b></p></td>
+<td>
+<p>The HTTP header that tells the MIME type the client accepts as the response (Accept)</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>CONTENT_LENGTH</b></p></td>
+<td>
+<p>The HTTP header that holds the content length (Content-Length).</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>CONTENT_TYPE</b></p></td>
+<td>
+<p>The HTTP header that specifies the content type (for request and response).</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>DONE</b></p></td>
+<td>
+<p>All content has been received.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>HEADERS_RECEIVED</b></p></td>
+<td>
+<p>send() has been called, headers and status are available.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>JSON</b></p></td>
+<td>
+<p>The MIME type for JSON content (application/json, see RFC 4627). See http://www.ietf.org/rfc/rfc4627.txt?number=4627</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>LOADING</b></p></td>
+<td>
+<p>The responseText property holds partial data (not true in IE).</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>OPENED</b></p></td>
+<td>
+<p>send() has not yet been called.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>UNSENT</b></p></td>
+<td>
+<p>open() has not yet been called.</p>
+<p>The AjaxTransaction ctor calls open, so this state should be invisible in that case.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>XML</b></p></td>
+<td>
+<p>The MIME type for XML content (text/xml). One of them anyway (application/xml is also standard). See http://en.wikipedia.org/wiki/XML_and_MIME as well as http://www.ietf.org/rfc/rfc3023.txt?number=3023 for more details.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>browser</b></p></td>
+<td>
+<p>This is the single instance of the Browser class for this browser.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>http</b></p></td>
+<td>
+<p>Some HTTP constants.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>mime</b></p></td>
+<td>
+<p>Some MIME type constants.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>xhr</b></p></td>
+<td>
+<p>The various readyStates of the XHR object.</p>
+</td></tr>
+</table>

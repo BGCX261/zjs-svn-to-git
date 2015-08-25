@@ -1,0 +1,306 @@
+#summary Function
+ * *File:* zjs/core.js
+ * *Module:* zjs.core
+= Class Function =
+
+----
+<p>Several extensions are added to the Javascript Function class. These are then available as methods on all function objects.</p>
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#bind bind]</b> (<b title="The 'this' pointer scope to use when calling the target function.">that</b>, <i title="(Optional) The first of any number of arguments to pass to the target function.">arg1</i>)<br/>Creates and returns a function that binds a "this" pointer and optional arguments to this function.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#bind2 bind2]</b> (<b title="The object that will be the &quot;this&quot; pointer.">obj</b>)<br/>Binds the given object as a permanent "this" pointer to this function.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#buffered buffered]</b> (<b title="The buffering options object or simply the delay in milliseconds.">number|object opts</b>, <b title="The &quot;this&quot; context to pass to the target method on each call.">scope</b>)<br/>This method creates a buffered function that calls this function later.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#delayed delayed]</b> (<b title="The number of milliseconds to delay calling the target function.">delay</b>, <b title="The &quot;this&quot; context to pass to the target method on each call.">scope</b>)<br/>This method creates a function that calls this function later.</td>
+</tr>
+<tr valign='top'>
+<td><b>string[]</b></td>
+<td><b>[#getArgumentNames getArgumentNames]</b> ()<br/>Returns the names of the arguments to this function.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#getFullName getFullName]</b> ()<br/>Returns the full name of this function.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#getName getName]</b> ()<br/>Returns the name of this function.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#head head]</b> ()<br/>Creates a function that passes stored parameters to this function.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#later later]</b> (<i title="(Optional) The number of milliseconds to delay calling the target function.">delay</i>, <i title="(Optional) The &quot;this&quot; context to use when calling the target method.">scope</i>, <i title="(Optional) The arguments to pass along to the target method.">args</i>)<br/>This method calls this function later.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#returns returns]</b> (<b title="The value for the adapter function to return.">ret</b>)<br/>Returns a function that returns a bound value after calling this function.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#seal seal]</b> ()<br/>Creates a function that does not pass on its parameters to this function.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#tail tail]</b> ()<br/>Creates a function that passes stored parameters to this function.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#tee tee]</b> ()<br/>Creates a function that calls this function and 1+ other functions.</td>
+</tr>
+</table>
+----
+== Method Details ==
+=== bind ===
+<code language='js'>object bind (that, arg1?)</code>
+<blockquote>
+<p>Creates and returns a function that binds a "this" pointer and optional arguments to this function.</p>
+<p>For example:</p>
+<code language="js">
+   function foo () { ... }
+   var bar = { ... };
+   var fn = foo.bind(bar);
+   fn(4,2); // equivalent to: foo.call(bar, 4, 2)</code>
+<p>When arguments are also bound, they are inserted before the actual arguments from the caller. For example:</p>
+<code language="js">
+   function foo () { ... }
+   var bar = {};
+
+   var fn = foo.bind(bar, 1, 2);
+
+   fn(3, 4); // equivalent to: foo.call(bar, 1, 2, 3, 4);</code>
+<b>Parameters:</b><br/><ol>
+<li>that
+<p>The 'this' pointer scope to use when calling the target function.</p>
+</li>
+<li>arg1 <i>(optional)</i>
+<p>The first of any number of arguments to pass to the target function.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The function that will call the target whenever it is called.</p>
+</blockquote>
+</blockquote>
+=== bind2 ===
+<code language='js'>object bind2 (obj)</code>
+<blockquote>
+<p>Binds the given object as a permanent "this" pointer to this function. The "this" context for each call to the returned function object is then passed as the 1st argument to this function.</p>
+<p>For example:</p>
+<code language="js">
+    function foo (obj, ...) { ... }
+    var bar = { ... };
+    var baz = { fn : foo.bind2(bar) };
+    baz.fn(4, 2); // equivalent to: foo.call(bar, baz, 4, 2);</code>
+<b>Parameters:</b><br/><ol>
+<li>obj
+<p>The object that will be the "this" pointer.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The adapter function.</p>
+</blockquote>
+</blockquote>
+=== buffered ===
+<code language='js'>object buffered (number|object opts, scope)</code>
+<blockquote>
+<p>This method creates a buffered function that calls this function later. The returned function coalesces (buffers) calls across two dimensions: delivery time and argument capture.</p>
+<p>A common use for a buffered method is event handling. Especially events that come in batches (like mouse and keyboard events) where it makes sense to do some work once for the batch.</p>
+<p>For example:</p>
+<code language="js">
+    // Call onMouseMove 50 msec after the last mouse move:
+    el.onmousemove = onMouseMove.buffered(50);
+
+    // Call onMouseMove 50 msec after the first mouse move:
+    el.onmousemove = onMouseMove.buffered(-50);
+
+    // Calls "func" 20 msec after the last call to fn passing the arguments
+    // from the first call:
+    var fn = func.buffered({ delay: 20, args: "first" });</code>
+<b>Parameters:</b><br/><ol>
+<li>opts : number|object
+<p>The buffering options object or simply the delay in milliseconds.</p>
+<b>Members:</b><br/><ul>
+<li>delay <i>(optional)</i>
+<p>The number of milliseconds to delay calling the target function. While a call is pending, subsequent calls to the deferer method will behave based on the sign of the delay and "args" properties.</p>
+<p>If delay is positive, any call to the deferer during the timer delay will restart the timer to the full buffer delay. If the delay value is negative, the first call to the deferer method starts the timer and that determines when the target is called.</p>
+</li>
+<li>args <i>(optional)</i>
+<p>Controls which arguments are delivered when repeated calls are made within the timer delay. The value can be either "first" or "last". When "first" is specified, the arguments passed to the first call to the deferer are delivered when the timer expires. When "last" is specified (which is the default), the arguments passed to the last call to the deferer are delivered.</p>
+</li>
+</ul>
+</li>
+<li>scope
+<p>The "this" context to pass to the target method on each call.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The adapter function.</p>
+</blockquote>
+</blockquote>
+=== delayed ===
+<code language='js'>object delayed (delay, scope)</code>
+<blockquote>
+<p>This method creates a function that calls this function later. Every call to the returned function captures its arguments and calls setTimeout for the specified delay. When the timer fires, the target function is called given the stored arguments.</p>
+<p>A common use for a delayed method is event handling.</p>
+<b>Parameters:</b><br/><ol>
+<li>delay
+<p>The number of milliseconds to delay calling the target function.</p>
+</li>
+<li>scope
+<p>The "this" context to pass to the target method on each call.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The adapter function.</p>
+</blockquote>
+</blockquote>
+=== getArgumentNames ===
+<code language='js'>string[] getArgumentNames ()</code>
+<blockquote>
+<p>Returns the names of the arguments to this function.</p>
+<code language="js">
+   function foo (x, y) { ... }
+
+   var a = foo.getArgumentNames();
+
+   // a = ["x", "y"]</code>
+<p>NOTE: This does not work with Rhino.</p>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The names of the arguments to this function.</p>
+</blockquote>
+</blockquote>
+=== getFullName ===
+<code language='js'>object getFullName ()</code>
+<blockquote>
+<p>Returns the full name of this function.</p>
+<br/><b>Returns:</b><br/><blockquote>
+<p>the full name of this function.</p>
+</blockquote>
+</blockquote>
+=== getName ===
+<code language='js'>object getName ()</code>
+<blockquote>
+<p>Returns the name of this function.</p>
+<br/><b>Returns:</b><br/><blockquote>
+<p>the name of this function.</p>
+</blockquote>
+</blockquote>
+=== head ===
+<code language='js'>object head ()</code>
+<blockquote>
+<p>Creates a function that passes stored parameters to this function.</p>
+<p>For example:</p>
+<code language="js">
+    function foo () { ... }
+    var fn = foo.head("a", "b");
+    fn(4, 2); // equivalent to: foo("a", "b", 4, 2);</code>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The adapter function.</p>
+</blockquote>
+</blockquote>
+=== later ===
+<code language='js'>object later (delay?, scope?, args?)</code>
+<blockquote>
+<p>This method calls this function later.</p>
+<p>For example:</p>
+<code language="js">
+    func.later(10); // call func 10 msec from now
+
+    this.func.later(10, this); // call this.func 10 msec from now
+
+    this.func.later(10, this, [1,2]); // call this.func(1,2) 10 msec from now</code>
+<b>Parameters:</b><br/><ol>
+<li>delay <i>(optional)</i>
+<p>The number of milliseconds to delay calling the target function. If not specified, 10 milliseconds is assumed.</p>
+</li>
+<li>scope <i>(optional)</i>
+<p>The "this" context to use when calling the target method.</p>
+</li>
+<li>args <i>(optional)</i>
+<p>The arguments to pass along to the target method.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>A zjs.OneShotTimer object that will kill the timer if destroyed.</p>
+</blockquote>
+</blockquote>
+=== returns ===
+<code language='js'>object returns (ret)</code>
+<blockquote>
+<p>Returns a function that returns a bound value after calling this function.</p>
+<p>For example:</p>
+<code language="js">
+    function foo () { return "a"; }
+    var fn = foo.returns(42);
+    var x = fn(4, 2);  // equivalent to: foo(4, 2) but returns 42.</code>
+<b>Parameters:</b><br/><ol>
+<li>ret
+<p>The value for the adapter function to return.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The adapter function.</p>
+</blockquote>
+</blockquote>
+=== seal ===
+<code language='js'>object seal ()</code>
+<blockquote>
+<p>Creates a function that does not pass on its parameters to this function.</p>
+<p>For example:</p>
+<code language="js">
+    function foo () { ... }
+    var fn = foo.seal();
+    fn(4, 2); // equivalent to: foo();
+
+    fn = foo.head("a", "b").seal();
+    fn(4, 2); // equivalent to: foo("a", "b");</code>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The adapter function.</p>
+</blockquote>
+</blockquote>
+=== tail ===
+<code language='js'>object tail ()</code>
+<blockquote>
+<p>Creates a function that passes stored parameters to this function.</p>
+<p>For example:</p>
+<code language="js">
+    function foo () { ... }
+    var fn = foo.tail("a", "b");
+    fn(4, 2); // equivalent to: foo(4, 2, "a", "b");</code>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The adapter function.</p>
+</blockquote>
+</blockquote>
+=== tee ===
+<code language='js'>object tee ()</code>
+<blockquote>
+<p>Creates a function that calls this function and 1+ other functions. All parameters are passed along and the return value of the last method is returned.</p>
+<p>For example:</p>
+<code language="js">
+    function foo () { ...; return 42; }
+    function bar () { ...; return 427; }
+    function jaz () { ...; return 31415; }
+    var fn = jaz.tee(foo, bar);
+
+    var ret = fn(4, 2);
+
+    // equivalent to:
+    //    foo(4, 2);
+    //    bar(4, 2);
+    //    var ret = jaz(4, 2);</code>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The adapter function.</p>
+</blockquote>
+</blockquote>

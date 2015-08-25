@@ -1,0 +1,53 @@
+#summary Metadata Details
+
+=Introduction=
+
+For ZJS to do some of its magic there is a good deal of bookkeeping required. This meta data is collected under the object property named *$meta* for each annotated object. The *$meta* container holds information needed mostly by ZJS facilities, but may also prove useful for other reasons.
+
+=Design=
+
+All functions (especially classes) and namespaces touched by ZJS have a *$meta* object property. This single object property was chosen to keep the number of properties added to other objects in check. This has the following desirable characteristics:
+
+ * Reduced risk of name collision.
+ * Minimal noise in debuggers (like Firebug).
+
+=Details=
+
+The meta data stored for functions and classes is slightly different.
+
+All classes, functions and namespaces have these common properties:
+
+|| *Property* || *Description* ||
+|| fullname || The fully qualified name of the class, method or namespace. ||
+|| name || The name of the class, method or namespace in its parent (the leaf name). ||
+|| namespace || The namespace to which the class, method or namespace belongs. For a nested class, this is actually the outer class. ||
+
+==Classes==
+
+Class methods also have the following data:
+
+|| *Property* || *Description* ||
+|| $class || The class (constructor function) object. ||
+|| $static || A boolean indicating that a class method is static. ||
+|| callNext || The next method in the per-class mixin call chain. ||
+|| priority || The mixin call chain priority. ||
+
+Classes have these additional data:
+
+|| *Property* || *Description* ||
+|| $super || The super class constructor for a class. ||
+
+==Namespaces==
+
+Namespaces also have these properties:
+
+|| *Property* || *Description* ||
+|| subNamespaces || The array of nested namespaces. ||
+
+==Functions==
+
+Function adapters (such as *bind*) have these data:
+
+|| *Property* || *Description* ||
+|| binding || A textual description of an adapter function (e.g., "seal"). ||
+|| target || The function wrapped by an adapter function. ||

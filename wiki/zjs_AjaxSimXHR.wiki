@@ -1,0 +1,7 @@
+#summary zjs.AjaxSimXHR
+ * *File:* zjs/ajaxsim.js
+ * *Module:* zjs.ajaxsim
+= Class AjaxSimXHR =
+
+----
+<p>This class mimics the XmlHttpRequest object interface for a simulated request. An instance of this type may be returned by newXHR.</p>

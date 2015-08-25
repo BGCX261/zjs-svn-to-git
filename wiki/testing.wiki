@@ -1,0 +1,46 @@
+#summary Unit Testing JavaScript
+
+= Introduction =
+
+As it turns out, ZJS being a pure !JavaScript library has a major advantage: it can be unit tested during the [build Build Process]!
+
+= Ant + Rhino + BSF =
+
+The same requirements that enable use of [jsmin] form the building blocks for testing ZJS from the build script. The idea is that an HTML page does little more than concatenate !JavaScript using `<script>` tags. This is the same thing that `<jsmin>` does with its `outfile` attribute.
+
+So, with a little Ant like this:
+
+{{{
+  <jsmin outfile="${build.dir}/temp/test.js">
+      <fileset dir="${src.dir}">
+          <include name="zjs.js"/>
+      </fileset>
+      <fileset dir="${test.dir}">
+          <include name="unittest.js"/>
+      </fileset>
+      <fileset dir="${test.dir}">
+          <include name="test.js"/>
+      </fileset>
+  </jsmin>
+}}}
+
+The `<fileset>` elements serve the same role as `<script>` tags in HTML. When the above has run, there is now a single `test.js` file. The reason for this single file is because of the limitations of the Ant `<scriptdef>` task:
+
+{{{
+  <scriptdef name="zjstest"
+             language="javascript" src="${build.dir}/temp/test.js">
+      <![CDATA[
+        importPackage(java.lang);
+        if (testDataToConsole(System.out, testRun()))
+            self.fail("Test failed");
+      ]]>
+  </scriptdef>
+}}}
+
+It turns out that a `<scriptdef>` can contain both a `src` attribute and a body with !JavaScript code. That's all it takes then to run the same tests that the HTML test page was running, but now the build will fail if the tests fail.
+
+= Limitations =
+
+This will obviously run into problems as a general technique. The code under test (so far) does not make much use of the browser. In fact, no use during these tests. This can be handled to some extent with some creative !JavaScript code injected while building the test code to fake the features of the browser (such as `document`, `window` et.al).
+
+Time will tell. For now, the results are very pleasing.

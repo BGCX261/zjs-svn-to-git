@@ -1,0 +1,47 @@
+#summary ZJS Features At A Glance
+#labels Featured
+
+=Features=
+
+Many of the features of ZJS are implemented as "pseudo-keywords":
+
+ * *[Class $class]*
+ * *[mixin $mixin]*
+ * *[namespace $namespace]*
+ * *[panic $panic]*
+ * *[priority $priority]*
+ * *[static $static]*
+ * *[super $super]*
+ * *[using $using]*
+ * *[throw $throw]* (V1.1+)
+
+New in V2.0:
+
+ * *[ajax ajax]*
+ * *[browser Browser detection]*
+ * *[singleton $singleton]*
+ * *[enum $enum]*
+ * *[eval $eval]*
+ * *[module $module/$requires]*
+ * *[import $import]*
+ * *[foreach2 $foreach/$break]*
+ * *[log $log]*
+ * *[conditionalMembers Conditional Class/Namespace Members]*
+ * *[advnamespace Advanced $namespace controls ($override/$overwrite/$replace)]*
+ * *[new Advanced object instantiation ($new)]*
+
+ New in V3.0:
+
+ * *[events $events]*
+ * *[foreach Improved $foreach]*
+ 
+Others are more traditional methods:
+
+ * [zjsutil Utility Methods]
+ * [string String.prototype Extensions]
+ * [function Function.prototype Extensions]
+
+And some miscellaneous support:
+
+ * [build Build Process] - use jsmin from Ant
+ * [testing Unit Testing] - run unit tests for !JavaScript from Ant!

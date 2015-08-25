@@ -1,0 +1,100 @@
+#summary zjs.AjaxSimManager
+ * *File:* zjs/ajaxsim.js
+ * *Module:* zjs.ajaxsim
+= Class AjaxSimManager =
+
+----
+<p>This singleton class is used to manage Ajax simulations. When created, this object will intercept the newXHR method. If the options object contains a "nosim" property, the request is not simulated. Otherwise, an AjaxSimXHR is created to simulate the normal Ajax usage.</p>
+<code language="js">
+   AjaxSimManager.getInstance().setDelay(100).
+       add(new zjs.AjaxSim("foo/bar", { responseText: "Hello" })).
+       add(new zjs.AjaxSim("bar/foo", { responseText: "World" }));</code>
+----
+== Constructor Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#ctor ctor]</b> ()<br/>Intercepts newXHR and sets the default delay.</td>
+</tr>
+</table>
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#add add]</b> (<b title="The AjaxSim to add.">sim</b>)<br/>Adds an AjaxSim object to simulate particular responses.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#addFront addFront]</b> (<b title="The AjaxSim to add.">sim</b>)<br/>Adds an AjaxSim object to simulate particular responses.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#getResult getResult]</b> (<b title="The request to satisfy.">xhr</b>)<br/>Returns the result to deliver for the particular request.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#setDelay setDelay]</b> (<b title="The delay in milliseconds.">delay</b>)<br/>Sets the delay between the request and delivery of the simulated response.</td>
+</tr>
+</table>
+----
+== Constructor Details ==
+=== ctor ===
+<code language='js'>void ctor ()</code>
+<blockquote>
+<p>Intercepts newXHR and sets the default delay.</p>
+</blockquote>
+----
+== Method Details ==
+=== add ===
+<code language='js'>object add (sim)</code>
+<blockquote>
+<p>Adds an AjaxSim object to simulate particular responses. The AjaxSim is added to the end of the set (and has least precedence).</p>
+<b>Parameters:</b><br/><ol>
+<li>sim
+<p>The AjaxSim to add.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>This object (for call chaining).</p>
+</blockquote>
+</blockquote>
+=== addFront ===
+<code language='js'>object addFront (sim)</code>
+<blockquote>
+<p>Adds an AjaxSim object to simulate particular responses. The AjaxSim is added to the front of the set (and has highest precedence).</p>
+<b>Parameters:</b><br/><ol>
+<li>sim
+<p>The AjaxSim to add.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>This object (for call chaining).</p>
+</blockquote>
+</blockquote>
+=== getResult ===
+<code language='js'>object getResult (xhr)</code>
+<blockquote>
+<p>Returns the result to deliver for the particular request.</p>
+<b>Parameters:</b><br/><ol>
+<li>xhr
+<p>The request to satisfy.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The result to use, perhaps the standard Not Found (404).</p>
+</blockquote>
+</blockquote>
+=== setDelay ===
+<code language='js'>object setDelay (delay)</code>
+<blockquote>
+<p>Sets the delay between the request and delivery of the simulated response.</p>
+<b>Parameters:</b><br/><ol>
+<li>delay
+<p>The delay in milliseconds.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>This object (for call chaining).</p>
+</blockquote>
+</blockquote>

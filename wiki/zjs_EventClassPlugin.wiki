@@ -1,0 +1,65 @@
+#summary zjs.EventClassPlugin
+ * *File:* zjs/events.js
+ * *Module:* zjs.events
+= Class EventClassPlugin =
+*[zjs_ClassPlugin zjs.ClassPlugin]*
+ <tt>|<br/>
+ +--</tt> *zjs.EventClassPlugin*
+
+----
+<p>This plugin implements the $events tag. This plugin is designed to work with the zjs.EventModel, but could be easily modified to delegate to the appropriate event model for the target class if necessary.</p>
+<p>The $events tag produces a collection of event types keyed by the event type as a string. For example, "foo" would map to the appropriate event type for events of type "foo".</p>
+<p>It can be used in the following ways in class declarations:</p>
+<code language="js">
+   MyClass : $class({
+       $events: [
+           // This is a basic (non-bubbling) event.
+           "foo",
+
+           // This is a bubbling event
+           "^bar"
+       ]
+   })</code>
+<p>The above is equivalent to this form:</p>
+<code language="js">
+   MyClass : $class({
+       $events: {
+           foo: false,
+           bar: true
+       }
+   })</code>
+<p>Custom event types can be defined like so:</p>
+<code language="js">
+   MyClass : $class({
+       $events: [
+           FooEvent,
+           BarEvent
+       ]
+   })</code>
+<p>In the above case, FooEvent and BarEvent classes must have a "type" property in their prototype. Like so:</p>
+<code language="js">
+   FooEvent : $class(zjs.Event, {
+       type: "foo",
+       ...
+   })</code>
+<p>An alternative method for doing this is to use the object literal form:</p>
+<code language="js">
+   MyClass : $class({
+       $events: {
+           foo: CustomEvent,
+           bar: CustomEvent
+       }
+   })</code>
+<p>This essentially could be rewritten like so:</p>
+<code language="js">
+   MyClass : $class({
+       $events: [
+           $class(CustomEvent, {
+               type: "foo"
+           }),
+
+           $class(CustomEvent, {
+               type: "bar"
+           })
+       ]
+   })</code>

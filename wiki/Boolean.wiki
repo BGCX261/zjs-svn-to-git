@@ -1,0 +1,6 @@
+#summary Boolean
+ * *File:* zjs/text.js
+ * *Module:* zjs.text
+= Class Boolean =
+
+----

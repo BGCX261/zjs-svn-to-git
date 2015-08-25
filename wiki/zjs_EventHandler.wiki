@@ -1,0 +1,11 @@
+#summary zjs.EventHandler
+ * *File:* zjs/events.js
+ * *Module:* zjs.events
+= Class EventHandler =
+
+== Implemented Interfaces ==
+<blockquote>
+*[zjs_IEventHandler zjs.IEventHandler]*
+</blockquote>
+----
+<p>This is a base class implements IEventHandler for listener cleanup.</p>

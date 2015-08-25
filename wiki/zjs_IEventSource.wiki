@@ -1,0 +1,205 @@
+#summary zjs.IEventSource
+ * *File:* zjs/events.js
+ * *Module:* zjs.events
+= Interface IEventSource =
+----
+<p>This interface is implemented by Event Source objects.</p>
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#fireEvent fireEvent]</b> (<b title="The name of the event.">string name</b>)<br/>Fires an event with "this" as the target.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#fireEvent fireEvent]</b> (<b title="The name of the event.">string name</b>, <b title="The event target.">target</b>)<br/>Fires an event with the given target.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#fireEvent fireEvent]</b> (<b title="The properties of the event.">object props</b>)<br/>This method fires an event given its properties.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#fireEvent fireEvent]</b> (<b title="The event object.">Event event</b>)<br/>When zjs.Event is used for the event object (as is the case with the zjs.EventModel), event objects can be fired directly.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#on on]</b> (<b title="The name of the event to which to subscribe.">string name</b>, <b title="The function that handles the event.">function fn</b>, <i title="(Optional) The scope on which to call the given function.">object scope</i>, <i title="(Optional) Extra options">object options</i>)<br/>This method sets up one event handler on this object.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#on on]</b> (<b title="The options to setup listeners.">object options</b>)<br/>Sets up one or more event listeners using specified options.</td>
+</tr>
+</table>
+----
+== Method Details ==
+=== fireEvent ===
+<code language='js'>void fireEvent (string name)</code>
+<blockquote>
+<p>Fires an event with "this" as the target.</p>
+<b>Parameters:</b><br/><ol>
+<li>name : string
+<p>The name of the event.</p>
+</li>
+</ol>
+</blockquote>
+<hr/>
+=== fireEvent ===
+<code language='js'>void fireEvent (string name, target)</code>
+<blockquote>
+<p>Fires an event with the given target.</p>
+<code language="js">
+    this.fireEvent("myevent", trg);</code>
+<b>Parameters:</b><br/><ol>
+<li>name : string
+<p>The name of the event.</p>
+</li>
+<li>target
+<p>The event target.</p>
+</li>
+</ol>
+</blockquote>
+<hr/>
+=== fireEvent ===
+<code language='js'>void fireEvent (object props)</code>
+<blockquote>
+<p>This method fires an event given its properties.</p>
+<code language="js">
+    this.fireEvent({ type: "myevent", foo: 42, bar: "hello" });</code>
+<b>Parameters:</b><br/><ol>
+<li>props : object
+<p>The properties of the event.</p>
+</li>
+</ol>
+</blockquote>
+<hr/>
+=== fireEvent ===
+<code language='js'>void fireEvent (Event event)</code>
+<blockquote>
+<p>When zjs.Event is used for the event object (as is the case with the zjs.EventModel), event objects can be fired directly.</p>
+<code language="js">
+    MyEvent : $class(zjs.Event, {  // must derive from zjs.Event
+        type: "myevent",
+
+        // ...
+    })
+
+    var ev = new MyEvent({ foo: 42, bar: "hello" });
+    this.fireEvent(ev); // target = this
+
+    ev = new MyEvent({ foo: 427, bar: "world", target: trg });
+    this.fireEvent(ev);</code>
+<b>Parameters:</b><br/><ol>
+<li>event : Event
+<p>The event object.</p>
+</li>
+</ol>
+</blockquote>
+=== on ===
+<code language='js'>void on (string name, function fn, object scope?, object options?)</code>
+<blockquote>
+<p>This method sets up one event handler on this object. For example:</p>
+<code language="js">
+    object.on("eventname", this.onEventName, this, { options });</code>
+<b>Parameters:</b><br/><ol>
+<li>name : string
+<p>The name of the event to which to subscribe.</p>
+</li>
+<li>fn : function
+<p>The function that handles the event.</p>
+</li>
+<li>scope : object <i>(optional)</i>
+<p>The scope on which to call the given function.</p>
+</li>
+<li>options : object <i>(optional)</i>
+<p>Extra options</p>
+<b>Members:</b><br/><ul>
+<li>$only <i>(optional)</i>
+<p>The number of times to fire this event (often 1 if present).</p>
+</li>
+<li>$target <i>(optional)</i>
+<p>Only invoke the handler if the event is fired directly by the target object.</p>
+</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<hr/>
+=== on ===
+<code language='js'>void on (object options)</code>
+<blockquote>
+<p>Sets up one or more event listeners using specified options.</p>
+<p>A simple example:</p>
+<code language="js">
+    object.on({
+        eventname : this.onEventName,
+        otherevent : this.onOtherEvent,
+        $this: this
+    });</code>
+<p>An even more flexible use case:</p>
+<code language="js">
+    object.on({
+        eventname : { fn: this.onEventName },
+        otherevent : { fn: this.onOtherEvent },
+        $this: this
+    });</code>
+<p>In this last use case, $this, $only and $target in an inner config will take precedence over those in the outer. For example:</p>
+<code language="js">
+    object.on({
+        eventname : { fn: this.onEventName, $this: that },
+        otherevent : { fn: this.onOtherEvent, $only: 1, $target: bar },
+        $this: this, // picked up by "otherevent"
+        $target: foo // picked up by "eventname"
+    });</code>
+<p>The above is equivalent to these:</p>
+<code language="js">
+    object.on({
+        eventname : this.onEventName,
+        $this: that,
+        $target: foo
+    });
+
+    object.on({
+        otherevent : this.onOtherEvent,
+        $this: this,
+        $only: 1,
+        $target: bar
+    });</code>
+<b>Parameters:</b><br/><ol>
+<li>options : object
+<p>The options to setup listeners.</p>
+<b>Members:</b><br/><ul>
+<li>eventname1 : function <i>(optional)</i>
+<p>The handler function for "eventname1". The actual name used is that of the desired event.</p>
+</li>
+<li>eventname2 : object <i>(optional)</i>
+<p>The options for a listener to "eventname2". The actual name used is that of the desired event.</p>
+<b>Members:</b><br/><ul>
+<li>fn : function
+<p>The handler function.</p>
+</li>
+<li>$this <i>(optional)</i>
+<p>The this pointer to use for the handler function. If not given, the $this from the outer object is used (if present).</p>
+</li>
+<li>$only <i>(optional)</i>
+<p>The number of times to fire this event (often 1 if present). If not given, the $only from the outer object is used (if present).</p>
+</li>
+<li>$target <i>(optional)</i>
+<p>Only invoke the handler if the event is fired directly by the target object. If not given, the $target from the outer object is used (if present).</p>
+</li>
+</ul>
+</li>
+<li>$this <i>(optional)</i>
+<p>The this pointer to use for handler functions.</p>
+</li>
+<li>$only <i>(optional)</i>
+<p>The number of times to fire this event (often 1 if present).</p>
+</li>
+<li>$target <i>(optional)</i>
+<p>Only invoke the handler if the event is fired directly by the target object.</p>
+</li>
+</ul>
+</li>
+</ol>
+</blockquote>

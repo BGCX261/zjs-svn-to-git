@@ -1,0 +1,59 @@
+#summary zjs.PackageManager
+ * *File:* zjs/import.js
+ * *Module:* zjs.import
+= Class PackageManager =
+
+== Implemented Interfaces ==
+<blockquote>
+*[zjs_IPackageManager zjs.IPackageManager]*
+</blockquote>
+----
+<p>This class provides the logic to manage modules for a package. This implementation of getRequiredModules uses a simple regex to parse out any $requires statements in the source. This does not respect block comments, but does understand "//" commented lines.</p>
+<p>The implementation of makeUrl provided by this class is a concatenatination of stored prefix and suffix text with a given relative path to form the URL. For most tasks, this is sufficient. In many cases, there is no suffix. The suffix is required in cases where cookies are disabled and URL rewriting is used. In particular, J2EE web containers use a suffix of ";jsessionid=xyz" to maintain association with the server-side session. While it *may* work to just ditch the suffix, one ought not make that assumption.</p>
+----
+== Constructor Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#ctor ctor]</b> (<i title="(Optional) The URL prefix text.">string prefix</i>, <i title="(Optional) The suffix text.">string suffix</i>)<br/>Stores the given prefix and (optional) suffix for forming URL's.</td>
+</tr>
+</table>
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>string</b></td>
+<td><b>[#makeRelPath makeRelPath]</b> (<b title="The module path to convert to a relative path.">string modpath</b>)<br/>Converts the given module path into a relative path.</td>
+</tr>
+</table>
+----
+== Constructor Details ==
+=== ctor ===
+<code language='js'>void ctor (string prefix?, string suffix?)</code>
+<blockquote>
+<p>Stores the given prefix and (optional) suffix for forming URL's.</p>
+<b>Parameters:</b><br/><ol>
+<li>prefix : string <i>(optional)</i>
+<p>The URL prefix text.</p>
+</li>
+<li>suffix : string <i>(optional)</i>
+<p>The suffix text.</p>
+</li>
+</ol>
+</blockquote>
+----
+== Method Details ==
+=== makeRelPath ===
+<code language='js'>string makeRelPath (string modpath)</code>
+<blockquote>
+<p>Converts the given module path into a relative path. This is called by makeUrl and the result is then concatenated with the prefix and suffix.</p>
+<p>The most likely reason to override this method is to remove the root package name from the path. This would be useful for mapping a non-ZJS body of code into the module path hierarchy. For example, to place a directory of JS code files from a library named "foo", one could register the "foo" package with a custom PackageManager that did not include "foo" in the conversion of a module path.</p>
+<b>Parameters:</b><br/><ol>
+<li>modpath : string
+<p>The module path to convert to a relative path.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The relative path for the given module path.</p>
+</blockquote>
+</blockquote>

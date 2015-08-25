@@ -1,0 +1,6 @@
+#summary zjs.EmptyBag
+ * *File:* zjs/ext.js
+ * *Module:* zjs.ext
+= Class EmptyBag =
+
+----

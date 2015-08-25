@@ -1,0 +1,59 @@
+#summary zjs.IPackageManager
+ * *File:* zjs/import.js
+ * *Module:* zjs.import
+= Interface IPackageManager =
+----
+<p>This is the interface that must be implemented to a valid Package Manager. To get started, there are several terms that need to be understood:</p>
+<p>*Package:* A Java-like hierarchical naming structure that maps to a folder. It is best practice to keep packages equivalent to namespaces, though this is not enforced. Packages can be nested as with Java and are then often called "sub-packages". Package names are separated by dots, like namespaces and also like Java, to form a Package Path.</p>
+<p>*Package Path:* A sequence of package names separated by dots. For example, take the string "foo.bar.bif". These are always absolute. In other words, "foo" is the top-level package with a "bar" sub-package, in turn with a "bif" sub-package.</p>
+<p>*Root Package:* A top-level (non-nested) package. For example, the root package of "foo.bar.bif" is "foo".</p>
+<p>*Module:* A member of a package in a single Javascript (.js) file. There can be multiple modules in a Javascript file, but modules do not span files. A file that contains multiple modules is called a Bundle.</p>
+<p>*Bundle:* A Javascript file that contains multiple modules. These are typically produced by a build process that combines individual files into one for efficiency.</p>
+<p>*Module Name:* The leaf file name, sans extent and path. For example, the name of this module is "import" (no ".js" and no "zjs").</p>
+<p>*Module Path:* The concatenation of the package and module name separated by a dot character ("."). For example, the module path of this module is "zjs.import".</p>
+<p>Similar to Java, sub-packages are assumed to be in a file-system hierarchy (in this case, via the src URL).</p>
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>string[]</b></td>
+<td><b>[#getRequiredModules getRequiredModules]</b> (<b title="The Javascript source text.">string scriptText</b>)<br/>Returns the modules required by the given Javascript source text string.</td>
+</tr>
+<tr valign='top'>
+<td><b>string</b></td>
+<td><b>[#makeUrl makeUrl]</b> (<b title="The module path to map to a URL.">string modpath</b>)<br/>Maps the given module path to its corresponding URL.</td>
+</tr>
+</table>
+----
+== Method Details ==
+=== getRequiredModules ===
+<code language='js'>string[] getRequiredModules (string scriptText)</code>
+<blockquote>
+<p>Returns the modules required by the given Javascript source text string. In this implementation, this is done by parsing the $requires statements and capturing the module paths they contain.</p>
+<b>Parameters:</b><br/><ol>
+<li>scriptText : string
+<p>The Javascript source text.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The array of module paths of the required modules.</p>
+</blockquote>
+</blockquote>
+=== makeUrl ===
+<code language='js'>string makeUrl (string modpath)</code>
+<blockquote>
+<p>Maps the given module path to its corresponding URL. The module path is the standard "foo.bar.module" format.</p>
+<p>For example:</p>
+<code language="js">
+    var url = pkg.makeUrl("foo.bar.module");
+
+    // url == "../js/foo/bar/module.js;jsessionid=4321"</code>
+<b>Parameters:</b><br/><ol>
+<li>modpath : string
+<p>The module path to map to a URL.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The URL to use to retrieve the specified module's JS file.</p>
+</blockquote>
+</blockquote>

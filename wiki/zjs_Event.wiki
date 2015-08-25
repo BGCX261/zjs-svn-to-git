@@ -1,0 +1,11 @@
+#summary zjs.Event
+ * *File:* zjs/events.js
+ * *Module:* zjs.events
+= Class Event =
+
+== Implemented Interfaces ==
+<blockquote>
+*[zjs_IEvent zjs.IEvent]*
+</blockquote>
+----
+<p>This class is a minimal event implementation.</p>

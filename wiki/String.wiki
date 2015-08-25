@@ -1,0 +1,189 @@
+#summary String
+ * *File:* zjs/text.js
+ * *Module:* zjs.text
+= Class String =
+
+----
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#camelize camelize]</b> (<b title="The character to split up words.">splitChar</b>)<br/>Converts this string into "camel case".</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#capitalize capitalize]</b> ()<br/>Returns this string modified by capitalizing the first character.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#decapitalize decapitalize]</b> ()<br/>Returns this string modified by lower-casing the first character.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#endsWith endsWith]</b> (<b title="The string to compare.">s</b>)<br/>Returns true if this string ends with a given string.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#endsWithNoCase endsWithNoCase]</b> (<b title="The string to compare.">s</b>)<br/>Returns true if this string ends with a given string ignoring case.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#equalsNoCase equalsNoCase]</b> (<b title="The string to compare.">s</b>)<br/>Returns true if this and another string are equal ignoring case.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#left left]</b> (<b title="The number of characters">n</b>)<br/>Returns the left-most n character of this string.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#right right]</b> (<b title="The number of characters.">n</b>)<br/>Returns the right-most n character of this string.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#startsWith startsWith]</b> (<b title="The string to compare.">s</b>)<br/>Returns true if this string starts with a given string.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#startsWith startsWith]</b> (<b title="The string to compare.">s</b>)<br/>Returns true if this string starts with a given string ignoring case.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#toQueryParam toQueryParam]</b> ()<br/>Returns the value of this object formatted for a Query Parameter.</td>
+</tr>
+</table>
+----
+== Method Details ==
+=== camelize ===
+<code language='js'>object camelize (splitChar)</code>
+<blockquote>
+<p>Converts this string into "camel case". For example, "foo-bar" becomes "fooBar". The splitChar determines how the words are divided. The first word is unchanged. All other words are capitalized and concatenated. The primary use case for this conversion is to convert CSS names to script property names (e.g., "background-color" to "backgroundColor").</p>
+<b>Parameters:</b><br/><ol>
+<li>splitChar
+<p>The character to split up words.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The camel-case conversion of this string.</p>
+</blockquote>
+</blockquote>
+=== capitalize ===
+<code language='js'>object capitalize ()</code>
+<blockquote>
+<p>Returns this string modified by capitalizing the first character.</p>
+<br/><b>Returns:</b><br/><blockquote>
+<p>This string modified by capitalizing the first character.</p>
+</blockquote>
+</blockquote>
+=== decapitalize ===
+<code language='js'>object decapitalize ()</code>
+<blockquote>
+<p>Returns this string modified by lower-casing the first character.</p>
+<br/><b>Returns:</b><br/><blockquote>
+<p>This string modified by lower-casing the first character.</p>
+</blockquote>
+</blockquote>
+=== endsWith ===
+<code language='js'>object endsWith (s)</code>
+<blockquote>
+<p>Returns true if this string ends with a given string.</p>
+<b>Parameters:</b><br/><ol>
+<li>s
+<p>The string to compare.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if this string ends with a given string.</p>
+</blockquote>
+</blockquote>
+=== endsWithNoCase ===
+<code language='js'>object endsWithNoCase (s)</code>
+<blockquote>
+<p>Returns true if this string ends with a given string ignoring case.</p>
+<b>Parameters:</b><br/><ol>
+<li>s
+<p>The string to compare.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if this string ends with a given string.</p>
+</blockquote>
+</blockquote>
+=== equalsNoCase ===
+<code language='js'>object equalsNoCase (s)</code>
+<blockquote>
+<p>Returns true if this and another string are equal ignoring case.</p>
+<b>Parameters:</b><br/><ol>
+<li>s
+<p>The string to compare.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if this and another string are equal ignoring case.</p>
+</blockquote>
+</blockquote>
+=== left ===
+<code language='js'>object left (n)</code>
+<blockquote>
+<p>Returns the left-most n character of this string. If n is negative, this will instead return the left-most characters upto the |n| characters on the right.</p>
+<p>For example:</p>
+<code language="js">
+    s = "12345".left(2);     // == "12"
+    s = "12345".left(-2);    // == "123" (upto the last 2 characters)</code>
+<b>Parameters:</b><br/><ol>
+<li>n
+<p>The number of characters</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The left-most n character of this string.</p>
+</blockquote>
+</blockquote>
+=== right ===
+<code language='js'>object right (n)</code>
+<blockquote>
+<p>Returns the right-most n character of this string. If n is negative, this will be empty.</p>
+<b>Parameters:</b><br/><ol>
+<li>n
+<p>The number of characters.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The right-most n character of this string.</p>
+</blockquote>
+</blockquote>
+=== startsWith ===
+<code language='js'>object startsWith (s)</code>
+<blockquote>
+<p>Returns true if this string starts with a given string.</p>
+<b>Parameters:</b><br/><ol>
+<li>s
+<p>The string to compare.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if this string starts with a given string.</p>
+</blockquote>
+</blockquote>
+<hr/>
+=== startsWith ===
+<code language='js'>object startsWith (s)</code>
+<blockquote>
+<p>Returns true if this string starts with a given string ignoring case.</p>
+<b>Parameters:</b><br/><ol>
+<li>s
+<p>The string to compare.</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>True if this string starts with a given string.</p>
+</blockquote>
+</blockquote>
+=== toQueryParam ===
+<code language='js'>object toQueryParam ()</code>
+<blockquote>
+<p>Returns the value of this object formatted for a Query Parameter.</p>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The value of this object formatted for a Query Parameter.</p>
+</blockquote>
+</blockquote>

@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+=============================================================================
+    test/test-import.html
+    Copyright (C) 2008, Donald W. Griffin
+    All rights reserved.
+    [MIT license :: see license.txt for details]
+=============================================================================
+-->
+<html>
+<head>
+  <title>ZJS-Import Testing Page</title>
+  <link href="test.css" rel="stylesheet"></link>
+
+  <!--[if IE]>
+  <script src="firebug/pi.js"></script>
+  <script src="firebug/firebug-lite.js"></script>
+  <![endif]-->
+
+  <script src="../src/zjs/core.js" id="zjs.core"></script>
+  <script>zjs.config.debug = window.location.href.indexOf("debug=false") < 0;</script>
+
+  <script src="../src/zjs/ext.js"></script>
+  <script src="../src/zjs/text.js"></script>
+  <script src="../src/zjs/ajax.js"></script>
+  <script src="../src/zjs/browser.js"></script>
+  <script src="../src/zjs/import.js"></script>
+
+  <script>
+    function imported ()
+    {
+        alert("imported baby!");
+    }
+
+    function setup ()
+    {
+        //console.info("setup...");
+
+        zjs.Importer.getInstance().addPackagePath("imp", "");
+        $import(["zjs.browser", "imp.imp3"], imported);
+    }
+  </script>
+
+  <script src="unittest.js"></script>
+  <script src="test.js"></script>
+  <script src="test-imp.js"></script>
+</head>
+
+<body onload="setup();">
+    <div class="onlyIE">IE</div>
+    <div class="isntIE">Not IE</div>
+    <div class="onlyFF">Firefox</div>
+    <div class="isntFF">Not Firefox</div>
+    <script>
+        zjs.browser.addDecorations(document.body);
+        document.write("<p>body: " + document.body.className + "</p>");
+        document.write("<pre>" +
+                "   navigator.userAgent: " + navigator.userAgent + "\n" +
+                "   navigator.vendor   : " + navigator.vendor + "\n" +
+                "   navigator.platform : " + navigator.platform + "\n" +
+            "</pre>");
+
+        var s = "";
+        for (var n in zjs.browser)
+            if (!(zjs.browser[n] instanceof Function))
+                s += n + ": " + zjs.browser[n] + "<br>";
+
+        document.write("<p>"+s+"</p>");
+
+        document.write("<pre>"+window.location.href+"</pre>");
+        document.write("<pre>debug="+zjs.config.debug+"</pre>");
+        runTests();
+    </script>
+</body>
+</html>

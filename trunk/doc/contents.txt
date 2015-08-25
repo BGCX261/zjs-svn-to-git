@@ -1,0 +1,24 @@
+Welcome to ZJS
+=====================
+
+This ZIP archive contains the following:
+
+doc/
+  contents.txt -- This file
+  license.txt -- The license terms for ZJS
+
+src/
+  json2.js	- A copy of the file http://www.JSON.org/json2.js used by ZJS for JSON
+  zjs/		- The ZJS package folder
+    ajax.js	- Code to support Ajax requests
+    all.js	- A combination of all files in the zjs package
+    browser.js	- Browser detection code (derived from http://www.quirksmode.org/js/detect.html)
+    core.js	- The core language-level features (e.g., $class and $namespace)
+    ext.js	- Extras not essential to core (String and Function prototype extensions)
+    import.js	- Support for $import, $module and $requires (needs all other ZJS modules)
+
+test/		- Various test support files
+    firebug/	- A copy of Firebug Lite ()
+    imp/	- A package used to test $import
+
+zjstest/	- Netbeans project for a webapp to test features over HTTP

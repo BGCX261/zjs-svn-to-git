@@ -1,0 +1,20 @@
+#summary zjs.IEventHandler
+ * *File:* zjs/events.js
+ * *Module:* zjs.events
+= Interface IEventHandler =
+----
+<p>This interface is how classes that listen to other objects provide listener cleanup.</p>
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#mon mon]</b> ()<br/></td>
+</tr>
+</table>
+----
+== Method Details ==
+=== mon ===
+<code language='js'>void mon ()</code>
+<blockquote>
+</blockquote>

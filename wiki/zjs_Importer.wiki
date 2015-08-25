@@ -1,0 +1,153 @@
+#summary zjs.Importer
+ * *File:* zjs/import.js
+ * *Module:* zjs.import
+= Class Importer =
+
+----
+<p>This class manages dynamic imports of Javascript code. One of the jobs of this class then is to track the association of base URL's and top-level package names. Only different top-level packages may have different base URL's. Sub-packages must be located under the base URL of its top-level package.</p>
+<p>There are two ways to establish this association.</p>
+<p>1. Using "id" attributes on script tags. For example, to declare the module path of a .js file, one can do this:</p>
+<p>`<`script src="/base/foo/bar/module.js" id="foo.bar.module"`>``<`/script`>`</p>
+<p>In the above example, ZJS can now determine the base URL of the "foo" top-level package. Given the above, we would have the following:</p>
+<p>foo : /base/</p>
+<p>The algorithm is that for any script tag, its base URL sets the base URL for the appropriate top-level package if there is not a base URL already set.</p>
+<p>2. Explicit calls to:</p>
+<p>zjs.Importer.getInstance().addPackageManager (pkg, pkgmgr) zjs.Importer.getInstance().addPackagePath (pkg, root) zjs.Importer.getInstance().addPackagePath (pkg, root, suffix)</p>
+----
+== Properties ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><p><b>canUseScriptSrcLoad</b></p></td>
+<td>
+<p>Controls whether or not we use loadScript. See that method for compatibility notes.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>debug</b></p></td>
+<td>
+<p>Set to true to use debugger-friendly injection technique. While less efficient, it is much better than breaking Firebug et.al..</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>modules</b></p></td>
+<td>
+<p>Modules that are loaded indexed by module path. The value is a Module object.</p>
+</td></tr>
+<tr valign='top'>
+<td><p><b>packages</b></p></td>
+<td>
+<p>An object indexed by root package name to get a PackageManager.</p>
+</td></tr>
+</table>
+----
+== Method Summary ==
+<table border='1' cellspacing='0' cellpadding='2' width='100%'>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#addPackageManager addPackageManager]</b> (<b title="The package name.">pkg</b>, <b title="The object that will manage modules in the package.">pkgmgr</b>)<br/>Adds a package and its associated object, if not already defined.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#addPackagePath addPackagePath]</b> (<b title="The package name.">pkg</b>, <b title="The base URL for modules in this package.">root</b>, <b title="The suffix for modules in this package (optional).">suffix</b>)<br/>Adds a package and its associated manager, if not already defined.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#getModule getModule]</b> (<b title="The module path for the module.">modpath</b>, <b title="True if the module does not need a package manager.">pkgMgrOptional</b>)<br/>Returns the Module object given its module path.</td>
+</tr>
+<tr valign='top'>
+<td><b>object</b></td>
+<td><b>[#getModulePackageManager getModulePackageManager]</b> (<b title="The module path of the desired module.">modpath</b>, <b title="True if the package manager is optional (no throw).">optional</b>)<br/>Returns the PackageManager object for the given module.</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#isReady isReady]</b> (<b title="The module path in question.">modpath</b>)<br/>Returns true if the given module is loaded (loading doesn't count).</td>
+</tr>
+<tr valign='top'>
+<td><b>void</b></td>
+<td><b>[#load load]</b> (<b title="The array of module paths to load.">modulePaths</b>, <b title="The callback to make when the load is complete.">onload</b>)<br/>Loads a given array of module paths and calls the given onload when done.</td>
+</tr>
+</table>
+----
+== Method Details ==
+=== addPackageManager ===
+<code language='js'>void addPackageManager (pkg, pkgmgr)</code>
+<blockquote>
+<p>Adds a package and its associated object, if not already defined. The object should be substitutable for a PackageManager.</p>
+<b>Parameters:</b><br/><ol>
+<li>pkg
+<p>The package name.</p>
+</li>
+<li>pkgmgr
+<p>The object that will manage modules in the package.</p>
+</li>
+</ol>
+</blockquote>
+=== addPackagePath ===
+<code language='js'>void addPackagePath (pkg, root, suffix)</code>
+<blockquote>
+<p>Adds a package and its associated manager, if not already defined. The root is the base URL for modules in that package. The optional suffix can be supplied to deal with things like URL rewriting (such as with J2EE web containers and ";jsessionid=" warts).</p>
+<b>Parameters:</b><br/><ol>
+<li>pkg
+<p>The package name.</p>
+</li>
+<li>root
+<p>The base URL for modules in this package.</p>
+</li>
+<li>suffix
+<p>The suffix for modules in this package (optional).</p>
+</li>
+</ol>
+</blockquote>
+=== getModule ===
+<code language='js'>void getModule (modpath, pkgMgrOptional)</code>
+<blockquote>
+<p>Returns the Module object given its module path. Creates as necessary the bookkeeping data for the module. If the Module object is created, it is placed in the INIT state. The caller must adjust the object's state as necessary.</p>
+<b>Parameters:</b><br/><ol>
+<li>modpath
+<p>The module path for the module.</p>
+</li>
+<li>pkgMgrOptional
+<p>True if the module does not need a package manager.</p>
+</li>
+</ol>
+</blockquote>
+=== getModulePackageManager ===
+<code language='js'>object getModulePackageManager (modpath, optional)</code>
+<blockquote>
+<p>Returns the PackageManager object for the given module. If the package manager is optional, the 2nd parameter can be passed as true to return null instead of throwing an exception.</p>
+<b>Parameters:</b><br/><ol>
+<li>modpath
+<p>The module path of the desired module.</p>
+</li>
+<li>optional
+<p>True if the package manager is optional (no throw).</p>
+</li>
+</ol>
+<br/><b>Returns:</b><br/><blockquote>
+<p>The PackageManager for the given module or null.</p>
+</blockquote>
+<br/><b>Throws:</b><br/><blockquote>
+<p>Error if there is no PackageManager for the specified modpath.</p>
+</blockquote>
+</blockquote>
+=== isReady ===
+<code language='js'>void isReady (modpath)</code>
+<blockquote>
+<p>Returns true if the given module is loaded (loading doesn't count).</p>
+<b>Parameters:</b><br/><ol>
+<li>modpath
+<p>The module path in question.</p>
+</li>
+</ol>
+</blockquote>
+=== load ===
+<code language='js'>void load (modulePaths, onload)</code>
+<blockquote>
+<p>Loads a given array of module paths and calls the given onload when done. Most likely, the $import method should be used instead of calling this method directly.</p>
+<b>Parameters:</b><br/><ol>
+<li>modulePaths
+<p>The array of module paths to load.</p>
+</li>
+<li>onload
+<p>The callback to make when the load is complete.</p>
+</li>
+</ol>
+</blockquote>
